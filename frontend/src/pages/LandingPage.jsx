@@ -249,367 +249,380 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3. THOUGHTFUL MAINTENANCE PANEL */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20 pb-20 relative z-20">
-        <div className="bg-[#EBE6DC] border border-[#DDD6C8] p-6 sm:p-10 shadow-sm">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-            {/* Left Visual (Architectural Detail Photo) */}
-            <div className="md:col-span-4 border border-[#D5CDBC] bg-white">
-              <img
-                src="/assets/maintenance_detail.jpg"
-                alt="Natural architectural materials and clean interior detailing"
-                className="w-full h-44 sm:h-52 object-cover"
-                loading="lazy"
-              />
-            </div>
-
-            {/* Middle Statement */}
-            <div className="md:col-span-5 space-y-2.5">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#6E7364]">
-                Thoughtful maintenance
-              </span>
-              <h2 className="font-serif text-2xl sm:text-3xl text-[#1F1E1C] font-normal leading-snug">
-                Better communication. Happier communities.
-              </h2>
-              <p className="text-sm sm:text-base text-[#5C5955] leading-relaxed">
-                One shared place for residents and administrators to keep everyday requests moving.
-              </p>
-            </div>
-
-            {/* Right Metric & Indicators */}
-            <div className="md:col-span-3 flex flex-col justify-between items-start md:items-end space-y-4 pt-4 md:pt-0 border-t md:border-t-0 border-[#D5CDBC]">
-              <div className="flex -space-x-1 overflow-hidden">
-                <div className="inline-block h-8 w-8 bg-[#1F1E1C] text-[#FAF8F5] text-[10px] font-bold flex items-center justify-center border border-[#EBE6DC]">
-                  AD
-                </div>
-                <div className="inline-block h-8 w-8 bg-[#6E7364] text-[#FAF8F5] text-[10px] font-bold flex items-center justify-center border border-[#EBE6DC]">
-                  RE
-                </div>
-                <div className="inline-block h-8 w-8 bg-[#8F8778] text-[#FAF8F5] text-[10px] font-bold flex items-center justify-center border border-[#EBE6DC]">
-                  MT
-                </div>
-              </div>
-
-              <div>
-                <p className="font-serif text-4xl sm:text-5xl font-normal text-[#1F1E1C] leading-none">
-                  12m
-                </p>
-                <p className="text-xs uppercase tracking-wider text-[#6E7364] font-semibold mt-1">
-                  requests managed
-                </p>
-              </div>
-
-              <a
-                href="#features"
-                onClick={(e) => handleScrollTo(e, 'features')}
-                className="text-xs font-bold text-[#1F1E1C] hover:text-[#6E7364] transition-colors inline-flex items-center gap-1 uppercase tracking-wider"
-              >
-                Learn more
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
+      {/* NON-HERO CONTINUOUS EDITORIAL SURFACE */}
+      <div className="editorial-page-surface relative">
+        {/* Subtle Decorative Alignment Rule (Aria-Hidden) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+        >
+          <div className="mx-auto h-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="h-full w-full border-x border-[#3f3126]/[0.04]" />
           </div>
         </div>
-      </section>
 
-      {/* 4. THREE-STEP WORKFLOW SECTION */}
-      <section
-        id="how-it-works"
-        className="scroll-mt-24 py-20 sm:py-28 bg-[#F3EFE8] border-y border-[#EAE5DC]"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#6E7364]">
-              Process
+        {/* 3. THOUGHTFUL MAINTENANCE PANEL */}
+        <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-20">
+          <div className="bg-[#ebe5da] border border-[#d8cdbc] p-6 sm:p-10 shadow-sm relative">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+              {/* Left Visual (Architectural Detail Photo) */}
+              <div className="md:col-span-4 border border-[#d8cdbc] bg-[#faf8f3]">
+                <img
+                  src="/assets/maintenance_detail.jpg"
+                  alt="Natural architectural materials and clean interior detailing"
+                  className="w-full h-44 sm:h-52 object-cover"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Middle Statement */}
+              <div className="md:col-span-5 space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b]">
+                  Thoughtful maintenance
+                </span>
+                <h2 className="font-serif text-2xl sm:text-3xl text-[#24211e] font-normal leading-snug">
+                  Better communication. Happier communities.
+                </h2>
+                <p className="text-sm sm:text-base text-[#6b665e] leading-relaxed">
+                  One shared place for residents and administrators to keep everyday requests moving.
+                </p>
+              </div>
+
+              {/* Right Metric & Indicators */}
+              <div className="md:col-span-3 flex flex-col justify-between items-start md:items-end space-y-4 pt-4 md:pt-0 border-t md:border-t-0 border-[#d8cdbc]">
+                <div className="flex -space-x-1 overflow-hidden">
+                  <div className="inline-block h-8 w-8 bg-[#24211e] text-[#FAF8F5] text-[10px] font-bold flex items-center justify-center border border-[#ebe5da]">
+                    AD
+                  </div>
+                  <div className="inline-block h-8 w-8 bg-[#5f4b3b] text-[#FAF8F5] text-[10px] font-bold flex items-center justify-center border border-[#ebe5da]">
+                    RE
+                  </div>
+                  <div className="inline-block h-8 w-8 bg-[#8F8778] text-[#FAF8F5] text-[10px] font-bold flex items-center justify-center border border-[#ebe5da]">
+                    MT
+                  </div>
+                </div>
+
+                <div>
+                  <p className="font-serif text-4xl sm:text-5xl font-normal text-[#24211e] leading-none">
+                    12m
+                  </p>
+                  <p className="text-xs uppercase tracking-wider text-[#5f4b3b] font-semibold mt-1">
+                    requests managed
+                  </p>
+                </div>
+
+                <a
+                  href="#features"
+                  onClick={(e) => handleScrollTo(e, 'features')}
+                  className="text-xs font-bold text-[#24211e] hover:text-[#5f4b3b] transition-colors inline-flex items-center gap-1 uppercase tracking-wider"
+                >
+                  Learn more
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. THREE-STEP WORKFLOW SECTION */}
+        <section
+          id="how-it-works"
+          className="scroll-mt-24 py-20 sm:py-28 bg-[#ebe5da]/85 border-y border-[#d8cdbc] relative z-10"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-2xl mb-16 space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b]">
+                Process
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#24211e] font-normal tracking-tight">
+                From request to resolution.
+              </h2>
+            </div>
+
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+              {/* Step 01 */}
+              <div className="space-y-4 border-t border-[#5f4b3b]/30 pt-6">
+                <span className="font-serif text-4xl sm:text-5xl text-[#5f4b3b]/80 font-light">
+                  01
+                </span>
+                <h3 className="font-serif text-2xl text-[#24211e] font-normal">Submit</h3>
+                <p className="text-[#6b665e] text-base leading-relaxed">
+                  Residents describe an issue and send it to the right place.
+                </p>
+              </div>
+
+              {/* Step 02 */}
+              <div className="space-y-4 border-t border-[#5f4b3b]/30 pt-6">
+                <span className="font-serif text-4xl sm:text-5xl text-[#5f4b3b]/80 font-light">
+                  02
+                </span>
+                <h3 className="font-serif text-2xl text-[#24211e] font-normal">Track</h3>
+                <p className="text-[#6b665e] text-base leading-relaxed">
+                  Everyone can understand what is open, in progress, or resolved.
+                </p>
+              </div>
+
+              {/* Step 03 */}
+              <div className="space-y-4 border-t border-[#5f4b3b]/30 pt-6">
+                <span className="font-serif text-4xl sm:text-5xl text-[#5f4b3b]/80 font-light">
+                  03
+                </span>
+                <h3 className="font-serif text-2xl text-[#24211e] font-normal">Resolve</h3>
+                <p className="text-[#6b665e] text-base leading-relaxed">
+                  Administrators keep the community moving with clear next actions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. FEATURES SECTION */}
+        <section
+          id="features"
+          className="scroll-mt-24 py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        >
+          <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b]">
+              Capabilities
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#1F1E1C] font-normal tracking-tight">
-              From request to resolution.
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#24211e] font-normal tracking-tight">
+              Everything your community needs to stay in sync.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            {/* Step 01 */}
-            <div className="space-y-4 border-t border-[#D5CDBC] pt-6">
-              <span className="font-serif text-4xl sm:text-5xl text-[#8F8778] font-light">
-                01
-              </span>
-              <h3 className="font-serif text-2xl text-[#1F1E1C] font-normal">Submit</h3>
-              <p className="text-[#5C5955] text-base leading-relaxed">
-                Residents describe an issue and send it to the right place.
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            {/* Feature 1 (Light card) */}
+            <div className="bg-[#faf8f3] p-8 sm:p-10 border border-[#d8cdbc] hover:border-[#5f4b3b]/50 transition-colors space-y-4 shadow-sm">
+              <div className="w-10 h-10 bg-[#ebe5da] border border-[#d8cdbc] flex items-center justify-center text-[#24211e]">
+                <Layers className="w-5 h-5" />
+              </div>
+              <h3 className="font-serif text-2xl text-[#24211e] font-normal">
+                Report without the back-and-forth
+              </h3>
+              <p className="text-[#6b665e] text-base leading-relaxed">
+                Residents can submit clear maintenance requests with the details administrators need.
               </p>
             </div>
 
-            {/* Step 02 */}
-            <div className="space-y-4 border-t border-[#D5CDBC] pt-6">
-              <span className="font-serif text-4xl sm:text-5xl text-[#8F8778] font-light">
-                02
-              </span>
-              <h3 className="font-serif text-2xl text-[#1F1E1C] font-normal">Track</h3>
-              <p className="text-[#5C5955] text-base leading-relaxed">
-                Everyone can understand what is open, in progress, or resolved.
+            {/* Feature 2 (Pale taupe card) */}
+            <div className="bg-[#ebe5da] p-8 sm:p-10 border border-[#d8cdbc] hover:border-[#5f4b3b]/50 transition-colors space-y-4 shadow-sm">
+              <div className="w-10 h-10 bg-[#faf8f3] border border-[#d8cdbc] flex items-center justify-center text-[#24211e]">
+                <Clock className="w-5 h-5" />
+              </div>
+              <h3 className="font-serif text-2xl text-[#24211e] font-normal">
+                Know what is happening
+              </h3>
+              <p className="text-[#6b665e] text-base leading-relaxed">
+                Track complaint status, priority, and progress from submission to resolution.
               </p>
             </div>
 
-            {/* Step 03 */}
-            <div className="space-y-4 border-t border-[#D5CDBC] pt-6">
-              <span className="font-serif text-4xl sm:text-5xl text-[#8F8778] font-light">
-                03
-              </span>
-              <h3 className="font-serif text-2xl text-[#1F1E1C] font-normal">Resolve</h3>
-              <p className="text-[#5C5955] text-base leading-relaxed">
-                Administrators keep the community moving with clear next actions.
+            {/* Feature 3 (Pale taupe card) */}
+            <div className="bg-[#ebe5da] p-8 sm:p-10 border border-[#d8cdbc] hover:border-[#5f4b3b]/50 transition-colors space-y-4 shadow-sm">
+              <div className="w-10 h-10 bg-[#faf8f3] border border-[#d8cdbc] flex items-center justify-center text-[#24211e]">
+                <Bell className="w-5 h-5" />
+              </div>
+              <h3 className="font-serif text-2xl text-[#24211e] font-normal">
+                Keep everyone informed
+              </h3>
+              <p className="text-[#6b665e] text-base leading-relaxed">
+                Publish important society notices in one visible, organized place.
+              </p>
+            </div>
+
+            {/* Feature 4 (Light card) */}
+            <div className="bg-[#faf8f3] p-8 sm:p-10 border border-[#d8cdbc] hover:border-[#5f4b3b]/50 transition-colors space-y-4 shadow-sm">
+              <div className="w-10 h-10 bg-[#ebe5da] border border-[#d8cdbc] flex items-center justify-center text-[#24211e]">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="font-serif text-2xl text-[#24211e] font-normal">
+                Give administrators clarity
+              </h3>
+              <p className="text-[#6b665e] text-base leading-relaxed">
+                Review requests, manage priorities, update statuses, and understand recurring issues.
               </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 5. FEATURES SECTION */}
-      <section
-        id="features"
-        className="scroll-mt-24 py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#6E7364]">
-            Capabilities
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#1F1E1C] font-normal tracking-tight">
-            Everything your community needs to stay in sync.
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {/* Feature 1 */}
-          <div className="bg-[#FAF8F5] p-8 sm:p-10 border border-[#EAE5DC] hover:border-[#DDD6C8] transition-all space-y-4">
-            <div className="w-10 h-10 bg-[#EAE5DC] flex items-center justify-center text-[#1F1E1C]">
-              <Layers className="w-5 h-5" />
-            </div>
-            <h3 className="font-serif text-2xl text-[#1F1E1C] font-normal">
-              Report without the back-and-forth
-            </h3>
-            <p className="text-[#5C5955] text-base leading-relaxed">
-              Residents can submit clear maintenance requests with the details administrators need.
-            </p>
+        {/* 6. ROLE PREVIEW SECTION */}
+        <section
+          id="about"
+          className="scroll-mt-24 py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#d8cdbc] relative z-10"
+        >
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b]">
+              Roles & Access
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl text-[#24211e] font-normal tracking-tight">
+              Designed for every member of the society.
+            </h2>
           </div>
 
-          {/* Feature 2 */}
-          <div className="bg-[#EBE6DC]/60 p-8 sm:p-10 border border-[#DDD6C8] hover:border-[#CCC3B2] transition-all space-y-4">
-            <div className="w-10 h-10 bg-white flex items-center justify-center text-[#1F1E1C]">
-              <Clock className="w-5 h-5" />
-            </div>
-            <h3 className="font-serif text-2xl text-[#1F1E1C] font-normal">
-              Know what is happening
-            </h3>
-            <p className="text-[#5C5955] text-base leading-relaxed">
-              Track complaint status, priority, and progress from submission to resolution.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            {/* Resident Experience Card */}
+            <div className="bg-[#faf8f3] p-8 sm:p-10 border border-[#d8cdbc] flex flex-col justify-between space-y-8 shadow-sm">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-[#d8cdbc] pb-4">
+                  <span className="font-serif text-2xl text-[#24211e] font-normal">Resident</span>
+                  <span className="text-xs font-semibold px-3 py-1 bg-[#ebe5da] text-[#5f4b3b] uppercase tracking-wider border border-[#d8cdbc]">
+                    Community Member
+                  </span>
+                </div>
 
-          {/* Feature 3 */}
-          <div className="bg-[#EBE6DC]/60 p-8 sm:p-10 border border-[#DDD6C8] hover:border-[#CCC3B2] transition-all space-y-4">
-            <div className="w-10 h-10 bg-white flex items-center justify-center text-[#1F1E1C]">
-              <Bell className="w-5 h-5" />
-            </div>
-            <h3 className="font-serif text-2xl text-[#1F1E1C] font-normal">
-              Keep everyone informed
-            </h3>
-            <p className="text-[#5C5955] text-base leading-relaxed">
-              Publish important society notices in one visible, organized place.
-            </p>
-          </div>
-
-          {/* Feature 4 */}
-          <div className="bg-[#FAF8F5] p-8 sm:p-10 border border-[#EAE5DC] hover:border-[#DDD6C8] transition-all space-y-4">
-            <div className="w-10 h-10 bg-[#EAE5DC] flex items-center justify-center text-[#1F1E1C]">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <h3 className="font-serif text-2xl text-[#1F1E1C] font-normal">
-              Give administrators clarity
-            </h3>
-            <p className="text-[#5C5955] text-base leading-relaxed">
-              Review requests, manage priorities, update statuses, and understand recurring issues.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. ROLE PREVIEW SECTION */}
-      <section
-        id="about"
-        className="scroll-mt-24 py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#EAE5DC]"
-      >
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#6E7364]">
-            Roles & Access
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl text-[#1F1E1C] font-normal tracking-tight">
-            Designed for every member of the society.
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-          {/* Resident Experience Card */}
-          <div className="bg-white p-8 sm:p-10 border border-[#EAE5DC] flex flex-col justify-between space-y-8">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-[#EAE5DC] pb-4">
-                <span className="font-serif text-2xl text-[#1F1E1C] font-normal">Resident</span>
-                <span className="text-xs font-semibold px-3 py-1 bg-[#F4F1EA] text-[#6E7364] uppercase tracking-wider border border-[#EAE5DC]">
-                  Community Member
-                </span>
+                <ul className="space-y-3.5 text-sm text-[#6b665e]">
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#5f4b3b]" />
+                    <span>Report complaints with optional photo uploads.</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#5f4b3b]" />
+                    <span>Track personal requests and resolution history.</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#5f4b3b]" />
+                    <span>Read official society notices and alerts.</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#5f4b3b]" />
+                    <span>View resident dashboard with active ticket counts.</span>
+                  </li>
+                </ul>
               </div>
 
-              <ul className="space-y-3.5 text-sm text-[#5C5955]">
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#6E7364]" />
-                  <span>Report complaints with optional photo uploads.</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#6E7364]" />
-                  <span>Track personal requests and resolution history.</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#6E7364]" />
-                  <span>Read official society notices and alerts.</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#6E7364]" />
-                  <span>View resident dashboard with active ticket counts.</span>
-                </li>
-              </ul>
+              <div>
+                <Link
+                  to="/login"
+                  className="w-full inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#ebe5da] hover:bg-[#d8cdbc] text-[#24211e] border border-[#d8cdbc] transition-all"
+                >
+                  Resident experience
+                  <ArrowUpRight className="w-4 h-4 ml-1.5" />
+                </Link>
+              </div>
             </div>
 
-            <div>
+            {/* Administrator Experience Card */}
+            <div className="bg-[#ebe5da] p-8 sm:p-10 border border-[#d8cdbc] flex flex-col justify-between space-y-8 shadow-sm">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-[#d8cdbc] pb-4">
+                  <span className="font-serif text-2xl text-[#24211e] font-normal">Administrator</span>
+                  <span className="text-xs font-semibold px-3 py-1 bg-[#faf8f3] text-[#24211e] uppercase tracking-wider border border-[#d8cdbc]">
+                    Management
+                  </span>
+                </div>
+
+                <ul className="space-y-3.5 text-sm text-[#6b665e]">
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#24211e]" />
+                    <span>Review all complaints across the complex.</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#24211e]" />
+                    <span>Change ticket status and prioritize urgent items.</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#24211e]" />
+                    <span>Publish announcements with broadcast notifications.</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#24211e]" />
+                    <span>View society-wide metrics and overdue SLA status.</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-[#24211e]" />
+                    <span>Manage dynamic administrative threshold settings.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <Link
+                  to="/login"
+                  className="w-full inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#383633] text-[#FAF8F5] border border-[#24211e] transition-all"
+                >
+                  Admin experience
+                  <ArrowUpRight className="w-4 h-4 ml-1.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 7. FINAL CALL TO ACTION */}
+        <section className="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-[#24211e] architectural-grid-dark text-[#FAF8F5] p-10 sm:p-16 text-center space-y-6 sm:space-y-8 border border-[#5f4b3b]/40 shadow-sm relative">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight max-w-2xl mx-auto">
+              Make everyday community management feel simpler.
+            </h2>
+
+            <p className="text-[#C4BDAF] text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+              Bring requests, updates, and residents together in one reliable workspace.
+            </p>
+
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
                 to="/login"
-                className="w-full inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#F4F1EA] hover:bg-[#EAE5DC] text-[#1F1E1C] border border-[#DDD6C8] transition-all"
+                className="inline-flex items-center justify-center px-8 py-3.5 font-medium text-sm bg-[#FAF8F5] hover:bg-[#ebe5da] text-[#24211e] transition-all border border-[#FAF8F5]"
               >
-                Resident experience
-                <ArrowUpRight className="w-4 h-4 ml-1.5" />
+                Open the tracker
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+
+              <Link
+                to="/register"
+                className="text-sm font-medium text-[#C4BDAF] hover:text-[#FAF8F5] underline underline-offset-4 transition-colors"
+              >
+                Create a resident account
               </Link>
             </div>
           </div>
+        </section>
 
-          {/* Administrator Experience Card */}
-          <div className="bg-[#EBE6DC] p-8 sm:p-10 border border-[#DDD6C8] flex flex-col justify-between space-y-8">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-[#DDD6C8] pb-4">
-                <span className="font-serif text-2xl text-[#1F1E1C] font-normal">Administrator</span>
-                <span className="text-xs font-semibold px-3 py-1 bg-white text-[#1F1E1C] uppercase tracking-wider border border-[#DDD6C8]">
-                  Management
-                </span>
-              </div>
-
-              <ul className="space-y-3.5 text-sm text-[#5C5955]">
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#1F1E1C]" />
-                  <span>Review all complaints across the complex.</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#1F1E1C]" />
-                  <span>Change ticket status and prioritize urgent items.</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#1F1E1C]" />
-                  <span>Publish announcements with broadcast notifications.</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#1F1E1C]" />
-                  <span>View society-wide metrics and overdue SLA status.</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-[#1F1E1C]" />
-                  <span>Manage dynamic administrative threshold settings.</span>
-                </li>
-              </ul>
+        {/* 8. FOOTER */}
+        <footer className="border-t border-[#d8cdbc] bg-[#ebe5da] py-12 text-[#6b665e] relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-1 text-center md:text-left">
+              <a
+                href="#home"
+                onClick={(e) => handleScrollTo(e, 'home')}
+                className="font-serif font-medium text-lg text-[#24211e] hover:opacity-80 transition-opacity"
+              >
+                Socivio
+              </a>
+              <p className="text-xs text-[#8F8778]">
+                A clearer way to manage apartment society maintenance.
+              </p>
             </div>
 
-            <div>
-              <Link
-                to="/login"
-                className="w-full inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#1F1E1C] hover:bg-[#383633] text-[#FAF8F5] border border-[#1F1E1C] transition-all"
+            <div className="flex items-center space-x-6 text-xs font-medium text-[#6b665e]">
+              <a
+                href="#home"
+                onClick={(e) => handleScrollTo(e, 'home')}
+                className="hover:text-[#24211e] transition-colors"
               >
-                Admin experience
-                <ArrowUpRight className="w-4 h-4 ml-1.5" />
+                Home
+              </a>
+              <a
+                href="#features"
+                onClick={(e) => handleScrollTo(e, 'features')}
+                className="hover:text-[#24211e] transition-colors"
+              >
+                Features
+              </a>
+              <Link to="/login" className="hover:text-[#24211e] transition-colors">
+                Sign in
+              </Link>
+              <Link to="/register" className="hover:text-[#24211e] transition-colors">
+                Register
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* 7. FINAL CALL TO ACTION */}
-      <section className="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#1F1E1C] text-[#FAF8F5] p-10 sm:p-16 text-center space-y-6 sm:space-y-8 border border-[#1F1E1C]">
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight max-w-2xl mx-auto">
-            Make everyday community management feel simpler.
-          </h2>
-
-          <p className="text-[#C4BDAF] text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-            Bring requests, updates, and residents together in one reliable workspace.
-          </p>
-
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-            <Link
-              to="/login"
-              className="inline-flex items-center justify-center px-8 py-3.5 font-medium text-sm bg-[#FAF8F5] hover:bg-[#EBE6DC] text-[#1F1E1C] transition-all border border-[#FAF8F5]"
-            >
-              Open the tracker
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-
-            <Link
-              to="/register"
-              className="text-sm font-medium text-[#C4BDAF] hover:text-[#FAF8F5] underline underline-offset-4 transition-colors"
-            >
-              Create a resident account
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. FOOTER */}
-      <footer className="border-t border-[#EAE5DC] bg-[#F4F1EA] py-12 text-[#5C5955]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-1 text-center md:text-left">
-            <a
-              href="#home"
-              onClick={(e) => handleScrollTo(e, 'home')}
-              className="font-serif font-medium text-lg text-[#1F1E1C] hover:opacity-80 transition-opacity"
-            >
-              Socivio
-            </a>
             <p className="text-xs text-[#8F8778]">
-              A clearer way to manage apartment society maintenance.
+              &copy; {new Date().getFullYear()} Socivio. All rights reserved.
             </p>
           </div>
-
-          <div className="flex items-center space-x-6 text-xs font-medium text-[#5C5955]">
-            <a
-              href="#home"
-              onClick={(e) => handleScrollTo(e, 'home')}
-              className="hover:text-[#1F1E1C] transition-colors"
-            >
-              Home
-            </a>
-            <a
-              href="#features"
-              onClick={(e) => handleScrollTo(e, 'features')}
-              className="hover:text-[#1F1E1C] transition-colors"
-            >
-              Features
-            </a>
-            <Link to="/login" className="hover:text-[#1F1E1C] transition-colors">
-              Sign in
-            </Link>
-            <Link to="/register" className="hover:text-[#1F1E1C] transition-colors">
-              Register
-            </Link>
-          </div>
-
-          <p className="text-xs text-[#8F8778]">
-            &copy; {new Date().getFullYear()} Socivio. All rights reserved.
-          </p>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }
