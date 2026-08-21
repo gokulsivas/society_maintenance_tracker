@@ -4,6 +4,49 @@ A modern, full-stack complaint tracking and society management web application b
 
 ---
 
+## Live Deployment & Evaluator Quickstart
+
+- **Live Application URL**: [https://society-maintenance-tracker-kappa.vercel.app](https://society-maintenance-tracker-kappa.vercel.app)
+- **API Health Check**: [https://society-maintenance-tracker-kappa.vercel.app/api/health](https://society-maintenance-tracker-kappa.vercel.app/api/health)
+
+### Disposable Demo Accounts
+
+The login page features 1-click **Quick Demo Access** buttons to prefill evaluation credentials without auto-submitting:
+
+| Role | Email | Password | Default Landing | Capabilities |
+| :--- | :--- | :--- | :--- | :--- |
+| **Administrator** | `admin.demo@society-tracker.com` | `DemoAdmin@2026` | `/admin/dashboard` | Manage complaints, transition statuses, adjust SLA overdue threshold, broadcast notices |
+| **Resident** | `resident.demo@society-tracker.com` | `DemoResident@2026` | `/dashboard` | Raise complaints with photo uploads, track personal tickets, view society notice board |
+
+---
+
+## Evaluator Walkthrough (4 Steps)
+
+1. **Resident Experience**:
+   - Navigate to [https://society-maintenance-tracker-kappa.vercel.app/login](https://society-maintenance-tracker-kappa.vercel.app/login).
+   - Click the **"Resident Demo"** button to fill the credentials, then click **"Sign In"**.
+   - View your active tickets and metrics on the **Resident Dashboard**.
+   - Click **"Raise Complaint"** to create a new ticket with title, description, category, and optional photo.
+   - Browse the **"Notice Board"** to read official society announcements.
+
+2. **Administrator Experience**:
+   - Sign out from the navbar user menu.
+   - Click the **"Admin Demo"** button on the login page and sign in.
+   - View society-wide complaint metrics, overdue breakdowns, and recent activity transitions on the **Admin Dashboard**.
+   - Go to **"All Complaints"**, update a ticket's priority (`LOW` / `MEDIUM` / `HIGH`), and click **"Status"** to transition an open ticket to `IN_PROGRESS` or `RESOLVED` with an audit note.
+   - Go to **"Notice Board"** and click **"Publish Notice"** (optionally toggle "Mark as Important" to trigger resident broadcast).
+   - Go to **"Settings"** to adjust the live dynamic **Complaint Resolution Overdue Threshold** (1 to 365 days).
+
+3. **Public Resident Self-Registration**:
+   - Sign out and click **"Register an account"** (or navigate to `/register`).
+   - Register a new resident account with your name, unique email, password, and flat number. Public registration is strictly resident-only.
+
+4. **Role-Based Access Control (RBAC) Verification**:
+   - Log in as a resident and attempt to manually navigate to `/admin/dashboard` or `/admin/settings` in the browser URL bar.
+   - Notice the client-side route guard immediately redirects you to `/dashboard`, while the backend rejects any direct API requests with `403 Forbidden`.
+
+---
+
 ## Tech Stack
 
 - **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons, Axios, React Router v6

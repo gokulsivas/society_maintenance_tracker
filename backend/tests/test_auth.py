@@ -2,6 +2,7 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 import pytest
+from sqlalchemy import select
 from fastapi import APIRouter, Depends, status
 from fastapi.testclient import TestClient
 
@@ -289,3 +290,223 @@ def test_role_based_authorization_admin_vs_resident(client, db_session):
         headers={"Authorization": f"Bearer {admin_token}"},
     )
     assert res_admin_on_resident.status_code == status.HTTP_200_OK
+
+
+def test_admin_login_returns_admin_role(client, db_session):
+    """Test that authenticating as an admin returns the ADMIN role."""
+    admin = User(
+        name="Chief Admin",
+        email="chief_admin@society.com",
+        password_hash=hash_password("AdminSecret123"),
+        role=UserRole.ADMIN,
+        is_active=True,
+    )
+    db_session.add(admin)
+    db_session.commit()
+
+    response = client.post(
+        "/api/auth/login",
+        json={"email": "chief_admin@society.com", "password": "AdminSecret123"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert data["user"]["role"] == "ADMIN"
+    assert data["user"]["email"] == "chief_admin@society.com"
+
+
+def test_resident_cannot_access_real_admin_endpoints(client, db_session):
+    """Test that a resident token receives 403 Forbidden across all real admin endpoints."""
+    resident = User(
+        name="Regular Resident",
+        email="regular_resident@society.com",
+        password_hash=hash_password("ResidentPass123"),
+        role=UserRole.RESIDENT,
+        is_active=True,
+    )
+    db_session.add(resident)
+    db_session.commit()
+
+    token = create_access_token(resident.id)
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # 1. Admin Dashboard
+    res_dash = client.get("/api/admin/dashboard", headers=headers)
+    assert res_dash.status_code == status.HTTP_403_FORBIDDEN
+    assert res_dash.json()["detail"] == "Admin privileges required"
+
+    # 2. Admin Complaints List
+    res_comp = client.get("/api/admin/complaints", headers=headers)
+    assert res_comp.status_code == status.HTTP_403_FORBIDDEN
+
+    # 3. Admin Notice Creation
+    res_notices = client.post(
+        "/api/admin/notices",
+        json={"title": "Hacked", "body": "Exploit attempt", "is_important": False},
+        headers=headers,
+    )
+    assert res_notices.status_code == status.HTTP_403_FORBIDDEN
+
+    # 4. Admin Settings
+    res_settings = client.get("/api/admin/settings/overdue-threshold", headers=headers)
+    assert res_settings.status_code == status.HTTP_403_FORBIDDEN
+
+
+def test_admin_can_access_real_admin_endpoints(client, db_session):
+    """Test that an admin token successfully accesses real admin endpoints."""
+    admin = User(
+        name="Super Admin",
+        email="super_admin@society.com",
+        password_hash=hash_password("SuperSecret123"),
+        role=UserRole.ADMIN,
+        is_active=True,
+    )
+    db_session.add(admin)
+    db_session.commit()
+
+    token = create_access_token(admin.id)
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # 1. Admin Dashboard -> 200 OK
+    res_dash = client.get("/api/admin/dashboard", headers=headers)
+    assert res_dash.status_code == status.HTTP_200_OK
+
+    # 2. Admin Complaints List -> 200 OK
+    res_comp = client.get("/api/admin/complaints", headers=headers)
+    assert res_comp.status_code == status.HTTP_200_OK
+
+    # 3. Admin Settings -> 200 OK
+    res_settings = client.get("/api/admin/settings/overdue-threshold", headers=headers)
+    assert res_settings.status_code == status.HTTP_200_OK
+
+
+def test_auth_me_returns_correct_role_for_resident_and_admin(client, db_session):
+    """Test /api/auth/me returns accurate role for both resident and admin users."""
+    resident = User(
+        name="Resident Role Check",
+        email="check_res@society.com",
+        password_hash=hash_password("Pass123"),
+        role=UserRole.RESIDENT,
+        is_active=True,
+    )
+    admin = User(
+        name="Admin Role Check",
+        email="check_adm@society.com",
+        password_hash=hash_password("Pass123"),
+        role=UserRole.ADMIN,
+        is_active=True,
+    )
+    db_session.add_all([resident, admin])
+    db_session.commit()
+
+    res_me_resident = client.get(
+        "/api/auth/me",
+        headers={"Authorization": f"Bearer {create_access_token(resident.id)}"},
+    )
+    assert res_me_resident.status_code == status.HTTP_200_OK
+    assert res_me_resident.json()["role"] == "RESIDENT"
+
+    res_me_admin = client.get(
+        "/api/auth/me",
+        headers={"Authorization": f"Bearer {create_access_token(admin.id)}"},
+    )
+    assert res_me_admin.status_code == status.HTTP_200_OK
+    assert res_me_admin.json()["role"] == "ADMIN"
+
+
+def test_create_admin_script_idempotency_and_promotion(db_session, monkeypatch):
+    """Test create_or_promote_admin idempotency, promotion of resident, and protection against downgrade."""
+    from backend.app.scripts.create_admin import create_or_promote_admin
+
+    # 1. Create a brand new admin user
+    res1 = create_or_promote_admin(
+        db=db_session,
+        email="script_admin@society.com",
+        password="AdminPass123",
+        name="Script Admin",
+        flat_no="Office-99",
+    )
+    assert res1["action"] == "created"
+    assert res1["role"] == "ADMIN"
+
+    # 2. Running again with same email is idempotent (noop)
+    res2 = create_or_promote_admin(
+        db=db_session,
+        email="script_admin@society.com",
+    )
+    assert res2["action"] == "noop"
+    assert res2["role"] == "ADMIN"
+
+    # 3. Promote an existing resident to admin
+    resident = User(
+        name="Promotable Resident",
+        email="promote_me@society.com",
+        password_hash=hash_password("ResPass123"),
+        role=UserRole.RESIDENT,
+        is_active=True,
+    )
+    db_session.add(resident)
+    db_session.commit()
+
+    res3 = create_or_promote_admin(
+        db=db_session,
+        email="promote_me@society.com",
+    )
+    assert res3["action"] == "promoted"
+    assert res3["role"] == "ADMIN"
+
+    # Verify user in database is now ADMIN
+    db_session.refresh(resident)
+    assert resident.role == UserRole.ADMIN
+
+    # 4. Production guardrail test: refuse to run when ENVIRONMENT=production without confirmation
+    monkeypatch.setenv("ENVIRONMENT", "production")
+    with pytest.raises(ValueError, match="Running in production environment requires explicit confirmation flag"):
+        create_or_promote_admin(
+            db=db_session,
+            email="another_admin@society.com",
+            password="Pass",
+            confirm_production=False,
+        )
+
+    # 5. Production execution succeeds when confirm_production=True
+    res5 = create_or_promote_admin(
+        db=db_session,
+        email="prod_admin@society.com",
+        password="ProdPass123",
+        confirm_production=True,
+    )
+    assert res5["action"] == "created"
+
+
+def test_seed_demo_data_idempotency_and_dry_run(db_session, monkeypatch):
+    """Test seed_demo_data in dry-run mode, initial execution, and idempotent re-execution."""
+    from backend.app.scripts.seed import seed_demo_data, DEMO_ADMIN_EMAIL, DEMO_RESIDENT_EMAIL
+
+    # 1. Dry run: verifies planned actions without DB commit
+    dry_results = seed_demo_data(db=db_session, dry_run=True)
+    assert any("[CREATE]" in u for u in dry_results["users"])
+    assert any("[CREATE]" in c for c in dry_results["complaints"])
+    assert any("[CREATE]" in n for n in dry_results["notices"])
+
+    # Verify no records were actually committed during dry-run
+    admin_check = db_session.scalars(select(User).where(User.email == DEMO_ADMIN_EMAIL)).first()
+    assert admin_check is None
+
+    # 2. Real Execution: creates demo accounts, sample complaints, and notices
+    exec_results = seed_demo_data(db=db_session, dry_run=False)
+    assert any("[CREATE]" in u for u in exec_results["users"])
+
+    admin = db_session.scalars(select(User).where(User.email == DEMO_ADMIN_EMAIL)).first()
+    resident = db_session.scalars(select(User).where(User.email == DEMO_RESIDENT_EMAIL)).first()
+    assert admin is not None
+    assert admin.role == UserRole.ADMIN
+    assert resident is not None
+    assert resident.role == UserRole.RESIDENT
+
+    # 3. Idempotent Re-execution: reports [EXISTS] for all items
+    re_exec_results = seed_demo_data(db=db_session, dry_run=False)
+    assert all("[EXISTS]" in u for u in re_exec_results["users"])
+    assert all("[EXISTS]" in c for c in re_exec_results["complaints"])
+    assert all("[EXISTS]" in n for n in re_exec_results["notices"])
+
+

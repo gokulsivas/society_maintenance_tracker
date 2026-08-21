@@ -120,4 +120,159 @@ describe('Auth & Protected Routing', () => {
       expect(screen.queryByText('ADMIN_SECRET_DASHBOARD')).not.toBeInTheDocument();
     });
   });
+
+  it('redirects resident to /dashboard even if previous attempt was an /admin/* route', async () => {
+    const { default: LoginPage } = await import('../pages/LoginPage');
+    vi.spyOn(authApi, 'loginUser').mockResolvedValueOnce({
+      access_token: 'res.token',
+      token_type: 'bearer',
+      user: {
+        id: 3,
+        name: 'Resident Redirect Test',
+        email: 'resident_redirect@society.com',
+        role: 'RESIDENT',
+      },
+    });
+
+    render(
+      <AuthProvider>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: '/login', state: { from: { pathname: '/admin/settings' } } },
+          ]}
+        >
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/dashboard" element={<div>RESIDENT_LANDING_PAGE</div>} />
+            <Route path="/admin/settings" element={<div>ADMIN_SETTINGS_PAGE</div>} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/Email Address/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const submitBtn = screen.getByRole('button', { name: /Sign In/i });
+
+    const { fireEvent } = await import('@testing-library/react');
+    fireEvent.change(emailInput, { target: { value: 'resident_redirect@society.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123' } });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText('RESIDENT_LANDING_PAGE')).toBeInTheDocument();
+      expect(screen.queryByText('ADMIN_SETTINGS_PAGE')).not.toBeInTheDocument();
+    });
+  });
+
+  it('redirects admin to /admin/dashboard upon login', async () => {
+    const { default: LoginPage } = await import('../pages/LoginPage');
+    vi.spyOn(authApi, 'loginUser').mockResolvedValueOnce({
+      access_token: 'adm.token',
+      token_type: 'bearer',
+      user: {
+        id: 4,
+        name: 'Admin Redirect Test',
+        email: 'admin_redirect@society.com',
+        role: 'ADMIN',
+      },
+    });
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/login']}>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin/dashboard" element={<div>ADMIN_LANDING_PAGE</div>} />
+            <Route path="/dashboard" element={<div>RESIDENT_LANDING_PAGE</div>} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/Email Address/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const submitBtn = screen.getByRole('button', { name: /Sign In/i });
+
+    const { fireEvent } = await import('@testing-library/react');
+    fireEvent.change(emailInput, { target: { value: 'admin_redirect@society.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123' } });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText('ADMIN_LANDING_PAGE')).toBeInTheDocument();
+      expect(screen.queryByText('RESIDENT_LANDING_PAGE')).not.toBeInTheDocument();
+    });
+  });
+
+  it('clicking Admin Demo button fills credentials into form without auto-submitting', async () => {
+    const { default: LoginPage } = await import('../pages/LoginPage');
+    const { fireEvent } = await import('@testing-library/react');
+
+    const loginSpy = vi.spyOn(authApi, 'loginUser');
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/login']}>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/Email Address/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const adminDemoBtn = screen.getByRole('button', { name: /Admin Demo/i });
+
+    // Initially empty
+    expect(emailInput.value).toBe('');
+    expect(passwordInput.value).toBe('');
+
+    // Click Admin Demo button
+    fireEvent.click(adminDemoBtn);
+
+    // Form is populated with demo credentials
+    expect(emailInput.value).toBe('admin.demo@society-tracker.com');
+    expect(passwordInput.value).toBe('DemoAdmin@2026');
+
+    // Does NOT auto-submit
+    expect(loginSpy).not.toHaveBeenCalled();
+  });
+
+  it('clicking Resident Demo button fills credentials into form without auto-submitting', async () => {
+    const { default: LoginPage } = await import('../pages/LoginPage');
+    const { fireEvent } = await import('@testing-library/react');
+
+    const loginSpy = vi.spyOn(authApi, 'loginUser');
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/login']}>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/Email Address/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const residentDemoBtn = screen.getByRole('button', { name: /Resident Demo/i });
+
+    // Initially empty
+    expect(emailInput.value).toBe('');
+    expect(passwordInput.value).toBe('');
+
+    // Click Resident Demo button
+    fireEvent.click(residentDemoBtn);
+
+    // Form is populated with demo credentials
+    expect(emailInput.value).toBe('resident.demo@society-tracker.com');
+    expect(passwordInput.value).toBe('DemoResident@2026');
+
+    // Does NOT auto-submit
+    expect(loginSpy).not.toHaveBeenCalled();
+  });
 });
+
