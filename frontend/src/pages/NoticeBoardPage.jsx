@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { listNotices, deleteNotice } from '../api/notices';
-import { getErrorMessage } from '../api/client';
+import { getErrorMessage, isRequestCanceled } from '../api/client';
 import NoticeCard from '../components/notices/NoticeCard';
 import NoticeModal from '../components/notices/NoticeModal';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { NoticeCardSkeleton } from '../components/common/Skeleton';
 import ErrorAlert from '../components/common/ErrorAlert';
 import EmptyState from '../components/common/EmptyState';
 import { Bell, PlusCircle, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
@@ -20,11 +20,19 @@ export default function NoticeBoardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNotice, setEditingNotice] = useState(null);
 
+  const controllerRef = useRef(null);
+
   const fetchNotices = async (page = 1) => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
     try {
       setLoading(true);
       setError(null);
-      const data = await listNotices({ page, page_size: pagination.page_size });
+      const data = await listNotices({ page, page_size: pagination.page_size }, { signal: controller.signal });
       setNotices(data?.items || []);
       setPagination({
         page: data?.page || 1,
@@ -33,14 +41,22 @@ export default function NoticeBoardPage() {
         total_pages: data?.total_pages || 1,
       });
     } catch (err) {
+      if (isRequestCanceled(err)) return;
       setError(getErrorMessage(err, 'Failed to load notices.'));
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     fetchNotices(1);
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
   }, []);
 
   const handleCreateNew = () => {
@@ -107,8 +123,8 @@ export default function NoticeBoardPage() {
       <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
       {/* Content */}
-      {loading ? (
-        <LoadingSpinner message="Fetching notice board..." size="large" />
+      {loading && notices.length === 0 ? (
+        <NoticeCardSkeleton count={3} />
       ) : notices.length === 0 ? (
         <EmptyState
           title="No notices published yet"

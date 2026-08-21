@@ -1,6 +1,6 @@
 import apiClient from './client';
 
-export async function getAdminDashboard(params = {}) {
-  const response = await apiClient.get('/admin/dashboard', { params });
+export async function getAdminDashboard(params = {}, options = {}) {
+  const response = await apiClient.get('/admin/dashboard', { ...options, params });
   return response.data;
 }

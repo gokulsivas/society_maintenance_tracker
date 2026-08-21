@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getComplaint, updateComplaintPriority } from '../api/complaints';
-import { getErrorMessage } from '../api/client';
+import { getErrorMessage, isRequestCanceled } from '../api/client';
 import StatusBadge from '../components/common/StatusBadge';
 import PriorityBadge from '../components/common/PriorityBadge';
 import ComplaintHistoryTimeline from '../components/complaints/ComplaintHistoryTimeline';
@@ -38,21 +38,30 @@ export default function ComplaintDetailPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [updatingPriority, setUpdatingPriority] = useState(false);
 
-  const fetchComplaint = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getComplaint(id);
-      setComplaint(data);
-    } catch (err) {
-      setError(getErrorMessage(err, 'Failed to load complaint details.'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchComplaint() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getComplaint(id, { signal: controller.signal });
+        setComplaint(data);
+      } catch (err) {
+        if (isRequestCanceled(err)) return;
+        setError(getErrorMessage(err, 'Failed to load complaint details.'));
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
     fetchComplaint();
+
+    return () => {
+      controller.abort();
+    };
   }, [id]);
 
   const handlePriorityChange = async (newPriority) => {

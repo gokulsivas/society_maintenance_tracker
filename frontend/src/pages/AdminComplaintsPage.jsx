@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { listAdminComplaints, updateComplaintPriority } from '../api/complaints';
-import { getErrorMessage } from '../api/client';
+import { getErrorMessage, isRequestCanceled } from '../api/client';
 import StatusBadge from '../components/common/StatusBadge';
 import PriorityBadge from '../components/common/PriorityBadge';
 import StatusTransitionModal from '../components/complaints/StatusTransitionModal';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { TableRowSkeleton } from '../components/common/Skeleton';
 import ErrorAlert from '../components/common/ErrorAlert';
 import EmptyState from '../components/common/EmptyState';
 import {
@@ -34,7 +34,15 @@ export default function AdminComplaintsPage() {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
+  const controllerRef = useRef(null);
+
   const fetchComplaints = async (page = 1) => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
     try {
       setLoading(true);
       setError(null);
@@ -47,7 +55,7 @@ export default function AdminComplaintsPage() {
       if (priorityFilter) params.priority = priorityFilter;
       if (isOverdueFilter === 'true') params.is_overdue = true;
 
-      const data = await listAdminComplaints(params);
+      const data = await listAdminComplaints(params, { signal: controller.signal });
       setComplaints(data?.items || []);
       setPagination({
         page: data?.page || 1,
@@ -56,14 +64,22 @@ export default function AdminComplaintsPage() {
         total_pages: data?.total_pages || 1,
       });
     } catch (err) {
+      if (isRequestCanceled(err)) return;
       setError(getErrorMessage(err, 'Failed to fetch complaints list.'));
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     fetchComplaints(1);
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
   }, [statusFilter, categoryFilter, priorityFilter, isOverdueFilter]);
 
   const handlePriorityChange = async (complaintId, newPriority) => {
@@ -180,9 +196,7 @@ export default function AdminComplaintsPage() {
       </div>
 
       {/* Complaints Table */}
-      {loading && complaints.length === 0 ? (
-        <LoadingSpinner message="Loading complaints..." size="large" />
-      ) : complaints.length === 0 ? (
+      {!loading && complaints.length === 0 ? (
         <EmptyState
           title="No complaints matching your criteria"
           description="Try adjusting your status, category, or priority filters."
@@ -201,7 +215,10 @@ export default function AdminComplaintsPage() {
                   <th className="px-6 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
+              {loading && complaints.length === 0 ? (
+                <TableRowSkeleton rows={6} cols={6} />
+              ) : (
+                <tbody className="divide-y divide-gray-200 bg-white">
                 {complaints.map((c) => (
                   <tr
                     key={c.id}
@@ -268,7 +285,8 @@ export default function AdminComplaintsPage() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            )}
+          </table>
           </div>
 
           {/* Pagination */}

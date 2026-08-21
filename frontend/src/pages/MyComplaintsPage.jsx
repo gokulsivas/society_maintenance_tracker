@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getMyComplaints } from '../api/complaints';
+import { isRequestCanceled } from '../api/client';
 import ComplaintCard from '../components/complaints/ComplaintCard';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { ComplaintCardSkeleton } from '../components/common/Skeleton';
 import ErrorAlert from '../components/common/ErrorAlert';
 import EmptyState from '../components/common/EmptyState';
 import { PlusCircle, Search, Filter, RefreshCw } from 'lucide-react';
@@ -17,21 +18,37 @@ export default function MyComplaintsPage() {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [categoryFilter, setCategoryFilter] = useState('ALL');
 
+  const controllerRef = useRef(null);
+
   const fetchComplaints = async () => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
     try {
       setLoading(true);
       setError(null);
-      const data = await getMyComplaints();
+      const data = await getMyComplaints({ signal: controller.signal });
       setComplaints(data || []);
     } catch (err) {
+      if (isRequestCanceled(err)) return;
       setError('Failed to fetch your complaints. Please try again.');
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     fetchComplaints();
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
   }, []);
 
   const filteredComplaints = complaints.filter((c) => {
@@ -130,8 +147,8 @@ export default function MyComplaintsPage() {
       </div>
 
       {/* Content */}
-      {loading ? (
-        <LoadingSpinner message="Fetching your complaints..." size="large" />
+      {loading && complaints.length === 0 ? (
+        <ComplaintCardSkeleton count={6} />
       ) : filteredComplaints.length === 0 ? (
         <EmptyState
           title={searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL' ? 'No matching complaints found' : 'No complaints raised yet'}

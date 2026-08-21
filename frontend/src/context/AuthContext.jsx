@@ -1,54 +1,76 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { loginUser, registerResident, getMe } from '../api/auth';
+import { isRequestCanceled } from '../api/client';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem('user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const [token, setToken] = useState(() => localStorage.getItem('token'));
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+    // If we have both token and cached user, we can render immediately while validating in background
+    return Boolean(storedToken && !storedUser);
+  });
 
-  // Restore session on mount
+  // Track active validation controller
+  const abortControllerRef = useRef(null);
+
+  // Restore & validate session on mount
   useEffect(() => {
-    let isMounted = true;
+    const storedToken = localStorage.getItem('token');
+    if (!storedToken) {
+      setLoading(false);
+      return;
+    }
 
-    async function restoreSession() {
-      const storedToken = localStorage.getItem('token');
-      if (!storedToken) {
-        if (isMounted) setLoading(false);
-        return;
-      }
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
+    async function validateSession() {
       try {
-        const userData = await getMe();
-        if (isMounted) {
-          setUser(userData);
-          setToken(storedToken);
-        }
+        const userData = await getMe({ signal: controller.signal });
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+        setToken(storedToken);
       } catch (err) {
+        if (isRequestCanceled(err)) return;
         localStorage.removeItem('token');
-        if (isMounted) {
-          setUser(null);
-          setToken(null);
-        }
+        localStorage.removeItem('user');
+        setUser(null);
+        setToken(null);
       } finally {
-        if (isMounted) setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
-    restoreSession();
+    validateSession();
 
-    // Listen for 401 unauthenticated events from Axios interceptor
     function handleUnauthorized() {
-      if (isMounted) {
-        setUser(null);
-        setToken(null);
-      }
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setUser(null);
+      setToken(null);
+      setLoading(false);
     }
     window.addEventListener('auth:unauthorized', handleUnauthorized);
 
     return () => {
-      isMounted = false;
+      controller.abort();
       window.removeEventListener('auth:unauthorized', handleUnauthorized);
     };
   }, []);
@@ -56,23 +78,29 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const data = await loginUser(email, password);
     localStorage.setItem('token', data.access_token);
+    localStorage.setItem('user', JSON.stringify(data.user));
     setToken(data.access_token);
     setUser(data.user);
+    setLoading(false);
     return data.user;
   };
 
   const register = async (formData) => {
     const data = await registerResident(formData);
     localStorage.setItem('token', data.access_token);
+    localStorage.setItem('user', JSON.stringify(data.user));
     setToken(data.access_token);
     setUser(data.user);
+    setLoading(false);
     return data.user;
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setToken(null);
     setUser(null);
+    setLoading(false);
   };
 
   const value = {

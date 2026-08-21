@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getOverdueThreshold, updateOverdueThreshold } from '../api/settings';
-import { getErrorMessage } from '../api/client';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { getErrorMessage, isRequestCanceled } from '../api/client';
 import ErrorAlert from '../components/common/ErrorAlert';
 import { Settings, Save, CheckCircle2, AlertOctagon, Clock } from 'lucide-react';
 
@@ -13,19 +12,28 @@ export default function AdminSettingsPage() {
   const [successMsg, setSuccessMsg] = useState(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function loadSettings() {
       try {
         setLoading(true);
         setError(null);
-        const data = await getOverdueThreshold();
+        const data = await getOverdueThreshold({ signal: controller.signal });
         setDays(data?.overdue_threshold_days || 3);
       } catch (err) {
+        if (isRequestCanceled(err)) return;
         setError(getErrorMessage(err, 'Failed to fetch settings.'));
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
     loadSettings();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   const handleSubmit = async (e) => {
@@ -50,10 +58,6 @@ export default function AdminSettingsPage() {
       setSaving(false);
     }
   };
-
-  if (loading) {
-    return <LoadingSpinner message="Loading society settings..." size="large" />;
-  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -103,9 +107,10 @@ export default function AdminSettingsPage() {
               min={1}
               max={365}
               required
+              disabled={loading || saving}
               value={days}
               onChange={(e) => setDays(e.target.value)}
-              className="block w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm shadow-sm"
+              className="block w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm shadow-sm disabled:bg-gray-100"
             />
             <p className="text-xs text-gray-400 mt-1.5">Valid range: 1 to 365 days.</p>
           </div>
@@ -120,7 +125,7 @@ export default function AdminSettingsPage() {
           <div className="pt-2">
             <button
               type="submit"
-              disabled={saving}
+              disabled={loading || saving}
               className="inline-flex items-center px-5 py-2.5 font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-xl shadow-sm transition-all"
             >
               <Save className="w-4 h-4 mr-2" />

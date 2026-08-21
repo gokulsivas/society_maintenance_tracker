@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminDashboard } from '../api/dashboard';
-import { getErrorMessage } from '../api/client';
+import { getErrorMessage, isRequestCanceled } from '../api/client';
 import StatusBadge from '../components/common/StatusBadge';
 import PriorityBadge from '../components/common/PriorityBadge';
-import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorAlert from '../components/common/ErrorAlert';
 import {
   ClipboardList,
@@ -28,7 +27,15 @@ export default function AdminDashboardPage() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
+  const controllerRef = useRef(null);
+
   const fetchDashboard = async () => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
     try {
       setLoading(true);
       setError(null);
@@ -36,17 +43,25 @@ export default function AdminDashboardPage() {
       if (fromDate) params.from_date = new Date(fromDate).toISOString();
       if (toDate) params.to_date = new Date(toDate).toISOString();
 
-      const result = await getAdminDashboard(params);
+      const result = await getAdminDashboard(params, { signal: controller.signal });
       setData(result);
     } catch (err) {
+      if (isRequestCanceled(err)) return;
       setError(getErrorMessage(err, 'Failed to load administrator dashboard.'));
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     fetchDashboard();
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
   }, []);
 
   const handleFilterSubmit = (e) => {
@@ -59,10 +74,6 @@ export default function AdminDashboardPage() {
     setToDate('');
     setTimeout(() => fetchDashboard(), 0);
   };
-
-  if (loading && !data) {
-    return <LoadingSpinner message="Calculating dashboard analytics..." size="large" />;
-  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -136,7 +147,50 @@ export default function AdminDashboardPage() {
         </form>
       </div>
 
-      {data && (
+      {loading && !data ? (
+        <div className="space-y-8 animate-pulse">
+          {/* Summary Metric Cards Skeleton */}
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 5 }).map((_, idx) => (
+              <div key={idx} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
+                <div className="flex justify-between items-center">
+                  <div className="h-3 bg-gray-200 rounded w-1/3" />
+                  <div className="w-5 h-5 bg-gray-200 rounded" />
+                </div>
+                <div className="h-8 bg-gray-300 rounded w-1/2" />
+              </div>
+            ))}
+          </div>
+
+          {/* Breakdown Section Skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                <div className="h-4 bg-gray-200 rounded w-1/3 pb-2" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-100 rounded" />
+                  <div className="h-4 bg-gray-100 rounded" />
+                  <div className="h-4 bg-gray-100 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Recent Activity Skeleton */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {Array.from({ length: 2 }).map((_, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                <div className="h-4 bg-gray-200 rounded w-1/4 pb-3" />
+                <div className="space-y-3">
+                  <div className="h-10 bg-gray-100 rounded" />
+                  <div className="h-10 bg-gray-100 rounded" />
+                  <div className="h-10 bg-gray-100 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : data ? (
         <>
           {/* Summary Metric Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
@@ -307,7 +361,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </>
-      )}
+      ) : null}
     </div>
   );
 }

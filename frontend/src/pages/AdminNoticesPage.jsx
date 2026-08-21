@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { listNotices, deleteNotice } from '../api/notices';
-import { getErrorMessage } from '../api/client';
+import { getErrorMessage, isRequestCanceled } from '../api/client';
 import NoticeCard from '../components/notices/NoticeCard';
 import NoticeModal from '../components/notices/NoticeModal';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { NoticeCardSkeleton } from '../components/common/Skeleton';
 import ErrorAlert from '../components/common/ErrorAlert';
 import EmptyState from '../components/common/EmptyState';
 import { Bell, PlusCircle, RefreshCw } from 'lucide-react';
@@ -17,21 +17,37 @@ export default function AdminNoticesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNotice, setSelectedNotice] = useState(null);
 
+  const controllerRef = useRef(null);
+
   const fetchNotices = async () => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
     try {
       setLoading(true);
       setError(null);
-      const data = await listNotices({ page: 1, page_size: 50 });
+      const data = await listNotices({ page: 1, page_size: 50 }, { signal: controller.signal });
       setNotices(data?.items || []);
     } catch (err) {
+      if (isRequestCanceled(err)) return;
       setError(getErrorMessage(err, 'Failed to load society notices.'));
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     fetchNotices();
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
   }, []);
 
   const handleCreate = () => {
@@ -90,8 +106,8 @@ export default function AdminNoticesPage() {
 
       <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
-      {loading ? (
-        <LoadingSpinner message="Loading notices..." size="large" />
+      {loading && notices.length === 0 ? (
+        <NoticeCardSkeleton count={4} />
       ) : notices.length === 0 ? (
         <EmptyState
           title="No notices published"

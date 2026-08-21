@@ -55,4 +55,11 @@ export function getErrorMessage(error, defaultMsg = 'An unexpected error occurre
   return error.message || defaultMsg;
 }
 
+/**
+ * Check if error is due to an intentional request abortion/cancellation
+ */
+export function isRequestCanceled(error) {
+  return axios.isCancel(error) || error?.name === 'CanceledError' || error?.code === 'ERR_CANCELED';
+}
+
 export default apiClient;
