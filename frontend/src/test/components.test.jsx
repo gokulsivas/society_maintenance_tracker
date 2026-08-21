@@ -12,6 +12,12 @@ import EditComplaintModal from '../components/complaints/EditComplaintModal';
 import * as complaintsApi from '../api/complaints';
 
 describe('Common UI Components', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    document.documentElement.className = 'light';
+    document.documentElement.setAttribute('data-theme', 'light');
+  });
+
   it('renders StatusBadge for OPEN, IN_PROGRESS, RESOLVED and OVERDUE state', () => {
     const { rerender } = render(<StatusBadge status="OPEN" isOverdue={false} />);
     expect(screen.getByText(/Open/i)).toBeInTheDocument();
