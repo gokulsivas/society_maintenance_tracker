@@ -137,7 +137,7 @@ export default function ComplaintDetailPage() {
           </div>
 
           {/* Status Actions */}
-          <div className="flex items-center space-x-3 flex-wrap">
+          <div className="complaint-header-actions flex items-center gap-5 flex-wrap">
             <StatusBadge status={complaint.status} isOverdue={complaint.is_overdue} />
 
             {/* Resident Owner Edit Button (Only for OPEN complaints) */}

@@ -125,3 +125,156 @@ describe('Common UI Components', () => {
     expect(onClose).toHaveBeenCalled();
   });
 });
+
+describe('Navbar Profile Trigger & Dropdown', () => {
+  it('getUserInitials correctly extracts initials from user names', async () => {
+    const { getUserInitials } = await import('../components/common/Navbar');
+    expect(getUserInitials('Demo Society Admin')).toBe('DA');
+    expect(getUserInitials('Demo Resident User')).toBe('DU');
+    expect(getUserInitials('Alice')).toBe('AL');
+    expect(getUserInitials('')).toBe('U');
+  });
+
+  it('renders circular profile trigger and opens dropdown with authenticated user data', async () => {
+    const { default: Navbar } = await import('../components/common/Navbar');
+    const { AuthContext } = await import('../context/AuthContext');
+
+    const mockLogout = vi.fn();
+    const authValue = {
+      user: { id: 1, name: 'Demo Society Admin', email: 'admin.demo@society-tracker.com', role: 'ADMIN' },
+      isAuthenticated: true,
+      isAdmin: true,
+      isResident: false,
+      logout: mockLogout,
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    // Profile trigger with initials DA
+    const trigger = screen.getByLabelText('Open account menu');
+    expect(trigger).toBeInTheDocument();
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveAttribute('aria-haspopup', 'menu');
+    expect(screen.getByText('DA')).toBeInTheDocument();
+
+    // Click trigger to open dropdown
+    fireEvent.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    // Verify Dropdown Contents
+    expect(screen.getByText('Demo Society Admin')).toBeInTheDocument();
+    expect(screen.getByText('ADMINISTRATOR')).toBeInTheDocument();
+
+    // Verify Logout button
+    const logoutBtn = screen.getByRole('menuitem', { name: /Sign Out/i });
+    expect(logoutBtn).toBeInTheDocument();
+
+    fireEvent.click(logoutBtn);
+    expect(mockLogout).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders RESIDENT role correctly in dropdown for resident user', async () => {
+    const { default: Navbar } = await import('../components/common/Navbar');
+    const { AuthContext } = await import('../context/AuthContext');
+
+    const mockLogout = vi.fn();
+    const authValue = {
+      user: { id: 2, name: 'Demo Resident User', email: 'resident.demo@society-tracker.com', role: 'RESIDENT', flat_no: 'B-202' },
+      isAuthenticated: true,
+      isAdmin: false,
+      isResident: true,
+      logout: mockLogout,
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    const trigger = screen.getByLabelText('Open account menu');
+    expect(screen.getByText('DU')).toBeInTheDocument();
+
+    fireEvent.click(trigger);
+    expect(screen.getByText('Demo Resident User')).toBeInTheDocument();
+    expect(screen.getByText('RESIDENT')).toBeInTheDocument();
+    expect(screen.getByText(/Flat B-202/i)).toBeInTheDocument();
+  });
+
+  it('closes dropdown on Escape key', async () => {
+    const { default: Navbar } = await import('../components/common/Navbar');
+    const { AuthContext } = await import('../context/AuthContext');
+
+    const authValue = {
+      user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
+      isAuthenticated: true,
+      isAdmin: true,
+      logout: vi.fn(),
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    const trigger = screen.getByLabelText('Open account menu');
+    fireEvent.click(trigger);
+    expect(screen.getByText('Demo Society Admin')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
+    expect(screen.queryByText('ADMINISTRATOR')).not.toBeInTheDocument();
+  });
+
+  it('closes dropdown on outside click', async () => {
+    const { default: Navbar } = await import('../components/common/Navbar');
+    const { AuthContext } = await import('../context/AuthContext');
+
+    const authValue = {
+      user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
+      isAuthenticated: true,
+      isAdmin: true,
+      logout: vi.fn(),
+    };
+
+    render(
+      <div>
+        <div data-testid="outside-area">Outside</div>
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter>
+            <Navbar />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </div>
+    );
+
+    const trigger = screen.getByLabelText('Open account menu');
+    fireEvent.click(trigger);
+    expect(screen.getByText('Demo Society Admin')).toBeInTheDocument();
+
+    fireEvent.mouseDown(screen.getByTestId('outside-area'));
+    expect(screen.queryByText('ADMINISTRATOR')).not.toBeInTheDocument();
+  });
+});
+
+describe('Date Filters & Complaint Header Spacing', () => {
+  it('date helpers calculate 90 days default range dynamically', async () => {
+    const { formatDateInput, getDaysAgo, getToday } = await import('../pages/AdminDashboardPage');
+    const todayStr = getToday();
+    const daysAgo90Str = getDaysAgo(90);
+
+    expect(todayStr).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(daysAgo90Str).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(new Date(daysAgo90Str) < new Date(todayStr)).toBe(true);
+  });
+});

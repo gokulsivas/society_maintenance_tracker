@@ -18,18 +18,34 @@ import {
   RefreshCw,
 } from 'lucide-react';
 
+export const formatDateInput = (date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+export const getDaysAgo = (days) => {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return formatDateInput(date);
+};
+
+export const getToday = () => formatDateInput(new Date());
+
 export default function AdminDashboardPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Date filters
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
+  // Widen default date range (90 days before today to today)
+  const [fromDate, setFromDate] = useState(() => getDaysAgo(90));
+  const [toDate, setToDate] = useState(() => getToday());
+  const [activePreset, setActivePreset] = useState('90d');
 
   const controllerRef = useRef(null);
 
-  const fetchDashboard = async () => {
+  const fetchDashboard = async (from = fromDate, to = toDate) => {
     if (controllerRef.current) {
       controllerRef.current.abort();
     }
@@ -40,8 +56,8 @@ export default function AdminDashboardPage() {
       setLoading(true);
       setError(null);
       const params = {};
-      if (fromDate) params.from_date = new Date(fromDate).toISOString();
-      if (toDate) params.to_date = new Date(toDate).toISOString();
+      if (from) params.from_date = new Date(from).toISOString();
+      if (to) params.to_date = new Date(to).toISOString();
 
       const result = await getAdminDashboard(params, { signal: controller.signal });
       setData(result);
@@ -56,7 +72,7 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
-    fetchDashboard();
+    fetchDashboard(fromDate, toDate);
     return () => {
       if (controllerRef.current) {
         controllerRef.current.abort();
@@ -66,13 +82,38 @@ export default function AdminDashboardPage() {
 
   const handleFilterSubmit = (e) => {
     e.preventDefault();
-    fetchDashboard();
+    if (fromDate && toDate && fromDate > toDate) {
+      setError('"To" date cannot be earlier than "From" date.');
+      return;
+    }
+    setActivePreset('custom');
+    fetchDashboard(fromDate, toDate);
+  };
+
+  const handleApplyPreset = (preset) => {
+    setActivePreset(preset);
+    let from = '';
+    let to = '';
+    if (preset === '7d') {
+      from = getDaysAgo(7);
+      to = getToday();
+    } else if (preset === '30d') {
+      from = getDaysAgo(30);
+      to = getToday();
+    } else if (preset === '90d') {
+      from = getDaysAgo(90);
+      to = getToday();
+    } else if (preset === 'all') {
+      from = '';
+      to = '';
+    }
+    setFromDate(from);
+    setToDate(to);
+    fetchDashboard(from, to);
   };
 
   const handleResetFilters = () => {
-    setFromDate('');
-    setToDate('');
-    setTimeout(() => fetchDashboard(), 0);
+    handleApplyPreset('90d');
   };
 
   return (
@@ -93,7 +134,7 @@ export default function AdminDashboardPage() {
           </div>
 
           <button
-            onClick={fetchDashboard}
+            onClick={() => fetchDashboard(fromDate, toDate)}
             className="inline-flex items-center px-4 py-2.5 bg-[#faf8f3] border border-[#d8cdbc] text-[#24211e] hover:bg-[#ebe5da] text-xs font-semibold uppercase tracking-wider transition-colors self-start sm:self-auto shadow-sm"
           >
             <RefreshCw className={`w-3.5 h-3.5 mr-2 text-[#5f4b3b] ${loading ? 'animate-spin' : ''}`} />
@@ -104,33 +145,105 @@ export default function AdminDashboardPage() {
         <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
         {/* Date Range Filter Bar */}
-        <div className="bg-[#faf8f3] p-4 sm:p-5 border border-[#d8cdbc] shadow-sm">
+        <div className="bg-[#faf8f3] p-4 sm:p-5 border border-[#d8cdbc] shadow-sm space-y-3">
+          {/* Preset Buttons */}
+          <div className="flex items-center gap-2 flex-wrap pb-2 border-b border-[#d8cdbc]/60">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5f4b3b] mr-1 flex items-center">
+              <Filter className="w-3 h-3 mr-1" /> Presets:
+            </span>
+            <button
+              type="button"
+              onClick={() => handleApplyPreset('7d')}
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+                activePreset === '7d'
+                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
+                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+              }`}
+            >
+              Last 7 Days
+            </button>
+            <button
+              type="button"
+              onClick={() => handleApplyPreset('30d')}
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+                activePreset === '30d'
+                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
+                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+              }`}
+            >
+              Last 30 Days
+            </button>
+            <button
+              type="button"
+              onClick={() => handleApplyPreset('90d')}
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+                activePreset === '90d'
+                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
+                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+              }`}
+            >
+              Last 90 Days
+            </button>
+            <button
+              type="button"
+              onClick={() => handleApplyPreset('all')}
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+                activePreset === 'all'
+                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
+                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+              }`}
+            >
+              All Time
+            </button>
+          </div>
+
           <form onSubmit={handleFilterSubmit} className="flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="flex items-center space-x-1.5 text-xs font-semibold text-[#5f4b3b] uppercase tracking-wider">
               <Calendar className="w-3.5 h-3.5 text-[#5f4b3b]" />
-              <span>Date Range:</span>
+              <span>Custom Range:</span>
             </div>
 
-            <div className="flex items-center gap-2 flex-1 flex-wrap">
-              <input
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
-                title="From date"
-              />
-              <span className="text-xs text-[#8F8778]">to</span>
-              <input
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
-                title="To date"
-              />
+            <div className="flex items-center gap-3 flex-1 flex-wrap">
+              <div className="flex items-center space-x-1.5">
+                <label htmlFor="from-date-input" className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">
+                  From:
+                </label>
+                <input
+                  id="from-date-input"
+                  type="date"
+                  value={fromDate}
+                  max={toDate || getToday()}
+                  onChange={(e) => {
+                    setFromDate(e.target.value);
+                    setActivePreset('custom');
+                  }}
+                  className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
+                  title="From date"
+                />
+              </div>
+
+              <div className="flex items-center space-x-1.5">
+                <label htmlFor="to-date-input" className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">
+                  To:
+                </label>
+                <input
+                  id="to-date-input"
+                  type="date"
+                  value={toDate}
+                  min={fromDate || undefined}
+                  max={getToday()}
+                  onChange={(e) => {
+                    setToDate(e.target.value);
+                    setActivePreset('custom');
+                  }}
+                  className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
+                  title="To date"
+                />
+              </div>
 
               <button
                 type="submit"
-                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] border border-[#24211e] shadow-sm"
+                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] border border-[#24211e] shadow-sm transition-colors"
               >
                 Apply Filter
               </button>
@@ -139,9 +252,9 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc]"
+                  className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc] transition-colors"
                 >
-                  Reset
+                  Reset (90d)
                 </button>
               )}
             </div>
