@@ -375,3 +375,111 @@ def test_threshold_update_dynamically_changes_overdue_count(client, dashboard_us
         headers={"Authorization": f"Bearer {dashboard_users['admin_token']}"},
     )
     assert res_dash2.json()["total_overdue"] == 0
+
+
+def test_dashboard_date_presets_and_custom_ranges_end_to_end(client, dashboard_users, db_session):
+    """Verify that filtering by Last 7d, 30d, 90d, All Time, and custom single-record ranges produces distinct metrics."""
+    now = datetime.now(timezone.utc)
+    res_id = dashboard_users["resident"].id
+
+    # Create demo dataset across relative dates
+    complaints = [
+        Complaint(title="3d ago issue", description="D", category=ComplaintCategory.SECURITY, priority=ComplaintPriority.HIGH, status=ComplaintStatus.OPEN, resident_id=res_id, created_at=now - timedelta(days=3)),
+        Complaint(title="12d ago issue", description="D", category=ComplaintCategory.PLUMBING, priority=ComplaintPriority.MEDIUM, status=ComplaintStatus.IN_PROGRESS, resident_id=res_id, created_at=now - timedelta(days=12)),
+        Complaint(title="24d ago issue", description="D", category=ComplaintCategory.ELECTRICAL, priority=ComplaintPriority.LOW, status=ComplaintStatus.RESOLVED, resident_id=res_id, created_at=now - timedelta(days=24), resolved_at=now - timedelta(days=22)),
+        Complaint(title="45d ago issue", description="D", category=ComplaintCategory.CARPENTRY, priority=ComplaintPriority.MEDIUM, status=ComplaintStatus.OPEN, resident_id=res_id, created_at=now - timedelta(days=45)),
+        Complaint(title="75d ago issue", description="D", category=ComplaintCategory.CLEANLINESS, priority=ComplaintPriority.HIGH, status=ComplaintStatus.RESOLVED, resident_id=res_id, created_at=now - timedelta(days=75), resolved_at=now - timedelta(days=73)),
+        Complaint(title="120d ago issue", description="D", category=ComplaintCategory.OTHER, priority=ComplaintPriority.LOW, status=ComplaintStatus.RESOLVED, resident_id=res_id, created_at=now - timedelta(days=120), resolved_at=now - timedelta(days=118)),
+    ]
+    db_session.add_all(complaints)
+    db_session.commit()
+
+    headers = {"Authorization": f"Bearer {dashboard_users['admin_token']}"}
+
+    # 1. Last 7 Days (now - 7d to now) -> Only the 3d complaint
+    res_7d = client.get(
+        "/api/admin/dashboard",
+        params={
+            "from_date": (now - timedelta(days=7)).isoformat(),
+            "to_date": now.isoformat(),
+        },
+        headers=headers,
+    )
+    assert res_7d.status_code == status.HTTP_200_OK
+    d7 = res_7d.json()
+    assert d7["total_complaints"] == 1
+    assert d7["total_open"] == 1
+    assert d7["total_in_progress"] == 0
+    assert d7["total_resolved"] == 0
+
+    # 2. Last 30 Days (now - 30d to now) -> 3d, 12d, 24d complaints
+    res_30d = client.get(
+        "/api/admin/dashboard",
+        params={
+            "from_date": (now - timedelta(days=30)).isoformat(),
+            "to_date": now.isoformat(),
+        },
+        headers=headers,
+    )
+    assert res_30d.status_code == status.HTTP_200_OK
+    d30 = res_30d.json()
+    assert d30["total_complaints"] == 3
+    assert d30["total_open"] == 1
+    assert d30["total_in_progress"] == 1
+    assert d30["total_resolved"] == 1
+
+    # 3. Last 90 Days (now - 90d to now) -> 3d, 12d, 24d, 45d, 75d complaints
+    res_90d = client.get(
+        "/api/admin/dashboard",
+        params={
+            "from_date": (now - timedelta(days=90)).isoformat(),
+            "to_date": now.isoformat(),
+        },
+        headers=headers,
+    )
+    assert res_90d.status_code == status.HTTP_200_OK
+    d90 = res_90d.json()
+    assert d90["total_complaints"] == 5
+    assert d90["total_open"] == 2
+    assert d90["total_in_progress"] == 1
+    assert d90["total_resolved"] == 2
+
+    # 4. All Time (no from/to parameters) -> All 6 complaints
+    res_all = client.get("/api/admin/dashboard", headers=headers)
+    assert res_all.status_code == status.HTTP_200_OK
+    dall = res_all.json()
+    assert dall["total_complaints"] == 6
+    assert dall["total_open"] == 2
+    assert dall["total_in_progress"] == 1
+    assert dall["total_resolved"] == 3
+
+    # 5. Custom single-record range (now - 50d to now - 40d) -> Only the 45d complaint
+    res_custom = client.get(
+        "/api/admin/dashboard",
+        params={
+            "from_date": (now - timedelta(days=50)).isoformat(),
+            "to_date": (now - timedelta(days=40)).isoformat(),
+        },
+        headers=headers,
+    )
+    assert res_custom.status_code == status.HTTP_200_OK
+    dcustom = res_custom.json()
+    assert dcustom["total_complaints"] == 1
+    assert dcustom["total_open"] == 1
+    assert dcustom["by_category"]["CARPENTRY"] == 1
+
+    # 6. Empty range (e.g., in future) -> 0 complaints
+    res_empty = client.get(
+        "/api/admin/dashboard",
+        params={
+            "from_date": (now + timedelta(days=10)).isoformat(),
+            "to_date": (now + timedelta(days=20)).isoformat(),
+        },
+        headers=headers,
+    )
+    assert res_empty.status_code == status.HTTP_200_OK
+    dempty = res_empty.json()
+    assert dempty["total_complaints"] == 0
+    assert dempty["total_open"] == 0
+    assert dempty["recent_complaints"] == []
+

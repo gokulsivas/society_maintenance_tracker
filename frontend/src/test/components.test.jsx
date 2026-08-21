@@ -126,7 +126,7 @@ describe('Common UI Components', () => {
   });
 });
 
-describe('Navbar Profile Trigger & Dropdown', () => {
+describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
   it('getUserInitials correctly extracts initials from user names', async () => {
     const { getUserInitials } = await import('../components/common/Navbar');
     expect(getUserInitials('Demo Society Admin')).toBe('DA');
@@ -135,9 +135,10 @@ describe('Navbar Profile Trigger & Dropdown', () => {
     expect(getUserInitials('')).toBe('U');
   });
 
-  it('renders circular profile trigger and opens dropdown with authenticated user data', async () => {
+  it('renders square profile trigger and opens dropdown with authenticated user data', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
+    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const mockLogout = vi.fn();
     const authValue = {
@@ -149,16 +150,19 @@ describe('Navbar Profile Trigger & Dropdown', () => {
     };
 
     render(
-      <AuthContext.Provider value={authValue}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </AuthContext.Provider>
+      <ThemeProvider>
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter>
+            <Navbar />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </ThemeProvider>
     );
 
-    // Profile trigger with initials DA
+    // Profile trigger is square (rounded-none) with initials DA
     const trigger = screen.getByLabelText('Open account menu');
     expect(trigger).toBeInTheDocument();
+    expect(trigger.className).toContain('rounded-none');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(trigger).toHaveAttribute('aria-haspopup', 'menu');
     expect(screen.getByText('DA')).toBeInTheDocument();
@@ -182,6 +186,7 @@ describe('Navbar Profile Trigger & Dropdown', () => {
   it('renders RESIDENT role correctly in dropdown for resident user', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
+    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const mockLogout = vi.fn();
     const authValue = {
@@ -193,11 +198,13 @@ describe('Navbar Profile Trigger & Dropdown', () => {
     };
 
     render(
-      <AuthContext.Provider value={authValue}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </AuthContext.Provider>
+      <ThemeProvider>
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter>
+            <Navbar />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </ThemeProvider>
     );
 
     const trigger = screen.getByLabelText('Open account menu');
@@ -209,9 +216,10 @@ describe('Navbar Profile Trigger & Dropdown', () => {
     expect(screen.getByText(/Flat B-202/i)).toBeInTheDocument();
   });
 
-  it('closes dropdown on Escape key', async () => {
+  it('renders square ThemeToggle button and toggles light/dark mode', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
+    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const authValue = {
       user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
@@ -221,11 +229,46 @@ describe('Navbar Profile Trigger & Dropdown', () => {
     };
 
     render(
-      <AuthContext.Provider value={authValue}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </AuthContext.Provider>
+      <ThemeProvider>
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter>
+            <Navbar />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </ThemeProvider>
+    );
+
+    const themeToggle = screen.getByLabelText(/Switch to dark mode/i);
+    expect(themeToggle).toBeInTheDocument();
+    expect(themeToggle.className).toContain('rounded-none');
+    expect(themeToggle).toHaveAttribute('aria-pressed', 'false');
+
+    // Click to toggle to dark mode
+    fireEvent.click(themeToggle);
+    expect(screen.getByLabelText(/Switch to light mode/i)).toBeInTheDocument();
+    expect(localStorage.getItem('socivio_theme')).toBe('dark');
+  });
+
+  it('closes dropdown on Escape key', async () => {
+    const { default: Navbar } = await import('../components/common/Navbar');
+    const { AuthContext } = await import('../context/AuthContext');
+    const { ThemeProvider } = await import('../context/ThemeContext');
+
+    const authValue = {
+      user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
+      isAuthenticated: true,
+      isAdmin: true,
+      logout: vi.fn(),
+    };
+
+    render(
+      <ThemeProvider>
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter>
+            <Navbar />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </ThemeProvider>
     );
 
     const trigger = screen.getByLabelText('Open account menu');
@@ -239,6 +282,7 @@ describe('Navbar Profile Trigger & Dropdown', () => {
   it('closes dropdown on outside click', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
+    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const authValue = {
       user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
@@ -248,14 +292,16 @@ describe('Navbar Profile Trigger & Dropdown', () => {
     };
 
     render(
-      <div>
-        <div data-testid="outside-area">Outside</div>
-        <AuthContext.Provider value={authValue}>
-          <MemoryRouter>
-            <Navbar />
-          </MemoryRouter>
-        </AuthContext.Provider>
-      </div>
+      <ThemeProvider>
+        <div>
+          <div data-testid="outside-area">Outside</div>
+          <AuthContext.Provider value={authValue}>
+            <MemoryRouter>
+              <Navbar />
+            </MemoryRouter>
+          </AuthContext.Provider>
+        </div>
+      </ThemeProvider>
     );
 
     const trigger = screen.getByLabelText('Open account menu');
@@ -267,7 +313,7 @@ describe('Navbar Profile Trigger & Dropdown', () => {
   });
 });
 
-describe('Date Filters & Complaint Header Spacing', () => {
+describe('Date Filters & Dashboard Preset Behavior', () => {
   it('date helpers calculate 90 days default range dynamically', async () => {
     const { formatDateInput, getDaysAgo, getToday } = await import('../pages/AdminDashboardPage');
     const todayStr = getToday();

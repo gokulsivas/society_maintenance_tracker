@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import {
   Building2,
   LayoutDashboard,
@@ -11,6 +12,8 @@ import {
   LogOut,
   Menu,
   X,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 export const getUserInitials = (name) => {
@@ -24,6 +27,7 @@ export const getUserInitials = (name) => {
 
 export default function Navbar() {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -61,14 +65,14 @@ export default function Navbar() {
   }, [isDropdownOpen]);
 
   const navLinkClass = ({ isActive }) =>
-    `inline-flex items-center px-3.5 py-2 text-sm font-medium transition-colors ${
+    `inline-flex items-center px-3.5 py-2 text-sm font-sans font-medium transition-colors ${
       isActive
         ? 'bg-[#302a25] text-[#f5f2ec] font-semibold border-b-2 border-[#d8cdbc]'
         : 'text-[#c8bfb3] hover:text-[#f5f2ec] hover:bg-[#302a25]'
     }`;
 
   const mobileNavLinkClass = ({ isActive }) =>
-    `block px-3.5 py-2.5 text-base font-medium transition-colors ${
+    `block px-3.5 py-2.5 text-base font-sans font-medium transition-colors ${
       isActive
         ? 'bg-[#302a25] text-[#f5f2ec] font-semibold border-l-4 border-[#d8cdbc]'
         : 'text-[#c8bfb3] hover:text-[#f5f2ec] hover:bg-[#302a25]'
@@ -96,7 +100,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-1 font-sans">
             {!isAdmin ? (
               // Resident Links
               <>
@@ -140,14 +144,30 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* User Profile Dropdown & Mobile Menu Toggle */}
-          <div className="flex items-center space-x-3">
-            {/* Circular Profile Trigger */}
+          {/* User Profile Dropdown, Theme Toggle & Mobile Menu Toggle */}
+          <div className="flex items-center space-x-2.5">
+            {/* Theme Toggle Button */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-pressed={isDark}
+              className="w-10 h-10 rounded-none bg-[#302a25] border border-[#d8cdbc]/50 hover:border-[#f5f2ec] text-[#f5f2ec] font-sans font-medium text-xs flex items-center justify-center shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d8cdbc]"
+              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {isDark ? (
+                <Sun className="w-4 h-4 text-[#e0a96d]" />
+              ) : (
+                <Moon className="w-4 h-4 text-[#c8bfb3]" />
+              )}
+            </button>
+
+            {/* Square Profile Trigger */}
             <div className="relative" ref={dropdownRef}>
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
-                className="w-10 h-10 rounded-full bg-[#302a25] border border-[#d8cdbc]/50 hover:border-[#f5f2ec] text-[#f5f2ec] font-semibold text-xs flex items-center justify-center shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d8cdbc]"
+                className="w-10 h-10 rounded-none bg-[#302a25] border border-[#d8cdbc]/50 hover:border-[#f5f2ec] text-[#f5f2ec] font-sans font-semibold text-xs flex items-center justify-center shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d8cdbc]"
                 aria-label="Open account menu"
                 aria-haspopup="menu"
                 aria-expanded={isDropdownOpen}
@@ -156,10 +176,10 @@ export default function Navbar() {
                   <img
                     src={user.avatar_url}
                     alt={user?.name || 'User avatar'}
-                    className="w-full h-full rounded-full object-cover"
+                    className="w-full h-full rounded-none object-cover"
                   />
                 ) : (
-                  <span className="tracking-wider">{getUserInitials(user?.name)}</span>
+                  <span className="tracking-wider font-sans">{getUserInitials(user?.name)}</span>
                 )}
               </button>
 
@@ -168,24 +188,24 @@ export default function Navbar() {
                 <div
                   role="menu"
                   aria-label="Account menu"
-                  className="absolute right-0 mt-2 w-64 bg-[#faf8f3] border border-[#d8cdbc] shadow-md z-50 rounded-none animate-in fade-in zoom-in-95 duration-100"
+                  className="absolute right-0 mt-2 w-64 bg-[#faf8f3] dark:bg-[#24201c] border border-[#d8cdbc] shadow-md z-50 rounded-none animate-in fade-in zoom-in-95 duration-100"
                 >
                   <div className="px-4 py-3.5 border-b border-[#d8cdbc]/60">
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8F8778] mb-0.5">
+                    <p className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#8F8778] dark:text-[#a89f91] mb-0.5">
                       Name
                     </p>
-                    <p className="font-serif text-base font-normal text-[#24211e] leading-snug break-words">
+                    <p className="font-serif text-base font-normal text-[#24211e] dark:text-[#f5f2ec] leading-snug break-words">
                       {user?.name || 'User'}
                     </p>
 
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8F8778] mt-3 mb-0.5">
+                    <p className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#8F8778] dark:text-[#a89f91] mt-3 mb-0.5">
                       Role
                     </p>
-                    <p className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b]">
+                    <p className="text-xs font-sans font-bold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc]">
                       {user?.role === 'ADMIN' ? 'ADMINISTRATOR' : 'RESIDENT'}
                     </p>
                     {user?.flat_no && user?.role !== 'ADMIN' && (
-                      <p className="text-xs text-[#6b665e] mt-1">Flat {user.flat_no}</p>
+                      <p className="text-xs font-sans text-[#6b665e] dark:text-[#c8bfb3] mt-1">Flat {user.flat_no}</p>
                     )}
                   </div>
 
@@ -197,7 +217,7 @@ export default function Navbar() {
                         handleLogout();
                       }}
                       role="menuitem"
-                      className="w-full flex items-center px-3 py-2 text-xs font-semibold uppercase tracking-wider text-[#8a4d43] hover:text-[#5f4b3b] hover:bg-[#ebe5da] transition-colors text-left"
+                      className="w-full flex items-center px-3 py-2 text-xs font-sans font-semibold uppercase tracking-wider text-[#8a4d43] hover:text-[#5f4b3b] hover:bg-[#ebe5da] dark:hover:bg-[#312b25] transition-colors text-left"
                     >
                       <LogOut className="w-3.5 h-3.5 mr-2 text-[#8a4d43]" />
                       Sign Out

@@ -125,54 +125,126 @@ def seed_demo_data(
         results["users"].append(f"[EXISTS] Resident ({DEMO_RESIDENT_EMAIL}) already exists (ID: {resident.id})")
 
     # ---------------------------------------------------------
-    # 3. Sample Complaints for Demo Resident
+    # 3. Sample Complaints for Demo Resident (Varied relative dates)
     # ---------------------------------------------------------
+    now = datetime.now(timezone.utc)
+
     sample_complaints_def = [
         {
-            "title": "Corridor Light Flickering (Floor 2)",
-            "description": "The corridor ceiling light fixture near flat B-204 is flickering intermittently and needs ballast replacement.",
-            "category": ComplaintCategory.ELECTRICAL,
-            "priority": ComplaintPriority.MEDIUM,
+            "title": "Main Gate Intercom Audio Distortion",
+            "description": "Visitor intercom speaker at the society main security gate is crackling and distorted.",
+            "category": ComplaintCategory.SECURITY,
+            "priority": ComplaintPriority.HIGH,
             "status": ComplaintStatus.OPEN,
+            "days_ago": 3,
             "transitions": [],
         },
         {
-            "title": "Water Leakage in Kitchen Pipe",
-            "description": "Continuous water dripping from the main cold-water supply pipe under the kitchen sink. Maintenance team conducted initial inspection.",
+            "title": "Water Leakage in Kitchen Supply Line",
+            "description": "Continuous water dripping from the main cold-water supply pipe under the kitchen sink. Initial inspection conducted.",
             "category": ComplaintCategory.PLUMBING,
-            "priority": ComplaintPriority.HIGH,
+            "priority": ComplaintPriority.MEDIUM,
             "status": ComplaintStatus.IN_PROGRESS,
+            "days_ago": 12,
             "transitions": [
                 {
                     "from_status": ComplaintStatus.OPEN,
                     "to_status": ComplaintStatus.IN_PROGRESS,
-                    "note": "Assigned to plumbing contractor for gasket repair.",
+                    "note": "Plumbing contractor assigned for pipe repair.",
+                    "days_ago": 10,
                 }
             ],
         },
         {
-            "title": "Broken Gym Treadmill Belt",
+            "title": "Corridor Light Fixture Replacement (Floor 2)",
+            "description": "The corridor ceiling light fixture near flat B-204 was flickering intermittently and ballast was replaced.",
+            "category": ComplaintCategory.ELECTRICAL,
+            "priority": ComplaintPriority.LOW,
+            "status": ComplaintStatus.RESOLVED,
+            "days_ago": 24,
+            "resolved_days_ago": 22,
+            "transitions": [
+                {
+                    "from_status": ComplaintStatus.OPEN,
+                    "to_status": ComplaintStatus.IN_PROGRESS,
+                    "note": "Electrician notified of ballast issue.",
+                    "days_ago": 23,
+                },
+                {
+                    "from_status": ComplaintStatus.IN_PROGRESS,
+                    "to_status": ComplaintStatus.RESOLVED,
+                    "note": "New LED fixture installed and verified operational.",
+                    "days_ago": 22,
+                },
+            ],
+        },
+        {
+            "title": "Balcony Sliding Door Latch Jammed",
+            "description": "Balcony glass door lock mechanism is sticking and difficult to latch securely.",
+            "category": ComplaintCategory.CARPENTRY,
+            "priority": ComplaintPriority.MEDIUM,
+            "status": ComplaintStatus.OPEN,
+            "days_ago": 45,
+            "transitions": [],
+        },
+        {
+            "title": "Basement Drainage Backup & Sump Pump Alarm",
+            "description": "Heavy monsoon runoff caused basement floor drain backup. High water alarm triggered in pump pit.",
+            "category": ComplaintCategory.CLEANLINESS,
+            "priority": ComplaintPriority.HIGH,
+            "status": ComplaintStatus.RESOLVED,
+            "days_ago": 75,
+            "resolved_days_ago": 73,
+            "transitions": [
+                {
+                    "from_status": ComplaintStatus.OPEN,
+                    "to_status": ComplaintStatus.IN_PROGRESS,
+                    "note": "Emergency maintenance dispatched to clear drainage lines.",
+                    "days_ago": 74,
+                },
+                {
+                    "from_status": ComplaintStatus.IN_PROGRESS,
+                    "to_status": ComplaintStatus.RESOLVED,
+                    "note": "Sump pump serviced and drain cleared thoroughly.",
+                    "days_ago": 73,
+                },
+            ],
+        },
+        {
+            "title": "Clubhouse Treadmill Belt Slipping",
             "description": "Clubhouse treadmill #2 belt was slipping during running. Technician completed alignment and lubrication.",
             "category": ComplaintCategory.OTHER,
             "priority": ComplaintPriority.LOW,
             "status": ComplaintStatus.RESOLVED,
+            "days_ago": 120,
+            "resolved_days_ago": 118,
             "transitions": [
                 {
                     "from_status": ComplaintStatus.OPEN,
                     "to_status": ComplaintStatus.IN_PROGRESS,
                     "note": "Fitness equipment vendor contacted.",
+                    "days_ago": 119,
                 },
                 {
                     "from_status": ComplaintStatus.IN_PROGRESS,
                     "to_status": ComplaintStatus.RESOLVED,
                     "note": "Treadmill belt replaced, tested, and verified operational.",
+                    "days_ago": 118,
                 },
             ],
         },
     ]
 
+    from datetime import timedelta
+
     for c_def in sample_complaints_def:
-        # Check if complaint with this title already exists for the resident
+        # Calculate dynamic relative dates
+        created_at = now - timedelta(days=c_def["days_ago"])
+        resolved_at = None
+        if c_def["status"] == ComplaintStatus.RESOLVED:
+            resolved_days_ago = c_def.get("resolved_days_ago", c_def["days_ago"] - 1)
+            resolved_at = now - timedelta(days=resolved_days_ago)
+
         existing_c = None
         if resident and resident.id:
             existing_c = db.scalars(
@@ -191,7 +263,9 @@ def seed_demo_data(
                     priority=c_def["priority"],
                     status=c_def["status"],
                     resident_id=resident.id,
-                    resolved_at=datetime.now(timezone.utc) if c_def["status"] == ComplaintStatus.RESOLVED else None,
+                    created_at=created_at,
+                    updated_at=created_at,
+                    resolved_at=resolved_at,
                 )
                 db.add(complaint)
                 db.flush()
@@ -203,22 +277,35 @@ def seed_demo_data(
                     to_status=ComplaintStatus.OPEN,
                     note="Complaint raised by resident",
                     changed_by=resident.id,
+                    changed_at=created_at,
                 )
                 db.add(history_open)
 
                 # Add intermediate and final transition records
                 for t in c_def["transitions"]:
+                    hist_time = now - timedelta(days=t["days_ago"])
                     hist = ComplaintStatusHistory(
                         complaint_id=complaint.id,
                         from_status=t["from_status"],
                         to_status=t["to_status"],
                         note=t["note"],
                         changed_by=admin.id if admin else None,
+                        changed_at=hist_time,
                     )
                     db.add(hist)
-            results["complaints"].append(f"[CREATE] Complaint: '{c_def['title']}' ({c_def['status'].value})")
+            results["complaints"].append(f"[CREATE] Complaint: '{c_def['title']}' ({c_def['status'].value}, {c_def['days_ago']}d ago)")
         else:
-            results["complaints"].append(f"[EXISTS] Complaint: '{c_def['title']}' (ID: {existing_c.id})")
+            # Update existing demo complaint timestamps and details to maintain relative dates
+            if not dry_run:
+                existing_c.description = c_def["description"]
+                existing_c.category = c_def["category"]
+                existing_c.priority = c_def["priority"]
+                existing_c.status = c_def["status"]
+                existing_c.created_at = created_at
+                existing_c.updated_at = created_at
+                existing_c.resolved_at = resolved_at
+                db.flush()
+            results["complaints"].append(f"[EXISTS] Complaint: '{c_def['title']}' (ID: {existing_c.id}, {c_def['days_ago']}d ago)")
 
     # ---------------------------------------------------------
     # 4. Sample Notices Posted by Demo Admin

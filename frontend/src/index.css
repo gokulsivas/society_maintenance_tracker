@@ -69,3 +69,85 @@ body {
   outline: 2px solid #5f4b3b;
   outline-offset: 2px;
 }
+
+/* ==========================================================================
+   Dark Theme Overrides
+   ========================================================================== */
+
+html.dark body {
+  background-color: #191715;
+  color: #f5f2ec;
+}
+
+html.dark .editorial-page-surface {
+  background-color: #191715;
+  background-image:
+    linear-gradient(rgba(245, 242, 236, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 242, 236, 0.035) 1px, transparent 1px);
+  color: #f5f2ec;
+}
+
+html.dark .bg-\[\#faf8f3\],
+html.dark .bg-\[\#FAF8F5\],
+html.dark .bg-\[\#FAF8F5\]\/95 {
+  background-color: #24201c !important;
+  color: #f5f2ec;
+}
+
+html.dark .bg-\[\#ebe5da\] {
+  background-color: #312b25 !important;
+  color: #f5f2ec;
+}
+
+html.dark .bg-\[\#f5f2ec\] {
+  background-color: #191715 !important;
+  color: #f5f2ec;
+}
+
+html.dark .border-\[\#d8cdbc\],
+html.dark .border-\[\#d8cdbc\]\/60 {
+  border-color: rgba(245, 242, 236, 0.12) !important;
+}
+
+html.dark .divide-\[\#d8cdbc\],
+html.dark .divide-\[\#d8cdbc\]\/60 {
+  border-color: rgba(245, 242, 236, 0.12) !important;
+}
+
+html.dark .text-\[\#24211e\] {
+  color: #f5f2ec !important;
+}
+
+html.dark .text-\[\#6b665e\] {
+  color: #c8bfb3 !important;
+}
+
+html.dark .text-\[\#8F8778\] {
+  color: #a89f91 !important;
+}
+
+html.dark .text-\[\#5f4b3b\] {
+  color: #d8cdbc !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #2a2520 !important;
+  color: #f5f2ec !important;
+  border-color: rgba(245, 242, 236, 0.16) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #887e72 !important;
+}
+
+html.dark table thead {
+  background-color: #312b25 !important;
+}
+
+html.dark table tbody tr:hover {
+  background-color: #2e2823 !important;
+}
+

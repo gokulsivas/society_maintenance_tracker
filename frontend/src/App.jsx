@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
@@ -24,102 +25,104 @@ import AdminSettingsPage from './pages/AdminSettingsPage';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="min-h-screen bg-[#f5f2ec] text-[#24211e] flex flex-col font-sans">
-          <Navbar />
-          <main className="flex-1">
-            <Routes>
-              {/* Public Landing Page */}
-              <Route path="/" element={<LandingPage />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <div className="min-h-screen bg-[#f5f2ec] dark:bg-[#191715] text-[#24211e] dark:text-[#f5f2ec] flex flex-col font-sans transition-colors duration-150">
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                {/* Public Landing Page */}
+                <Route path="/" element={<LandingPage />} />
 
-              {/* Public Auth Routes */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+                {/* Public Auth Routes */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
 
-              {/* Resident & Shared Protected Routes */}
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <ResidentDashboardPage />
-                  </ProtectedRoute>
-                }
-              />
-              {/* Order matters: /complaints/new MUST come before /complaints/:id */}
-              <Route
-                path="/complaints/new"
-                element={
-                  <ProtectedRoute>
-                    <CreateComplaintPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/complaints/:id"
-                element={
-                  <ProtectedRoute>
-                    <ComplaintDetailPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/complaints"
-                element={
-                  <ProtectedRoute>
-                    <MyComplaintsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/notices"
-                element={
-                  <ProtectedRoute>
-                    <NoticeBoardPage />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Resident & Shared Protected Routes */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <ResidentDashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* Order matters: /complaints/new MUST come before /complaints/:id */}
+                <Route
+                  path="/complaints/new"
+                  element={
+                    <ProtectedRoute>
+                      <CreateComplaintPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/complaints/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ComplaintDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/complaints"
+                  element={
+                    <ProtectedRoute>
+                      <MyComplaintsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notices"
+                  element={
+                    <ProtectedRoute>
+                      <NoticeBoardPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Admin-only Protected Routes */}
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <ProtectedRoute adminOnly>
-                    <AdminDashboardPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/complaints"
-                element={
-                  <ProtectedRoute adminOnly>
-                    <AdminComplaintsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/notices"
-                element={
-                  <ProtectedRoute adminOnly>
-                    <AdminNoticesPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/settings"
-                element={
-                  <ProtectedRoute adminOnly>
-                    <AdminSettingsPage />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Admin-only Protected Routes */}
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminDashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/complaints"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminComplaintsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/notices"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminNoticesPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/settings"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminSettingsPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* 404 Fallback */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+                {/* 404 Fallback */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </main>
+          </div>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

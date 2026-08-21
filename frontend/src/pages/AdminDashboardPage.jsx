@@ -56,8 +56,12 @@ export default function AdminDashboardPage() {
       setLoading(true);
       setError(null);
       const params = {};
-      if (from) params.from_date = new Date(from).toISOString();
-      if (to) params.to_date = new Date(to).toISOString();
+      if (from) {
+        params.from_date = from.includes('T') ? from : `${from}T00:00:00.000Z`;
+      }
+      if (to) {
+        params.to_date = to.includes('T') ? to : `${to}T23:59:59.999Z`;
+      }
 
       const result = await getAdminDashboard(params, { signal: controller.signal });
       setData(result);
