@@ -283,3 +283,39 @@ describe('Date Filters & Dashboard Preset Behavior', () => {
     expect(new Date(daysAgo90Str) < new Date(todayStr)).toBe(true);
   });
 });
+
+describe('Auth Navigation & Back to Landing Page', () => {
+  it('renders Back to Home link on LoginPage that points to /', async () => {
+    const { default: LoginPage } = await import('../pages/LoginPage');
+    const { AuthContext } = await import('../context/AuthContext');
+
+    render(
+      <AuthContext.Provider value={{ login: vi.fn(), isAuthenticated: false }}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    const backLink = screen.getByRole('link', { name: /Back to Home/i });
+    expect(backLink).toBeInTheDocument();
+    expect(backLink).toHaveAttribute('href', '/');
+  });
+
+  it('renders Back to Home link on RegisterPage that points to /', async () => {
+    const { default: RegisterPage } = await import('../pages/RegisterPage');
+    const { AuthContext } = await import('../context/AuthContext');
+
+    render(
+      <AuthContext.Provider value={{ register: vi.fn(), isAuthenticated: false }}>
+        <MemoryRouter>
+          <RegisterPage />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    const backLink = screen.getByRole('link', { name: /Back to Home/i });
+    expect(backLink).toBeInTheDocument();
+    expect(backLink).toHaveAttribute('href', '/');
+  });
+});

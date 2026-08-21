@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getErrorMessage } from '../api/client';
 import ErrorAlert from '../components/common/ErrorAlert';
-import { Building2, Lock, Mail, Loader2, ArrowRight, Shield, User } from 'lucide-react';
+import { Building2, Lock, Mail, Loader2, ArrowRight, ArrowLeft, Shield, User } from 'lucide-react';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -45,6 +45,16 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen editorial-page-surface flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
+        <Link
+          to="/"
+          className="inline-flex items-center px-3.5 py-1.5 bg-[#faf8f3] hover:bg-[#ebe5da] border border-[#d8cdbc] text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] hover:text-[#24211e] transition-colors shadow-sm"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
+          Back to Home
+        </Link>
+      </div>
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link to="/" className="inline-flex items-center justify-center mb-4">
           <div className="w-10 h-10 bg-[#24211e] text-[#FAF8F5] flex items-center justify-center">
