@@ -1,8 +1,8 @@
 import sys
 from pathlib import Path
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 
 # Ensure root and backend are in sys.path
 app_dir = Path(__file__).resolve().parent
@@ -72,11 +72,6 @@ def health_check_alt() -> dict:
     return health_check()
 
 
-@app.get("/api")
-def api_root() -> dict:
-    return health_check()
-
-
 @app.get("/assets/{file_path:path}")
 def serve_asset(file_path: str):
     for base_dir in [
@@ -126,14 +121,52 @@ def get_spa_html() -> str:
     return FALLBACK_HTML
 
 
-@app.get("/")
-@app.get("/index.html")
-def root_spa():
+# Middleware / Route dispatcher based on actual requested path
+@app.middleware("http")
+async def dispatch_routing(request: Request, call_next):
+    # Determine the real requested path
+    raw_path = request.url.path
+    matched_path = request.headers.get("x-matched-path", "")
+
+    # If it's an API route (/api/*, /auth/*, /complaints/*, /notices/*, /health)
+    if (
+        raw_path.startswith("/api")
+        or raw_path.startswith("/health")
+        or "health" in raw_path
+        or "health" in matched_path
+        or raw_path.startswith("/auth")
+        or raw_path.startswith("/complaints")
+        or raw_path.startswith("/notices")
+        or raw_path.startswith("/admin")
+    ):
+        response = await call_next(request)
+        return response
+
+    # If it's an asset route (/assets/*)
+    if raw_path.startswith("/assets/"):
+        file_path = raw_path[len("/assets/"):]
+        for base_dir in [
+            root_dir / "frontend" / "dist" / "assets",
+            root_dir / "dist" / "assets",
+            Path("frontend/dist/assets"),
+            Path("dist/assets"),
+        ]:
+            p = base_dir / file_path
+            if p.exists() and p.is_file():
+                media_type = (
+                    "application/javascript"
+                    if file_path.endswith(".js")
+                    else "text/css"
+                    if file_path.endswith(".css")
+                    else None
+                )
+                return FileResponse(str(p), media_type=media_type)
+        return JSONResponse({"detail": "Asset not found"}, status_code=404)
+
+    # For all non-API web pages (/ , /login, /dashboard, etc.), return HTML
     return HTMLResponse(content=get_spa_html(), status_code=200)
 
 
-@app.get("/{full_path:path}")
-def catch_all_spa(full_path: str):
-    if full_path.startswith("api/") or full_path == "api":
-        raise HTTPException(status_code=404, detail="API endpoint not found")
+@app.get("/")
+def root_spa():
     return HTMLResponse(content=get_spa_html(), status_code=200)
