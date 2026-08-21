@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import LandingPage from '../pages/LandingPage';
@@ -21,8 +21,13 @@ describe('LandingPage Component', () => {
     );
   }
 
-  it('renders brand wordmark and major headline', () => {
+  it('renders brand wordmark and major headline with no eyebrow badge', () => {
     renderLanding();
+
+    // Eyebrow badge MUST be absent
+    expect(
+      screen.queryByText(/A better way to care for your community/i)
+    ).not.toBeInTheDocument();
 
     // Brand Wordmark
     expect(screen.getAllByText(/Society Maintenance Tracker/i).length).toBeGreaterThan(0);
@@ -36,6 +41,38 @@ describe('LandingPage Component', () => {
     expect(
       screen.getByText(/Report maintenance requests, follow their progress/i)
     ).toBeInTheDocument();
+  });
+
+  it('renders realistic apartment photograph with proper alt text', () => {
+    renderLanding();
+
+    const heroImg = screen.getByAltText('Modern apartment society exterior with landscaped entrance');
+    expect(heroImg).toBeInTheDocument();
+    expect(heroImg).toHaveAttribute('src', '/assets/hero_apartment.jpg');
+  });
+
+  it('renders semantic section IDs for smooth in-page scrolling', () => {
+    const { container } = renderLanding();
+
+    expect(container.querySelector('#home')).toBeInTheDocument();
+    expect(container.querySelector('#how-it-works')).toBeInTheDocument();
+    expect(container.querySelector('#features')).toBeInTheDocument();
+    expect(container.querySelector('#about')).toBeInTheDocument();
+  });
+
+  it('clicking Home or wordmark smoothly scrolls to top without reload', () => {
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy;
+
+    renderLanding();
+
+    const homeLinks = screen.getAllByText('Home');
+    expect(homeLinks.length).toBeGreaterThan(0);
+
+    fireEvent.click(homeLinks[0]);
+    expect(scrollToSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ top: 0 })
+    );
   });
 
   it('renders navigation links and action buttons', () => {
