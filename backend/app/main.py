@@ -72,6 +72,11 @@ def health_check_alt() -> dict:
     return health_check()
 
 
+@app.get("/api")
+def api_root() -> dict:
+    return health_check()
+
+
 @app.get("/assets/{file_path:path}")
 def serve_asset(file_path: str):
     for base_dir in [
@@ -123,7 +128,6 @@ def get_spa_html() -> str:
 
 @app.get("/")
 @app.get("/index.html")
-@app.get("/api/index.py")
 def root_spa():
     return HTMLResponse(content=get_spa_html(), status_code=200)
 
