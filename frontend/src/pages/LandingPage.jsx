@@ -186,19 +186,36 @@ export default function LandingPage() {
         )}
       </header>
 
-      {/* 2. HERO SECTION */}
+      {/* 2. FULL-BLEED HERO SECTION */}
       <section
         id="home"
-        className="scroll-mt-24 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        className="scroll-mt-20 relative w-full min-h-[720px] sm:min-h-[760px] lg:h-[85vh] flex items-center overflow-hidden border-b border-[#DDD6C8]"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
-          {/* Left Column (Begins directly with h1 headline) */}
-          <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-left">
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#1F1E1C] leading-[1.12]">
+        {/* Background Full-Bleed Realistic Architectural Image */}
+        <img
+          src="/assets/hero_apartment.jpg"
+          alt="Modern apartment society exterior with landscaped entrance"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          loading="eager"
+        />
+
+        {/* Readability Overlay (Subtle gradient preserving realistic building details) */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(20, 20, 18, 0.76) 0%, rgba(20, 20, 18, 0.52) 45%, rgba(20, 20, 18, 0.15) 100%)',
+          }}
+        />
+
+        {/* Content Container */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24">
+          <div className="max-w-2xl space-y-6 sm:space-y-8 text-left">
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#FAF8F5] leading-[1.12]">
               A calmer way to care for your society.
             </h1>
 
-            <p className="text-lg sm:text-xl text-[#5C5955] font-normal leading-relaxed max-w-xl">
+            <p className="text-lg sm:text-xl text-[#E8E3DA] font-normal leading-relaxed">
               Report maintenance requests, follow their progress, and keep every resident informed
               in one thoughtful workspace.
             </p>
@@ -206,7 +223,7 @@ export default function LandingPage() {
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
               <Link
                 to={isAuthenticated ? authDestination : '/register'}
-                className="inline-flex items-center justify-center px-8 py-3.5 font-medium text-sm bg-[#1F1E1C] hover:bg-[#383633] text-[#FAF8F5] border border-[#1F1E1C] transition-all"
+                className="inline-flex items-center justify-center px-8 py-3.5 font-medium text-sm bg-[#FAF8F5] hover:bg-white text-[#1F1E1C] transition-all shadow-md"
               >
                 Get started
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -215,37 +232,25 @@ export default function LandingPage() {
               <a
                 href="#features"
                 onClick={(e) => handleScrollTo(e, 'features')}
-                className="inline-flex items-center justify-center text-sm font-medium text-[#1F1E1C] hover:text-[#5C5955] transition-colors py-3 group"
+                className="inline-flex items-center justify-center text-sm font-medium text-[#FAF8F5] hover:text-white transition-colors py-3 group"
               >
                 Explore the platform
                 <ArrowRight className="w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-1" />
               </a>
             </div>
           </div>
+        </div>
 
-          {/* Right Column: Realistic Architectural Photography in Sharp Frame */}
-          <div className="lg:col-span-6 relative">
-            <div className="bg-white p-2.5 sm:p-3.5 border border-[#DDD6C8] shadow-sm relative">
-              <img
-                src="/assets/hero_apartment.jpg"
-                alt="Modern apartment society exterior with landscaped entrance"
-                className="w-full h-[320px] sm:h-[420px] object-cover"
-                loading="eager"
-              />
-
-              {/* Minimalist Sharp Floating Status Badge */}
-              <div className="absolute bottom-6 left-6 bg-[#FAF8F5]/95 backdrop-blur-md px-4 py-3 border border-[#DDD6C8] shadow-sm flex items-center space-x-3">
-                <div className="w-7 h-7 bg-[#EBE6DC] flex items-center justify-center text-[#6E7364]">
-                  <CheckCircle2 className="w-4 h-4 text-[#6E7364]" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-[#1F1E1C]">12 requests resolved</p>
-                  <p className="text-[11px] text-[#6E7364] uppercase tracking-wider font-medium">
-                    This month
-                  </p>
-                </div>
-              </div>
-            </div>
+        {/* Subtle sharp-cornered translucent caption badge near bottom */}
+        <div className="absolute bottom-6 left-4 sm:left-6 lg:left-12 z-10 bg-[#1F1E1C]/70 backdrop-blur-md px-4 py-3 border border-white/15 shadow-sm hidden sm:flex items-center space-x-3">
+          <div className="w-7 h-7 bg-[#FAF8F5]/15 flex items-center justify-center text-[#FAF8F5]">
+            <CheckCircle2 className="w-4 h-4 text-[#FAF8F5]" />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-[#FAF8F5]">12 requests resolved</p>
+            <p className="text-[11px] text-[#D5CDBC] uppercase tracking-wider font-medium">
+              This month
+            </p>
           </div>
         </div>
       </section>
