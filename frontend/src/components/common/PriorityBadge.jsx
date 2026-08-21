@@ -4,21 +4,21 @@ export default function PriorityBadge({ priority }) {
   const priorityConfig = {
     LOW: {
       label: 'Low',
-      className: 'bg-[#faf8f3] dark:bg-[#2b2723] text-[#6b665e] dark:text-[#c8bfb3] border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]',
+      className: 'bg-[#faf8f3] text-[#6b665e] border-[#d8cdbc]',
     },
     MEDIUM: {
       label: 'Medium',
-      className: 'bg-[#ebe5da] dark:bg-[#342d27] text-[#8a6843] dark:text-[#e0a96d] border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]',
+      className: 'bg-[#f3eadb] text-[#73532c] border-[#b18a55]',
     },
     HIGH: {
       label: 'High',
-      className: 'bg-[#fbeeed] dark:bg-[#4a2927] text-[#8a4d43] dark:text-[#ffe6e1] border-[#d9a8a0] dark:border-[#9b5a50] font-bold',
+      className: 'bg-[#f8e9e7] text-[#7e443d] border-[#bd8178] font-bold',
     },
   };
 
   const config = priorityConfig[priority] || {
     label: priority,
-    className: 'bg-[#faf8f3] dark:bg-[#2b2723] text-[#6b665e] dark:text-[#c8bfb3] border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]',
+    className: 'bg-[#faf8f3] text-[#6b665e] border-[#d8cdbc]',
   };
 
   return (
@@ -29,4 +29,3 @@ export default function PriorityBadge({ priority }) {
     </span>
   );
 }
-

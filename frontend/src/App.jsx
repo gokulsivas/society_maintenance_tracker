@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
@@ -25,12 +24,11 @@ import AdminSettingsPage from './pages/AdminSettingsPage';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <div className="min-h-screen bg-[#f5f2ec] dark:bg-[#191715] text-[#24211e] dark:text-[#f5f2ec] flex flex-col font-sans transition-colors duration-150">
-            <Navbar />
-            <main className="flex-1">
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="min-h-screen bg-[#f5f2ec] text-[#24211e] flex flex-col font-sans">
+          <Navbar />
+          <main className="flex-1">
               <Routes>
                 {/* Public Landing Page */}
                 <Route path="/" element={<LandingPage />} />
@@ -120,9 +118,8 @@ export default function App() {
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>
-          </div>
-        </BrowserRouter>
-      </AuthProvider>
-    </ThemeProvider>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

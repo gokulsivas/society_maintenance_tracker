@@ -64,22 +64,22 @@ export default function ResidentDashboardPage() {
     <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Welcome Banner */}
-        <div className="bg-[#24211e] architectural-grid-dark p-6 sm:p-10 text-[#FAF8F5] border border-[#5f4b3b]/30 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative">
+        <div className="bg-[#faf8f3] p-6 sm:p-10 text-[#24211e] border border-[#d8cdbc] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative rounded-none">
           <div className="space-y-2">
-            <span className="inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-[#FAF8F5]/10 text-[#FAF8F5] border border-white/10">
+            <span className="inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc]">
               Resident Portal &bull; Flat {user?.flat_no || 'Resident'}
             </span>
-            <h1 className="font-serif text-3xl sm:text-4xl font-normal tracking-tight text-[#FAF8F5]">
+            <h1 className="font-serif text-3xl sm:text-4xl font-normal tracking-tight text-[#24211e]">
               Welcome back, {user?.name}!
             </h1>
-            <p className="text-[#C4BDAF] text-sm leading-relaxed max-w-xl">
+            <p className="text-[#6b665e] text-sm leading-relaxed max-w-xl">
               Track maintenance tickets, check live status updates, and stay informed with society notices.
             </p>
           </div>
 
           <Link
             to="/complaints/new"
-            className="inline-flex items-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#FAF8F5] hover:bg-[#ebe5da] text-[#24211e] border border-[#FAF8F5] transition-all flex-shrink-0 shadow-sm"
+            className="inline-flex items-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#3f3025] text-[#FAF8F5] border border-[#24211e] transition-all flex-shrink-0 shadow-sm"
           >
             <PlusCircle className="w-4 h-4 mr-2" />
             Raise Complaint
@@ -93,33 +93,33 @@ export default function ResidentDashboardPage() {
           <MetricCardSkeleton count={3} />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-            <div className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm flex items-center space-x-4 rounded-none">
-              <div className="p-3.5 bg-[#ebe5da] dark:bg-[#342d27] text-[#8a6843] dark:text-[#e0a96d] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none">
+            <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm flex items-center space-x-4 rounded-none">
+              <div className="p-3.5 bg-[#ebe5da] text-[#8a6843] border border-[#d8cdbc] rounded-none">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-[#5f4b3b] dark:text-[#d8cdbc] uppercase tracking-wider">Open Tickets</p>
-                <p className="font-serif text-3xl text-[#24211e] dark:text-[#f5f2ec] font-normal mt-0.5">{openCount}</p>
+                <p className="text-xs font-semibold text-[#5f4b3b] uppercase tracking-wider">Open Tickets</p>
+                <p className="font-serif text-3xl text-[#24211e] font-normal mt-0.5">{openCount}</p>
               </div>
             </div>
 
-            <div className="bg-[#ebe5da] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm flex items-center space-x-4 rounded-none">
-              <div className="p-3.5 bg-[#faf8f3] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none">
+            <div className="bg-[#ebe5da] p-6 border border-[#d8cdbc] shadow-sm flex items-center space-x-4 rounded-none">
+              <div className="p-3.5 bg-[#faf8f3] text-[#5f4b3b] border border-[#d8cdbc] rounded-none">
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-[#5f4b3b] dark:text-[#d8cdbc] uppercase tracking-wider">In Progress</p>
-                <p className="font-serif text-3xl text-[#24211e] dark:text-[#f5f2ec] font-normal mt-0.5">{progressCount}</p>
+                <p className="text-xs font-semibold text-[#5f4b3b] uppercase tracking-wider">In Progress</p>
+                <p className="font-serif text-3xl text-[#24211e] font-normal mt-0.5">{progressCount}</p>
               </div>
             </div>
 
-            <div className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm flex items-center space-x-4 rounded-none">
-              <div className="p-3.5 bg-[#eef2eb] dark:bg-[#223023] text-[#52634a] dark:text-[#a3c99b] border border-[#b8c9af] dark:border-[#4d6b49] rounded-none">
+            <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm flex items-center space-x-4 rounded-none">
+              <div className="p-3.5 bg-[#eef2eb] text-[#52634a] border border-[#b8c9af] rounded-none">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-[#5f4b3b] dark:text-[#d8cdbc] uppercase tracking-wider">Resolved</p>
-                <p className="font-serif text-3xl text-[#24211e] dark:text-[#f5f2ec] font-normal mt-0.5">{resolvedCount}</p>
+                <p className="text-xs font-semibold text-[#5f4b3b] uppercase tracking-wider">Resolved</p>
+                <p className="font-serif text-3xl text-[#24211e] font-normal mt-0.5">{resolvedCount}</p>
               </div>
             </div>
           </div>
@@ -128,18 +128,18 @@ export default function ResidentDashboardPage() {
         {/* Society Announcements Preview */}
         {loading ? (
           <div className="space-y-3">
-            <div className="h-6 bg-[#ebe5da] dark:bg-[#342d27] w-1/4 animate-pulse rounded-none" />
+            <div className="h-6 bg-[#ebe5da] w-1/4 animate-pulse rounded-none" />
             <NoticeCardSkeleton count={2} />
           </div>
         ) : (
           recentNotices.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-3">
-                <h3 className="font-serif text-xl sm:text-2xl text-[#24211e] dark:text-[#f5f2ec] font-normal flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-[#5f4b3b] dark:text-[#d8cdbc]" />
+              <div className="flex items-center justify-between border-b border-[#d8cdbc] pb-3">
+                <h3 className="font-serif text-xl sm:text-2xl text-[#24211e] font-normal flex items-center gap-2">
+                  <Bell className="w-5 h-5 text-[#5f4b3b]" />
                   Latest Society Announcements
                 </h3>
-                <Link to="/notices" className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] hover:text-[#24211e] dark:hover:text-[#f5f2ec] inline-flex items-center transition-colors">
+                <Link to="/notices" className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] hover:text-[#24211e] inline-flex items-center transition-colors">
                   View All Notices <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </Link>
               </div>
@@ -155,18 +155,18 @@ export default function ResidentDashboardPage() {
         {/* Recent Complaints Section */}
         {loading ? (
           <div className="space-y-4">
-            <div className="h-6 bg-[#ebe5da] dark:bg-[#342d27] w-1/4 animate-pulse rounded-none" />
+            <div className="h-6 bg-[#ebe5da] w-1/4 animate-pulse rounded-none" />
             <ComplaintCardSkeleton count={3} />
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-3">
-              <h3 className="font-serif text-xl sm:text-2xl text-[#24211e] dark:text-[#f5f2ec] font-normal flex items-center gap-2">
-                <ClipboardList className="w-5 h-5 text-[#5f4b3b] dark:text-[#d8cdbc]" />
+            <div className="flex items-center justify-between border-b border-[#d8cdbc] pb-3">
+              <h3 className="font-serif text-xl sm:text-2xl text-[#24211e] font-normal flex items-center gap-2">
+                <ClipboardList className="w-5 h-5 text-[#5f4b3b]" />
                 My Recent Complaints
               </h3>
               {complaints.length > 0 && (
-                <Link to="/complaints" className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] hover:text-[#24211e] dark:hover:text-[#f5f2ec] inline-flex items-center transition-colors">
+                <Link to="/complaints" className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] hover:text-[#24211e] inline-flex items-center transition-colors">
                   View All ({complaints.length}) <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </Link>
               )}

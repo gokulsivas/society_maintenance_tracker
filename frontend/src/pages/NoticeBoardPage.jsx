@@ -84,17 +84,17 @@ export default function NoticeBoardPage() {
     <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] pb-4">
           <div>
             <div className="flex items-center space-x-2.5">
-              <div className="p-2 bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none">
+              <div className="p-2 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc]">
                 <Bell className="w-4 h-4" />
               </div>
-              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] dark:text-[#f5f2ec] tracking-tight">
+              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] tracking-tight">
                 Society Notice Board
               </h1>
             </div>
-            <p className="text-sm text-[#6b665e] dark:text-[#c8bfb3] mt-1">
+            <p className="text-sm text-[#6b665e] mt-1">
               Stay informed with society announcements, scheduled maintenance, and community updates.
             </p>
           </div>
@@ -102,17 +102,17 @@ export default function NoticeBoardPage() {
           <div className="flex items-center space-x-3">
             <button
               onClick={() => fetchNotices(pagination.page)}
-              className="p-2.5 text-[#24211e] dark:text-[#f5f2ec] bg-[#faf8f3] dark:bg-[#24211e] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm transition-colors rounded-none"
+              className="p-2.5 text-[#24211e] bg-[#faf8f3] hover:bg-[#ebe5da] border border-[#d8cdbc] shadow-sm transition-colors"
               title="Refresh notices"
               aria-label="Refresh notices"
             >
-              <RefreshCw className={`w-4 h-4 text-[#5f4b3b] dark:text-[#d8cdbc] ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-4 h-4 text-[#5f4b3b] ${loading ? 'animate-spin' : ''}`} />
             </button>
 
             {isAdmin && (
               <button
                 onClick={handleCreateNew}
-                className="inline-flex items-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#3f3025] dark:bg-[#342d27] dark:hover:bg-[#433931] text-[#FAF8F5] border border-[#24211e] dark:border-[rgba(245,242,236,0.2)] shadow-sm transition-all rounded-none"
+                className="inline-flex items-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#3f3025] text-[#FAF8F5] border border-[#24211e] shadow-sm transition-all"
               >
                 <PlusCircle className="w-4 h-4 mr-2" />
                 Publish Notice
@@ -147,8 +147,8 @@ export default function NoticeBoardPage() {
 
             {/* Pagination Controls */}
             {pagination.total_pages > 1 && (
-              <div className="flex items-center justify-between pt-6 border-t border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]">
-                <span className="text-xs text-[#6b665e] dark:text-[#c8bfb3]">
+              <div className="flex items-center justify-between pt-6 border-t border-[#d8cdbc]">
+                <span className="text-xs text-[#6b665e]">
                   Page {pagination.page} of {pagination.total_pages} ({pagination.total} notices total)
                 </span>
 
@@ -156,14 +156,14 @@ export default function NoticeBoardPage() {
                   <button
                     disabled={pagination.page <= 1}
                     onClick={() => fetchNotices(pagination.page - 1)}
-                    className="inline-flex items-center px-4 py-2 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-xs font-semibold uppercase tracking-wider text-[#24211e] dark:text-[#f5f2ec] bg-[#FAF8F5] dark:bg-[#2b2723] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] disabled:opacity-50 transition-colors rounded-none"
+                    className="inline-flex items-center px-4 py-2 border border-[#d8cdbc] text-xs font-semibold uppercase tracking-wider text-[#24211e] bg-[#FAF8F5] hover:bg-[#ebe5da] disabled:opacity-50 transition-colors"
                   >
                     <ChevronLeft className="w-4 h-4 mr-1" /> Previous
                   </button>
                   <button
                     disabled={pagination.page >= pagination.total_pages}
                     onClick={() => fetchNotices(pagination.page + 1)}
-                    className="inline-flex items-center px-4 py-2 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-xs font-semibold uppercase tracking-wider text-[#24211e] dark:text-[#f5f2ec] bg-[#FAF8F5] dark:bg-[#2b2723] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] disabled:opacity-50 transition-colors rounded-none"
+                    className="inline-flex items-center px-4 py-2 border border-[#d8cdbc] text-xs font-semibold uppercase tracking-wider text-[#24211e] bg-[#FAF8F5] hover:bg-[#ebe5da] disabled:opacity-50 transition-colors"
                   >
                     Next <ChevronRight className="w-4 h-4 ml-1" />
                   </button>

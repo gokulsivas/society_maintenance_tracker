@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import StatusBadge from '../components/common/StatusBadge';
@@ -14,8 +14,6 @@ import * as complaintsApi from '../api/complaints';
 describe('Common UI Components', () => {
   beforeEach(() => {
     localStorage.clear();
-    document.documentElement.className = 'light';
-    document.documentElement.setAttribute('data-theme', 'light');
   });
 
   it('renders StatusBadge for OPEN, IN_PROGRESS, RESOLVED and OVERDUE state', () => {
@@ -132,7 +130,7 @@ describe('Common UI Components', () => {
   });
 });
 
-describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
+describe('Navbar Profile Trigger & Dropdown', () => {
   it('getUserInitials correctly extracts initials from user names', async () => {
     const { getUserInitials } = await import('../components/common/Navbar');
     expect(getUserInitials('Demo Society Admin')).toBe('DA');
@@ -144,7 +142,6 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
   it('renders square profile trigger and opens dropdown with authenticated user data', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
-    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const mockLogout = vi.fn();
     const authValue = {
@@ -156,13 +153,11 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
     };
 
     render(
-      <ThemeProvider>
-        <AuthContext.Provider value={authValue}>
-          <MemoryRouter>
-            <Navbar />
-          </MemoryRouter>
-        </AuthContext.Provider>
-      </ThemeProvider>
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </AuthContext.Provider>
     );
 
     // Profile trigger is square (rounded-none) with initials DA
@@ -192,7 +187,6 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
   it('renders RESIDENT role correctly in dropdown for resident user', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
-    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const mockLogout = vi.fn();
     const authValue = {
@@ -204,13 +198,11 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
     };
 
     render(
-      <ThemeProvider>
-        <AuthContext.Provider value={authValue}>
-          <MemoryRouter>
-            <Navbar />
-          </MemoryRouter>
-        </AuthContext.Provider>
-      </ThemeProvider>
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </AuthContext.Provider>
     );
 
     const trigger = screen.getByLabelText('Open account menu');
@@ -222,43 +214,9 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
     expect(screen.getByText(/Flat B-202/i)).toBeInTheDocument();
   });
 
-  it('renders square ThemeToggle button and toggles light/dark mode', async () => {
-    const { default: Navbar } = await import('../components/common/Navbar');
-    const { AuthContext } = await import('../context/AuthContext');
-    const { ThemeProvider } = await import('../context/ThemeContext');
-
-    const authValue = {
-      user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
-      isAuthenticated: true,
-      isAdmin: true,
-      logout: vi.fn(),
-    };
-
-    render(
-      <ThemeProvider>
-        <AuthContext.Provider value={authValue}>
-          <MemoryRouter>
-            <Navbar />
-          </MemoryRouter>
-        </AuthContext.Provider>
-      </ThemeProvider>
-    );
-
-    const themeToggle = screen.getByLabelText(/Switch to dark mode/i);
-    expect(themeToggle).toBeInTheDocument();
-    expect(themeToggle.className).toContain('rounded-none');
-    expect(themeToggle).toHaveAttribute('aria-pressed', 'false');
-
-    // Click to toggle to dark mode
-    fireEvent.click(themeToggle);
-    expect(screen.getByLabelText(/Switch to light mode/i)).toBeInTheDocument();
-    expect(localStorage.getItem('socivio_theme')).toBe('dark');
-  });
-
   it('closes dropdown on Escape key', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
-    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const authValue = {
       user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
@@ -268,13 +226,11 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
     };
 
     render(
-      <ThemeProvider>
-        <AuthContext.Provider value={authValue}>
-          <MemoryRouter>
-            <Navbar />
-          </MemoryRouter>
-        </AuthContext.Provider>
-      </ThemeProvider>
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </AuthContext.Provider>
     );
 
     const trigger = screen.getByLabelText('Open account menu');
@@ -288,7 +244,6 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
   it('closes dropdown on outside click', async () => {
     const { default: Navbar } = await import('../components/common/Navbar');
     const { AuthContext } = await import('../context/AuthContext');
-    const { ThemeProvider } = await import('../context/ThemeContext');
 
     const authValue = {
       user: { id: 1, name: 'Demo Society Admin', role: 'ADMIN' },
@@ -298,16 +253,14 @@ describe('Navbar Profile Trigger, Theme Toggle & Dropdown', () => {
     };
 
     render(
-      <ThemeProvider>
-        <div>
-          <div data-testid="outside-area">Outside</div>
-          <AuthContext.Provider value={authValue}>
-            <MemoryRouter>
-              <Navbar />
-            </MemoryRouter>
-          </AuthContext.Provider>
-        </div>
-      </ThemeProvider>
+      <div>
+        <div data-testid="outside-area">Outside</div>
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter>
+            <Navbar />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </div>
     );
 
     const trigger = screen.getByLabelText('Open account menu');
