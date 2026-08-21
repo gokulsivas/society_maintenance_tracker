@@ -393,7 +393,7 @@ export default function AdminDashboardPage() {
                 <div className="space-y-2 text-sm">
                   {Object.entries(data.by_category || {}).map(([cat, cnt]) => (
                     <div key={cat} className="flex items-center justify-between">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc]">{cat}</span>
+                      <span className="category-label">{cat}</span>
                       <span className="font-serif text-base text-[#24211e] dark:text-[#f5f2ec]">{cnt}</span>
                     </div>
                   ))}

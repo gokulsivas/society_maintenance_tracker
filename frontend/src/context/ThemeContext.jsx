@@ -14,10 +14,15 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     try {
+      const root = document.documentElement;
       if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
+        root.classList.add('dark');
+        root.classList.remove('light');
+        root.setAttribute('data-theme', 'dark');
       } else {
-        document.documentElement.classList.remove('dark');
+        root.classList.remove('dark');
+        root.classList.add('light');
+        root.setAttribute('data-theme', 'light');
       }
       localStorage.setItem('socivio_theme', theme);
     } catch {

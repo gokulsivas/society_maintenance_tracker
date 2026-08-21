@@ -18,7 +18,7 @@ export default function ComplaintCard({ complaint, showResident = false }) {
           <div className="flex items-center gap-2 flex-wrap">
             <StatusBadge status={complaint.status} isOverdue={complaint.is_overdue} />
             <PriorityBadge priority={complaint.priority} />
-            <span className="text-xs px-2 py-0.5 bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] font-semibold uppercase tracking-wider rounded-none whitespace-nowrap">
+            <span className="category-label">
               {complaint.category}
             </span>
           </div>
