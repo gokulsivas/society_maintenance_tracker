@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen editorial-page-surface flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6 sm:-translate-x-10">
         <Link
           to="/"
           className="inline-flex items-center px-3.5 py-1.5 bg-[#faf8f3] hover:bg-[#ebe5da] border border-[#d8cdbc] text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] hover:text-[#24211e] transition-colors shadow-sm"
