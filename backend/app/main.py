@@ -1,9 +1,7 @@
 import sys
 from pathlib import Path
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 
 # Ensure root and backend are in sys.path
 app_dir = Path(__file__).resolve().parent
@@ -73,39 +71,14 @@ def health_check_alt() -> dict:
     return health_check()
 
 
-# Static file serving for Frontend fallback
-dist_dir = root_dir / "frontend" / "dist"
-assets_dir = dist_dir / "assets"
-if assets_dir.exists():
-    app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+@app.get("/api")
+def api_root() -> dict:
+    return health_check()
 
 
 @app.get("/")
-@app.get("/index.html")
-def serve_spa_root():
-    index_file = dist_dir / "index.html"
-    if index_file.exists():
-        return FileResponse(str(index_file), media_type="text/html")
+def root() -> dict:
     return {
         "message": "Society Maintenance Tracker API is running",
         "docs": "/api/docs",
     }
-
-
-@app.get("/{full_path:path}")
-def serve_spa_fallback(full_path: str):
-    # If path starts with api/ or is an api path, 404
-    if full_path.startswith("api/") or full_path == "api":
-        raise HTTPException(status_code=404, detail="API endpoint not found")
-
-    # Check if a static file directly matches in frontend/dist
-    target_file = dist_dir / full_path
-    if target_file.exists() and target_file.is_file():
-        return FileResponse(str(target_file))
-
-    # Otherwise return SPA index.html
-    index_file = dist_dir / "index.html"
-    if index_file.exists():
-        return FileResponse(str(index_file), media_type="text/html")
-
-    raise HTTPException(status_code=404, detail="Not Found")
