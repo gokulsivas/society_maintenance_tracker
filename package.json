@@ -7,6 +7,6 @@
     "frontend:dev": "cd frontend && npm run dev",
     "frontend:build": "cd frontend && npm run build",
     "backend:dev": "uvicorn app.main:app --reload",
-    "build": "cd frontend && npm install && npm run build && node -e \"const fs=require('fs'); fs.cpSync('dist', '../dist', {recursive:true});\""
+    "build": "cd frontend && npm install && npm run build"
   }
 }
