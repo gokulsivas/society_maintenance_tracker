@@ -3,7 +3,6 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
 
 # Ensure root and backend are in sys.path
 app_dir = Path(__file__).resolve().parent
@@ -73,24 +72,28 @@ def health_check_alt() -> dict:
     return health_check()
 
 
-@app.get("/api")
-@app.get("/api/index.py")
-def api_root() -> dict:
-    return health_check()
+@app.get("/assets/{file_path:path}")
+def serve_asset(file_path: str):
+    for base_dir in [
+        root_dir / "frontend" / "dist" / "assets",
+        root_dir / "dist" / "assets",
+        Path("frontend/dist/assets"),
+        Path("dist/assets"),
+    ]:
+        p = base_dir / file_path
+        if p.exists() and p.is_file():
+            media_type = (
+                "application/javascript"
+                if file_path.endswith(".js")
+                else "text/css"
+                if file_path.endswith(".css")
+                else None
+            )
+            return FileResponse(str(p), media_type=media_type)
+    raise HTTPException(status_code=404, detail="Asset not found")
 
 
-# Mount static assets directory
-for asset_path in [
-    root_dir / "frontend" / "dist" / "assets",
-    root_dir / "dist" / "assets",
-    Path("frontend/dist/assets"),
-    Path("dist/assets"),
-]:
-    if asset_path.exists():
-        app.mount("/assets", StaticFiles(directory=str(asset_path)), name="assets")
-        break
-
-DEFAULT_INDEX_HTML = """<!doctype html>
+FALLBACK_HTML = """<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -106,7 +109,7 @@ DEFAULT_INDEX_HTML = """<!doctype html>
 </html>"""
 
 
-def get_html_content() -> str:
+def get_spa_html() -> str:
     for p in [
         root_dir / "frontend" / "dist" / "index.html",
         root_dir / "dist" / "index.html",
@@ -115,23 +118,18 @@ def get_html_content() -> str:
     ]:
         if p.exists():
             return p.read_text(encoding="utf-8")
-    return DEFAULT_INDEX_HTML
+    return FALLBACK_HTML
 
 
 @app.get("/")
 @app.get("/index.html")
+@app.get("/api/index.py")
 def root_spa():
-    return HTMLResponse(content=get_html_content(), status_code=200)
+    return HTMLResponse(content=get_spa_html(), status_code=200)
 
 
 @app.get("/{full_path:path}")
 def catch_all_spa(full_path: str):
     if full_path.startswith("api/") or full_path == "api":
         raise HTTPException(status_code=404, detail="API endpoint not found")
-
-    for d in [root_dir / "frontend" / "dist", root_dir / "dist", Path("frontend/dist"), Path("dist")]:
-        target = d / full_path
-        if target.exists() and target.is_file():
-            return FileResponse(str(target))
-
-    return HTMLResponse(content=get_html_content(), status_code=200)
+    return HTMLResponse(content=get_spa_html(), status_code=200)
