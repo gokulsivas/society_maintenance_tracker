@@ -1,7 +1,9 @@
 import sys
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 # Ensure root and backend are in sys.path
 app_dir = Path(__file__).resolve().parent
@@ -55,6 +57,30 @@ app.include_router(admin_notices_router, prefix="/admin/notices", tags=["Admin N
 app.include_router(uploads_router, prefix="/uploads", tags=["Uploads (Direct)"])
 app.include_router(admin_dashboard_router, prefix="/admin", tags=["Admin Dashboard & Settings (Direct)"])
 
+# Embedded SPA HTML fallback
+INDEX_HTML = """<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Society Maintenance Tracker</title>
+    <script type="module" crossorigin src="/assets/index-CgJi1ki1.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BpdY0n0V.css">
+  </head>
+  <body class="bg-gray-50 text-gray-900 antialiased min-h-screen">
+    <div id="root"></div>
+  </body>
+</html>
+"""
+
+# Mount static assets if present on disk
+for d in [root_dir / "frontend" / "dist", root_dir / "dist"]:
+    assets_dir = d / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+        break
+
 
 @app.get("/api/health")
 def health_check() -> dict:
@@ -77,8 +103,22 @@ def api_root() -> dict:
 
 
 @app.get("/")
-def root() -> dict:
-    return {
-        "message": "Society Maintenance Tracker API is running",
-        "docs": "/api/docs",
-    }
+@app.get("/index.html")
+def root_html():
+    return HTMLResponse(content=INDEX_HTML, status_code=200)
+
+
+@app.get("/{full_path:path}")
+def catch_all_fallback(full_path: str):
+    # Reject nonexistent /api/* calls with 404 JSON
+    if full_path.startswith("api/") or full_path == "api":
+        raise HTTPException(status_code=404, detail="API endpoint not found")
+
+    # Serve static assets if file exists on disk
+    for d in [root_dir / "frontend" / "dist", root_dir / "dist"]:
+        target = d / full_path
+        if target.exists() and target.is_file():
+            return FileResponse(str(target))
+
+    # All non-API SPA routes return the React index.html
+    return HTMLResponse(content=INDEX_HTML, status_code=200)

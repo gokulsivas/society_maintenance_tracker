@@ -63,6 +63,16 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    @field_validator("ACCESS_TOKEN_EXPIRE_MINUTES", mode="before")
+    @classmethod
+    def validate_access_token_expire(cls, v: Union[str, int, None]) -> int:
+        if v is None or v == "" or (isinstance(v, str) and not v.strip()):
+            return 1440
+        try:
+            return int(v)
+        except (ValueError, TypeError):
+            return 1440
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
@@ -100,7 +110,6 @@ class Settings(BaseSettings):
     def is_database_configured(self) -> bool:
         if not self.DATABASE_URL or not self.DATABASE_URL.strip():
             return False
-        # Treat placeholder from example as unconfigured
         if "user:password@host/dbname" in self.DATABASE_URL:
             return False
         return True
