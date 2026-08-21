@@ -2,11 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
-  "functions": {
-    "backend/main.py": {
-      "runtime": "python@3.11"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
