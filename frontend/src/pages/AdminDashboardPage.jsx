@@ -149,19 +149,19 @@ export default function AdminDashboardPage() {
         <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
         {/* Date Range Filter Bar */}
-        <div className="bg-[#faf8f3] p-4 sm:p-5 border border-[#d8cdbc] shadow-sm space-y-3">
+        <div className="bg-[#faf8f3] dark:bg-[#24211e] p-4 sm:p-5 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm space-y-3 rounded-none">
           {/* Preset Buttons */}
-          <div className="flex items-center gap-2 flex-wrap pb-2 border-b border-[#d8cdbc]/60">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5f4b3b] mr-1 flex items-center">
+          <div className="flex items-center gap-2 flex-wrap pb-2 border-b border-[#d8cdbc]/60 dark:border-[rgba(245,242,236,0.12)]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] mr-1 flex items-center">
               <Filter className="w-3 h-3 mr-1" /> Presets:
             </span>
             <button
               type="button"
               onClick={() => handleApplyPreset('7d')}
-              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border rounded-none ${
                 activePreset === '7d'
-                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
-                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+                  ? 'bg-[#24211e] dark:bg-[#FAF8F5] text-[#FAF8F5] dark:text-[#24211e] border-[#24211e] dark:border-[#FAF8F5]'
+                  : 'bg-[#FAF8F5] dark:bg-[#2b2723] text-[#6b665e] dark:text-[#c8bfb3] hover:text-[#24211e] dark:hover:text-[#f5f2ec] border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]'
               }`}
             >
               Last 7 Days
@@ -169,10 +169,10 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => handleApplyPreset('30d')}
-              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border rounded-none ${
                 activePreset === '30d'
-                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
-                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+                  ? 'bg-[#24211e] dark:bg-[#FAF8F5] text-[#FAF8F5] dark:text-[#24211e] border-[#24211e] dark:border-[#FAF8F5]'
+                  : 'bg-[#FAF8F5] dark:bg-[#2b2723] text-[#6b665e] dark:text-[#c8bfb3] hover:text-[#24211e] dark:hover:text-[#f5f2ec] border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]'
               }`}
             >
               Last 30 Days
@@ -180,10 +180,10 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => handleApplyPreset('90d')}
-              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border rounded-none ${
                 activePreset === '90d'
-                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
-                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+                  ? 'bg-[#24211e] dark:bg-[#FAF8F5] text-[#FAF8F5] dark:text-[#24211e] border-[#24211e] dark:border-[#FAF8F5]'
+                  : 'bg-[#FAF8F5] dark:bg-[#2b2723] text-[#6b665e] dark:text-[#c8bfb3] hover:text-[#24211e] dark:hover:text-[#f5f2ec] border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]'
               }`}
             >
               Last 90 Days
@@ -191,10 +191,10 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => handleApplyPreset('all')}
-              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border ${
+              className={`px-2.5 py-1 text-xs font-semibold uppercase tracking-wider transition-colors border rounded-none ${
                 activePreset === 'all'
-                  ? 'bg-[#24211e] text-[#FAF8F5] border-[#24211e]'
-                  : 'bg-[#FAF8F5] text-[#6b665e] hover:text-[#24211e] border-[#d8cdbc]'
+                  ? 'bg-[#24211e] dark:bg-[#FAF8F5] text-[#FAF8F5] dark:text-[#24211e] border-[#24211e] dark:border-[#FAF8F5]'
+                  : 'bg-[#FAF8F5] dark:bg-[#2b2723] text-[#6b665e] dark:text-[#c8bfb3] hover:text-[#24211e] dark:hover:text-[#f5f2ec] border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)]'
               }`}
             >
               All Time
@@ -202,14 +202,14 @@ export default function AdminDashboardPage() {
           </div>
 
           <form onSubmit={handleFilterSubmit} className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <div className="flex items-center space-x-1.5 text-xs font-semibold text-[#5f4b3b] uppercase tracking-wider">
-              <Calendar className="w-3.5 h-3.5 text-[#5f4b3b]" />
+            <div className="flex items-center space-x-1.5 text-xs font-semibold text-[#5f4b3b] dark:text-[#d8cdbc] uppercase tracking-wider">
+              <Calendar className="w-3.5 h-3.5 text-[#5f4b3b] dark:text-[#d8cdbc]" />
               <span>Custom Range:</span>
             </div>
 
             <div className="flex items-center gap-3 flex-1 flex-wrap">
               <div className="flex items-center space-x-1.5">
-                <label htmlFor="from-date-input" className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">
+                <label htmlFor="from-date-input" className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc]">
                   From:
                 </label>
                 <input
@@ -221,13 +221,13 @@ export default function AdminDashboardPage() {
                     setFromDate(e.target.value);
                     setActivePreset('custom');
                   }}
-                  className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
+                  className="text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none rounded-none"
                   title="From date"
                 />
               </div>
 
               <div className="flex items-center space-x-1.5">
-                <label htmlFor="to-date-input" className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">
+                <label htmlFor="to-date-input" className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc]">
                   To:
                 </label>
                 <input
@@ -240,14 +240,14 @@ export default function AdminDashboardPage() {
                     setToDate(e.target.value);
                     setActivePreset('custom');
                   }}
-                  className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
+                  className="text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none rounded-none"
                   title="To date"
                 />
               </div>
 
               <button
                 type="submit"
-                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] border border-[#24211e] shadow-sm transition-colors"
+                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] dark:bg-[#342d27] dark:hover:bg-[#433931] border border-[#24211e] dark:border-[rgba(245,242,236,0.2)] shadow-sm transition-colors rounded-none"
               >
                 Apply Filter
               </button>
@@ -256,7 +256,7 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc] transition-colors"
+                  className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] dark:text-[#c8bfb3] bg-[#ebe5da] dark:bg-[#342d27] hover:bg-[#d8cdbc] dark:hover:bg-[#433931] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] transition-colors rounded-none"
                 >
                   Reset (90d)
                 </button>
@@ -270,12 +270,12 @@ export default function AdminDashboardPage() {
             {/* Summary Metric Cards Skeleton */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
               {Array.from({ length: 5 }).map((_, idx) => (
-                <div key={idx} className="bg-[#faf8f3] p-5 border border-[#d8cdbc] space-y-3">
+                <div key={idx} className="bg-[#faf8f3] dark:bg-[#24211e] p-5 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] space-y-3 rounded-none">
                   <div className="flex justify-between items-center">
-                    <div className="h-3 bg-[#ebe5da] rounded-none w-1/3" />
-                    <div className="w-5 h-5 bg-[#ebe5da] rounded-none" />
+                    <div className="h-3 bg-[#ebe5da] dark:bg-[#342d27] rounded-none w-1/3" />
+                    <div className="w-5 h-5 bg-[#ebe5da] dark:bg-[#342d27] rounded-none" />
                   </div>
-                  <div className="h-8 bg-[#ebe5da] rounded-none w-1/2" />
+                  <div className="h-8 bg-[#ebe5da] dark:bg-[#342d27] rounded-none w-1/2" />
                 </div>
               ))}
             </div>
@@ -283,12 +283,12 @@ export default function AdminDashboardPage() {
             {/* Breakdown Section Skeleton */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {Array.from({ length: 3 }).map((_, idx) => (
-                <div key={idx} className="bg-[#faf8f3] p-6 border border-[#d8cdbc] space-y-4">
-                  <div className="h-4 bg-[#ebe5da] rounded-none w-1/3 pb-2" />
+                <div key={idx} className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] space-y-4 rounded-none">
+                  <div className="h-4 bg-[#ebe5da] dark:bg-[#342d27] rounded-none w-1/3 pb-2" />
                   <div className="space-y-2">
-                    <div className="h-4 bg-[#FAF8F5] rounded-none" />
-                    <div className="h-4 bg-[#FAF8F5] rounded-none" />
-                    <div className="h-4 bg-[#FAF8F5] rounded-none" />
+                    <div className="h-4 bg-[#FAF8F5] dark:bg-[#2b2723] rounded-none" />
+                    <div className="h-4 bg-[#FAF8F5] dark:bg-[#2b2723] rounded-none" />
+                    <div className="h-4 bg-[#FAF8F5] dark:bg-[#2b2723] rounded-none" />
                   </div>
                 </div>
               ))}
@@ -297,12 +297,12 @@ export default function AdminDashboardPage() {
             {/* Recent Activity Skeleton */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {Array.from({ length: 2 }).map((_, idx) => (
-                <div key={idx} className="bg-[#faf8f3] p-6 border border-[#d8cdbc] space-y-4">
-                  <div className="h-4 bg-[#ebe5da] rounded-none w-1/4 pb-3" />
+                <div key={idx} className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] space-y-4 rounded-none">
+                  <div className="h-4 bg-[#ebe5da] dark:bg-[#342d27] rounded-none w-1/4 pb-3" />
                   <div className="space-y-3">
-                    <div className="h-10 bg-[#FAF8F5] rounded-none" />
-                    <div className="h-10 bg-[#FAF8F5] rounded-none" />
-                    <div className="h-10 bg-[#FAF8F5] rounded-none" />
+                    <div className="h-10 bg-[#FAF8F5] dark:bg-[#2b2723] rounded-none" />
+                    <div className="h-10 bg-[#FAF8F5] dark:bg-[#2b2723] rounded-none" />
+                    <div className="h-10 bg-[#FAF8F5] dark:bg-[#2b2723] rounded-none" />
                   </div>
                 </div>
               ))}
@@ -312,89 +312,89 @@ export default function AdminDashboardPage() {
           <>
             {/* Summary Metric Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-              <div className="bg-[#faf8f3] p-5 border border-[#d8cdbc] shadow-sm">
-                <div className="flex items-center justify-between text-[#5f4b3b] mb-2">
+              <div className="bg-[#faf8f3] dark:bg-[#24211e] p-5 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm rounded-none">
+                <div className="flex items-center justify-between text-[#5f4b3b] dark:text-[#d8cdbc] mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider">Total</span>
-                  <ClipboardList className="w-5 h-5 text-[#8F8778]" />
+                  <ClipboardList className="w-5 h-5 text-[#8F8778] dark:text-[#a89e91]" />
                 </div>
-                <p className="font-serif text-3xl font-normal text-[#24211e]">{data.total_complaints}</p>
+                <p className="font-serif text-3xl font-normal text-[#24211e] dark:text-[#f5f2ec]">{data.total_complaints}</p>
               </div>
 
-              <div className="bg-[#FAF8F5] p-5 border border-[#d8cdbc] shadow-sm">
-                <div className="flex items-center justify-between text-[#8a6843] mb-2">
+              <div className="bg-[#FAF8F5] dark:bg-[#2b2723] p-5 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm rounded-none">
+                <div className="flex items-center justify-between text-[#8a6843] dark:text-[#e0a96d] mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider">Open</span>
-                  <Clock className="w-5 h-5 text-[#8a6843]" />
+                  <Clock className="w-5 h-5 text-[#8a6843] dark:text-[#e0a96d]" />
                 </div>
-                <p className="font-serif text-3xl font-normal text-[#8a6843]">{data.total_open}</p>
+                <p className="font-serif text-3xl font-normal text-[#8a6843] dark:text-[#e0a96d]">{data.total_open}</p>
               </div>
 
-              <div className="bg-[#ebe5da] p-5 border border-[#d8cdbc] shadow-sm">
-                <div className="flex items-center justify-between text-[#5f4b3b] mb-2">
+              <div className="bg-[#ebe5da] dark:bg-[#342d27] p-5 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm rounded-none">
+                <div className="flex items-center justify-between text-[#5f4b3b] dark:text-[#d8cdbc] mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider">In Progress</span>
-                  <AlertTriangle className="w-5 h-5 text-[#5f4b3b]" />
+                  <AlertTriangle className="w-5 h-5 text-[#5f4b3b] dark:text-[#d8cdbc]" />
                 </div>
-                <p className="font-serif text-3xl font-normal text-[#5f4b3b]">{data.total_in_progress}</p>
+                <p className="font-serif text-3xl font-normal text-[#5f4b3b] dark:text-[#d8cdbc]">{data.total_in_progress}</p>
               </div>
 
-              <div className="bg-[#faf8f3] p-5 border border-[#b8c9af] shadow-sm">
-                <div className="flex items-center justify-between text-[#52634a] mb-2">
+              <div className="bg-[#faf8f3] dark:bg-[#223023] p-5 border border-[#b8c9af] dark:border-[#4d6b49] shadow-sm rounded-none">
+                <div className="flex items-center justify-between text-[#52634a] dark:text-[#a3c99b] mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider">Resolved</span>
-                  <CheckCircle2 className="w-5 h-5 text-[#52634a]" />
+                  <CheckCircle2 className="w-5 h-5 text-[#52634a] dark:text-[#a3c99b]" />
                 </div>
-                <p className="font-serif text-3xl font-normal text-[#52634a]">{data.total_resolved}</p>
+                <p className="font-serif text-3xl font-normal text-[#52634a] dark:text-[#a3c99b]">{data.total_resolved}</p>
               </div>
 
-              <div className="bg-[#fbeeed] p-5 border border-[#d9a8a0] shadow-sm col-span-2 lg:col-span-1">
-                <div className="flex items-center justify-between text-[#8a4d43] mb-2">
+              <div className="bg-[#fbeeed] dark:bg-[#4a2927] p-5 border border-[#d9a8a0] dark:border-[#9b5a50] shadow-sm col-span-2 lg:col-span-1 rounded-none">
+                <div className="flex items-center justify-between text-[#8a4d43] dark:text-[#ffe6e1] mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider">Overdue</span>
-                  <AlertOctagon className="w-5 h-5 text-[#8a4d43]" />
+                  <AlertOctagon className="w-5 h-5 text-[#8a4d43] dark:text-[#efb2a8]" />
                 </div>
-                <p className="font-serif text-3xl font-normal text-[#8a4d43]">{data.total_overdue}</p>
+                <p className="font-serif text-3xl font-normal text-[#8a4d43] dark:text-[#ffe6e1]">{data.total_overdue}</p>
               </div>
             </div>
 
             {/* Breakdown Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* By Status */}
-              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-3">
-                <h3 className="font-serif text-lg text-[#24211e] font-normal border-b border-[#d8cdbc] pb-2">
+              <div className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm space-y-3 rounded-none">
+                <h3 className="font-serif text-lg text-[#24211e] dark:text-[#f5f2ec] font-normal border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-2">
                   By Status
                 </h3>
                 <div className="space-y-2 text-sm">
                   {Object.entries(data.by_status || {}).map(([st, cnt]) => (
                     <div key={st} className="flex items-center justify-between">
                       <StatusBadge status={st} showOverdue={false} />
-                      <span className="font-serif text-base text-[#24211e]">{cnt}</span>
+                      <span className="font-serif text-base text-[#24211e] dark:text-[#f5f2ec]">{cnt}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* By Priority */}
-              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-3">
-                <h3 className="font-serif text-lg text-[#24211e] font-normal border-b border-[#d8cdbc] pb-2">
+              <div className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm space-y-3 rounded-none">
+                <h3 className="font-serif text-lg text-[#24211e] dark:text-[#f5f2ec] font-normal border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-2">
                   By Priority
                 </h3>
                 <div className="space-y-2 text-sm">
                   {Object.entries(data.by_priority || {}).map(([prio, cnt]) => (
                     <div key={prio} className="flex items-center justify-between">
                       <PriorityBadge priority={prio} />
-                      <span className="font-serif text-base text-[#24211e]">{cnt}</span>
+                      <span className="font-serif text-base text-[#24211e] dark:text-[#f5f2ec]">{cnt}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* By Category */}
-              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-3">
-                <h3 className="font-serif text-lg text-[#24211e] font-normal border-b border-[#d8cdbc] pb-2">
+              <div className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm space-y-3 rounded-none">
+                <h3 className="font-serif text-lg text-[#24211e] dark:text-[#f5f2ec] font-normal border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-2">
                   By Category
                 </h3>
                 <div className="space-y-2 text-sm">
                   {Object.entries(data.by_category || {}).map(([cat, cnt]) => (
                     <div key={cat} className="flex items-center justify-between">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">{cat}</span>
-                      <span className="font-serif text-base text-[#24211e]">{cnt}</span>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc]">{cat}</span>
+                      <span className="font-serif text-base text-[#24211e] dark:text-[#f5f2ec]">{cnt}</span>
                     </div>
                   ))}
                 </div>
@@ -404,28 +404,28 @@ export default function AdminDashboardPage() {
             {/* Recent Activity: Complaints & Transitions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Recent Complaints */}
-              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-4">
-                <div className="flex items-center justify-between border-b border-[#d8cdbc] pb-3">
-                  <h3 className="font-serif text-lg text-[#24211e] font-normal">Recent Complaints</h3>
-                  <Link to="/admin/complaints" className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] hover:text-[#24211e] flex items-center">
+              <div className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm space-y-4 rounded-none">
+                <div className="flex items-center justify-between border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-3">
+                  <h3 className="font-serif text-lg text-[#24211e] dark:text-[#f5f2ec] font-normal">Recent Complaints</h3>
+                  <Link to="/admin/complaints" className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] hover:text-[#24211e] dark:hover:text-[#f5f2ec] flex items-center">
                     View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </Link>
                 </div>
 
                 {data.recent_complaints?.length === 0 ? (
-                  <p className="text-sm text-[#6b665e] italic">No complaints found.</p>
+                  <p className="text-sm text-[#6b665e] dark:text-[#c8bfb3] italic">No complaints found.</p>
                 ) : (
-                  <div className="divide-y divide-[#d8cdbc]/60">
+                  <div className="divide-y divide-[#d8cdbc]/60 dark:divide-[rgba(245,242,236,0.12)]">
                     {data.recent_complaints.map((c) => (
                       <div key={c.id} className="py-3 flex items-center justify-between gap-2">
                         <div>
                           <Link
                             to={`/complaints/${c.id}`}
-                            className="font-serif text-base font-normal text-[#24211e] hover:text-[#5f4b3b] line-clamp-1"
+                            className="font-serif text-base font-normal text-[#24211e] dark:text-[#f5f2ec] hover:text-[#5f4b3b] dark:hover:text-[#d8cdbc] line-clamp-1"
                           >
                             {c.title}
                           </Link>
-                          <p className="text-xs text-[#6b665e] mt-0.5">
+                          <p className="text-xs text-[#6b665e] dark:text-[#c8bfb3] mt-0.5">
                             {c.resident_name} &bull; Flat {c.resident_flat_no || 'N/A'}
                           </p>
                         </div>
@@ -439,25 +439,25 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* Recent Status Transitions */}
-              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-4">
-                <div className="border-b border-[#d8cdbc] pb-3">
-                  <h3 className="font-serif text-lg text-[#24211e] font-normal">Recent Status Transitions</h3>
+              <div className="bg-[#faf8f3] dark:bg-[#24211e] p-6 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm space-y-4 rounded-none">
+                <div className="border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-3">
+                  <h3 className="font-serif text-lg text-[#24211e] dark:text-[#f5f2ec] font-normal">Recent Status Transitions</h3>
                 </div>
 
                 {data.recent_status_transitions?.length === 0 ? (
-                  <p className="text-sm text-[#6b665e] italic">No recent transitions recorded.</p>
+                  <p className="text-sm text-[#6b665e] dark:text-[#c8bfb3] italic">No recent transitions recorded.</p>
                 ) : (
-                  <div className="divide-y divide-[#d8cdbc]/60">
+                  <div className="divide-y divide-[#d8cdbc]/60 dark:divide-[rgba(245,242,236,0.12)]">
                     {data.recent_status_transitions.map((t) => (
                       <div key={t.id} className="py-3 text-xs space-y-1">
                         <div className="flex items-center justify-between">
                           <Link
                             to={`/complaints/${t.complaint_id}`}
-                            className="font-semibold text-[#5f4b3b] hover:text-[#24211e]"
+                            className="font-semibold text-[#5f4b3b] dark:text-[#d8cdbc] hover:text-[#24211e] dark:hover:text-[#f5f2ec]"
                           >
                             Complaint #{t.complaint_id}
                           </Link>
-                          <span className="text-[#8F8778]">
+                          <span className="text-[#8F8778] dark:text-[#a89e91]">
                             {new Date(t.changed_at).toLocaleString('en-US', {
                               month: 'short',
                               day: 'numeric',
@@ -466,12 +466,12 @@ export default function AdminDashboardPage() {
                             })}
                           </span>
                         </div>
-                        <div className="flex items-center space-x-1.5 font-semibold text-[#24211e]">
+                        <div className="flex items-center space-x-1.5 font-semibold text-[#24211e] dark:text-[#f5f2ec]">
                           <span>{t.from_status || 'INITIAL'}</span>
                           <span>&rarr;</span>
-                          <span className="text-[#5f4b3b]">{t.to_status}</span>
+                          <span className="text-[#5f4b3b] dark:text-[#d8cdbc]">{t.to_status}</span>
                         </div>
-                        {t.note && <p className="text-[#6b665e] italic mt-0.5">"{t.note}"</p>}
+                        {t.note && <p className="text-[#6b665e] dark:text-[#c8bfb3] italic mt-0.5">"{t.note}"</p>}
                       </div>
                     ))}
                   </div>

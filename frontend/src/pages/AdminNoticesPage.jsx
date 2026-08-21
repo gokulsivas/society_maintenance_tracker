@@ -74,17 +74,17 @@ export default function AdminNoticesPage() {
   return (
     <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-4">
           <div>
             <div className="flex items-center space-x-2.5">
-              <div className="p-2 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc]">
+              <div className="p-2 bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none">
                 <Bell className="w-4 h-4" />
               </div>
-              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] tracking-tight">
+              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] dark:text-[#f5f2ec] tracking-tight">
                 Notice Management
               </h1>
             </div>
-            <p className="text-sm text-[#6b665e] mt-1">
+            <p className="text-sm text-[#6b665e] dark:text-[#c8bfb3] mt-1">
               Publish, edit, and broadcast society announcements to residents.
             </p>
           </div>
@@ -92,16 +92,16 @@ export default function AdminNoticesPage() {
           <div className="flex items-center space-x-3">
             <button
               onClick={fetchNotices}
-              className="p-2.5 text-[#24211e] bg-[#faf8f3] hover:bg-[#ebe5da] border border-[#d8cdbc] shadow-sm transition-colors"
+              className="p-2.5 text-[#24211e] dark:text-[#f5f2ec] bg-[#faf8f3] dark:bg-[#24211e] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm transition-colors rounded-none"
               title="Refresh list"
               aria-label="Refresh list"
             >
-              <RefreshCw className={`w-4 h-4 text-[#5f4b3b] ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-4 h-4 text-[#5f4b3b] dark:text-[#d8cdbc] ${loading ? 'animate-spin' : ''}`} />
             </button>
 
             <button
               onClick={handleCreate}
-              className="inline-flex items-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#3f3025] text-[#FAF8F5] border border-[#24211e] shadow-sm transition-all"
+              className="inline-flex items-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#3f3025] dark:bg-[#342d27] dark:hover:bg-[#433931] text-[#FAF8F5] border border-[#24211e] dark:border-[rgba(245,242,236,0.2)] shadow-sm transition-all rounded-none"
             >
               <PlusCircle className="w-4 h-4 mr-2" />
               Publish Notice

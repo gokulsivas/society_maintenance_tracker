@@ -4,7 +4,7 @@ import { ArrowRight, Clock, MessageSquare } from 'lucide-react';
 
 export default function ComplaintHistoryTimeline({ history = [] }) {
   if (!history || history.length === 0) {
-    return <p className="text-sm text-[#6b665e] italic">No history records available.</p>;
+    return <p className="text-sm text-[#6b665e] dark:text-[#c8bfb3] italic">No history records available.</p>;
   }
 
   return (
@@ -26,38 +26,38 @@ export default function ComplaintHistoryTimeline({ history = [] }) {
               <div className="relative pb-8">
                 {!isLast && (
                   <span
-                    className="absolute top-4 left-4 -ml-px h-full w-[1px] bg-[#d8cdbc]"
+                    className="absolute top-4 left-4 -ml-px h-full w-[1px] bg-[#d8cdbc] dark:bg-[rgba(245,242,236,0.16)]"
                     aria-hidden="true"
                   />
                 )}
                 <div className="relative flex items-start space-x-3">
                   {/* Indicator Dot */}
-                  <div className="h-8 w-8 bg-[#ebe5da] border border-[#5f4b3b] flex items-center justify-center text-[#5f4b3b]">
+                  <div className="h-8 w-8 bg-[#ebe5da] dark:bg-[#342d27] border border-[#5f4b3b] dark:border-[#d8cdbc] flex items-center justify-center text-[#5f4b3b] dark:text-[#d8cdbc] rounded-none">
                     <Clock className="w-4 h-4" />
                   </div>
 
-                  <div className="min-w-0 flex-1 bg-[#FAF8F5] border border-[#d8cdbc] p-4 shadow-sm">
+                  <div className="min-w-0 flex-1 bg-[#FAF8F5] dark:bg-[#2b2723] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] p-4 shadow-sm rounded-none">
                     <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                      <div className="flex items-center space-x-2 text-xs font-semibold text-[#24211e]">
+                      <div className="flex items-center space-x-2 text-xs font-semibold text-[#24211e] dark:text-[#f5f2ec]">
                         {event.from_status ? (
                           <>
                             <StatusBadge status={event.from_status} showOverdue={false} />
-                            <ArrowRight className="w-3.5 h-3.5 text-[#8F8778]" />
+                            <ArrowRight className="w-3.5 h-3.5 text-[#8F8778] dark:text-[#a89e91]" />
                             <StatusBadge status={event.to_status} showOverdue={false} />
                           </>
                         ) : (
                           <>
-                            <span className="text-xs text-[#6b665e] font-normal">Initial State:</span>
+                            <span className="text-xs text-[#6b665e] dark:text-[#c8bfb3] font-normal">Initial State:</span>
                             <StatusBadge status={event.to_status} showOverdue={false} />
                           </>
                         )}
                       </div>
-                      <span className="text-xs text-[#8F8778]">{formattedTime}</span>
+                      <span className="text-xs text-[#8F8778] dark:text-[#a89e91]">{formattedTime}</span>
                     </div>
 
                     {event.note && (
-                      <div className="mt-2 text-xs text-[#5C5955] bg-[#ebe5da]/70 p-3 border border-[#d8cdbc] flex items-start space-x-2">
-                        <MessageSquare className="w-4 h-4 text-[#5f4b3b] mt-0.5 flex-shrink-0" />
+                      <div className="mt-2 text-xs text-[#5C5955] dark:text-[#d8cfc3] bg-[#ebe5da]/70 dark:bg-[#342d27] p-3 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] flex items-start space-x-2 rounded-none">
+                        <MessageSquare className="w-4 h-4 text-[#5f4b3b] dark:text-[#d8cdbc] mt-0.5 flex-shrink-0" />
                         <p className="whitespace-pre-line leading-relaxed">{event.note}</p>
                       </div>
                     )}
@@ -71,3 +71,4 @@ export default function ComplaintHistoryTimeline({ history = [] }) {
     </div>
   );
 }
+

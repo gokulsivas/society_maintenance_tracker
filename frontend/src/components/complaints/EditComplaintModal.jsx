@@ -80,24 +80,24 @@ export default function EditComplaintModal({ complaint, isOpen, onClose, onSucce
       aria-modal="true"
       aria-labelledby="edit-complaint-title"
     >
-      <div className="bg-[#faf8f3] border border-[#d8cdbc] max-w-xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-[#faf8f3] dark:bg-[#24211e] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] max-w-xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 rounded-none">
         {/* Modal Header */}
-        <div className="px-6 py-4 border-b border-[#d8cdbc] flex items-center justify-between bg-[#FAF8F5]">
+        <div className="px-6 py-4 border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] flex items-center justify-between bg-[#FAF8F5] dark:bg-[#2b2723]">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc]">
+            <div className="p-2 bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none">
               <Edit3 className="w-4 h-4" />
             </div>
             <div>
-              <h3 id="edit-complaint-title" className="font-serif text-lg font-normal text-[#24211e]">
+              <h3 id="edit-complaint-title" className="font-serif text-lg font-normal text-[#24211e] dark:text-[#f5f2ec]">
                 Edit Complaint #{complaint.id}
               </h3>
-              <p className="text-xs text-[#6b665e]">Update your open complaint details.</p>
+              <p className="text-xs text-[#6b665e] dark:text-[#c8bfb3]">Update your open complaint details.</p>
             </div>
           </div>
           <button
             type="button"
             onClick={handleClose}
-            className="text-[#6b665e] hover:text-[#24211e] p-1.5 transition-colors"
+            className="text-[#6b665e] dark:text-[#b9afa3] hover:text-[#24211e] dark:hover:text-[#f5f2ec] p-1.5 transition-colors rounded-none"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -110,8 +110,8 @@ export default function EditComplaintModal({ complaint, isOpen, onClose, onSucce
           <ErrorAlert message={uploadError} onDismiss={() => setUploadError(null)} />
 
           <div>
-            <label htmlFor="edit-title" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
-              Issue Title <span className="text-[#8a4d43]">*</span>
+            <label htmlFor="edit-title" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] mb-1.5">
+              Issue Title <span className="text-[#8a4d43] dark:text-[#efb2a8]">*</span>
             </label>
             <input
               id="edit-title"
@@ -123,20 +123,20 @@ export default function EditComplaintModal({ complaint, isOpen, onClose, onSucce
               value={formData.title}
               onChange={handleChange}
               placeholder="e.g. Master bathroom sink drain clogged"
-              className="block w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] placeholder-[#a8a196] focus:border-[#5f4b3b] focus:outline-none text-sm"
+              className="block w-full px-3.5 py-2.5 bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] placeholder-[#a8a196] dark:placeholder-[#887e72] focus:border-[#5f4b3b] focus:outline-none text-sm rounded-none"
             />
           </div>
 
           <div>
-            <label htmlFor="edit-category" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
-              Category <span className="text-[#8a4d43]">*</span>
+            <label htmlFor="edit-category" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] mb-1.5">
+              Category <span className="text-[#8a4d43] dark:text-[#efb2a8]">*</span>
             </label>
             <select
               id="edit-category"
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="block w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] focus:border-[#5f4b3b] focus:outline-none text-sm"
+              className="block w-full px-3.5 py-2.5 bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] focus:border-[#5f4b3b] focus:outline-none text-sm rounded-none"
             >
               <option value="PLUMBING">Plumbing (Water leaks, drainage, pipes)</option>
               <option value="ELECTRICAL">Electrical (Switches, wiring, power, lighting)</option>
@@ -148,8 +148,8 @@ export default function EditComplaintModal({ complaint, isOpen, onClose, onSucce
           </div>
 
           <div>
-            <label htmlFor="edit-description" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
-              Detailed Description <span className="text-[#8a4d43]">*</span>
+            <label htmlFor="edit-description" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] mb-1.5">
+              Detailed Description <span className="text-[#8a4d43] dark:text-[#efb2a8]">*</span>
             </label>
             <textarea
               id="edit-description"
@@ -160,7 +160,7 @@ export default function EditComplaintModal({ complaint, isOpen, onClose, onSucce
               value={formData.description}
               onChange={handleChange}
               placeholder="Please describe the issue in detail..."
-              className="block w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] placeholder-[#a8a196] focus:border-[#5f4b3b] focus:outline-none text-sm"
+              className="block w-full px-3.5 py-2.5 bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] placeholder-[#a8a196] dark:placeholder-[#887e72] focus:border-[#5f4b3b] focus:outline-none text-sm rounded-none"
             />
           </div>
 
@@ -172,19 +172,19 @@ export default function EditComplaintModal({ complaint, isOpen, onClose, onSucce
           />
 
           {/* Actions */}
-          <div className="pt-4 border-t border-[#d8cdbc] flex items-center justify-end space-x-3">
+          <div className="pt-4 border-t border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] flex items-center justify-end space-x-3">
             <button
               type="button"
               onClick={handleClose}
               disabled={loading}
-              className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc] transition-colors"
+              className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] dark:text-[#c8bfb3] bg-[#ebe5da] dark:bg-[#342d27] hover:bg-[#d8cdbc] dark:hover:bg-[#433931] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] transition-colors rounded-none"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !formData.title.trim() || !formData.description.trim()}
-              className="inline-flex items-center px-5 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] disabled:opacity-50 border border-[#24211e] shadow-sm transition-all"
+              className="inline-flex items-center px-5 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] dark:bg-[#342d27] dark:hover:bg-[#433931] disabled:opacity-50 border border-[#24211e] dark:border-[rgba(245,242,236,0.2)] shadow-sm transition-all rounded-none"
             >
               {loading ? (
                 <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />

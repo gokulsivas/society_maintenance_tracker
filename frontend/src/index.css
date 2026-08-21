@@ -90,64 +90,103 @@ html.dark .editorial-page-surface {
 html.dark .bg-\[\#faf8f3\],
 html.dark .bg-\[\#FAF8F5\],
 html.dark .bg-\[\#FAF8F5\]\/95 {
-  background-color: #24201c !important;
+  background-color: #24201c;
   color: #f5f2ec;
 }
 
 html.dark .bg-\[\#ebe5da\] {
-  background-color: #312b25 !important;
+  background-color: #312b25;
   color: #f5f2ec;
 }
 
 html.dark .bg-\[\#f5f2ec\] {
-  background-color: #191715 !important;
+  background-color: #191715;
   color: #f5f2ec;
 }
 
 html.dark .border-\[\#d8cdbc\],
 html.dark .border-\[\#d8cdbc\]\/60 {
-  border-color: rgba(245, 242, 236, 0.12) !important;
+  border-color: rgba(245, 242, 236, 0.16);
 }
 
 html.dark .divide-\[\#d8cdbc\],
 html.dark .divide-\[\#d8cdbc\]\/60 {
-  border-color: rgba(245, 242, 236, 0.12) !important;
+  border-color: rgba(245, 242, 236, 0.16);
 }
 
 html.dark .text-\[\#24211e\] {
-  color: #f5f2ec !important;
+  color: #f5f2ec;
 }
 
 html.dark .text-\[\#6b665e\] {
-  color: #c8bfb3 !important;
+  color: #c8bfb3;
 }
 
 html.dark .text-\[\#8F8778\] {
-  color: #a89f91 !important;
+  color: #a89f91;
 }
 
 html.dark .text-\[\#5f4b3b\] {
-  color: #d8cdbc !important;
+  color: #d8cdbc;
 }
 
 html.dark input,
 html.dark select,
 html.dark textarea {
-  background-color: #2a2520 !important;
-  color: #f5f2ec !important;
-  border-color: rgba(245, 242, 236, 0.16) !important;
+  background-color: #2a2520;
+  color: #f5f2ec;
+  border-color: rgba(245, 242, 236, 0.16);
 }
 
 html.dark input::placeholder,
 html.dark textarea::placeholder {
-  color: #887e72 !important;
+  color: #887e72;
 }
 
 html.dark table thead {
-  background-color: #312b25 !important;
+  background-color: #312b25;
 }
 
 html.dark table tbody tr:hover {
-  background-color: #2e2823 !important;
+  background-color: #2e2823;
 }
+
+/* Navbar must always remain light in both light and dark mode */
+html.dark header,
+html.dark header.bg-\[\#faf8f3\],
+html.dark nav {
+  background-color: #faf8f3 !important;
+  color: #24211e !important;
+  border-color: #d8cdbc !important;
+}
+
+html.dark header .text-\[\#24211e\],
+html.dark header .text-\[\#3f3025\],
+html.dark header .text-\[\#5f4b3b\] {
+  color: #24211e !important;
+}
+
+html.dark header .text-\[\#6b665e\] {
+  color: #6b665e !important;
+}
+
+html.dark header .border-\[\#d8cdbc\] {
+  border-color: #d8cdbc !important;
+}
+
+html.dark header .bg-\[\#ebe5da\] {
+  background-color: #ebe5da !important;
+  color: #24211e !important;
+}
+
+html.dark header .bg-\[\#FAF8F5\] {
+  background-color: #FAF8F5 !important;
+  color: #24211e !important;
+}
+
+html.dark header .bg-\[\#24211e\] {
+  background-color: #24211e !important;
+  color: #FAF8F5 !important;
+}
+
 

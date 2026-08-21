@@ -124,17 +124,17 @@ export default function AdminComplaintsPage() {
         <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
         {/* Filter Bar */}
-        <div className="bg-[#faf8f3] p-4 sm:p-5 border border-[#d8cdbc] shadow-sm flex flex-wrap gap-3 items-center justify-between">
+        <div className="bg-[#faf8f3] dark:bg-[#24211e] p-4 sm:p-5 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm flex flex-wrap gap-3 items-center justify-between rounded-none">
           <div className="flex items-center gap-2.5 flex-wrap flex-1">
-            <div className="flex items-center space-x-1 text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">
-              <Filter className="w-3.5 h-3.5 text-[#5f4b3b]" />
+            <div className="flex items-center space-x-1 text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc]">
+              <Filter className="w-3.5 h-3.5 text-[#5f4b3b] dark:text-[#d8cdbc]" />
               <span>Filters:</span>
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none"
+              className="text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none rounded-none"
             >
               <option value="">All Statuses</option>
               <option value="OPEN">Open</option>
@@ -145,7 +145,7 @@ export default function AdminComplaintsPage() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none"
+              className="text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none rounded-none"
             >
               <option value="">All Categories</option>
               <option value="PLUMBING">Plumbing</option>
@@ -159,7 +159,7 @@ export default function AdminComplaintsPage() {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none"
+              className="text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none rounded-none"
             >
               <option value="">All Priorities</option>
               <option value="HIGH">High Priority</option>
@@ -170,7 +170,7 @@ export default function AdminComplaintsPage() {
             <select
               value={isOverdueFilter}
               onChange={(e) => setIsOverdueFilter(e.target.value)}
-              className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none"
+              className="text-xs sm:text-sm bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] py-1.5 px-3 focus:border-[#5f4b3b] focus:outline-none rounded-none"
             >
               <option value="">All Timelines</option>
               <option value="true">Overdue Only</option>
@@ -184,14 +184,14 @@ export default function AdminComplaintsPage() {
                   setPriorityFilter('');
                   setIsOverdueFilter('');
                 }}
-                className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] hover:text-[#24211e] transition-colors"
+                className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc] hover:text-[#24211e] dark:hover:text-[#f5f2ec] transition-colors"
               >
                 Clear
               </button>
             )}
           </div>
 
-          <span className="text-xs font-medium text-[#6b665e]">
+          <span className="text-xs font-medium text-[#6b665e] dark:text-[#c8bfb3]">
             Showing {complaints.length} of {pagination.total} complaints
           </span>
         </div>
@@ -203,10 +203,10 @@ export default function AdminComplaintsPage() {
             description="Try adjusting your status, category, or priority filters."
           />
         ) : (
-          <div className="bg-[#faf8f3] border border-[#d8cdbc] shadow-sm overflow-hidden">
+          <div className="bg-[#faf8f3] dark:bg-[#24211e] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm overflow-hidden rounded-none">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-[#d8cdbc] text-left text-sm">
-                <thead className="bg-[#ebe5da] text-[11px] font-bold text-[#5f4b3b] uppercase tracking-wider">
+              <table className="min-w-full divide-y divide-[#d8cdbc] dark:divide-[rgba(245,242,236,0.16)] text-left text-sm">
+                <thead className="bg-[#ebe5da] dark:bg-[#342d27] text-[11px] font-bold text-[#5f4b3b] dark:text-[#d8cdbc] uppercase tracking-wider">
                   <tr>
                     <th className="px-6 py-3.5">Ticket / Title</th>
                     <th className="px-6 py-3.5">Resident</th>
@@ -219,33 +219,35 @@ export default function AdminComplaintsPage() {
                 {loading && complaints.length === 0 ? (
                   <TableRowSkeleton rows={6} cols={6} />
                 ) : (
-                  <tbody className="divide-y divide-[#d8cdbc]/60 bg-[#faf8f3]">
+                  <tbody className="divide-y divide-[#d8cdbc]/60 dark:divide-[rgba(245,242,236,0.12)] bg-[#faf8f3] dark:bg-[#24211e]">
                   {complaints.map((c) => (
                     <tr
                       key={c.id}
-                      className={`hover:bg-[#FAF8F5] transition-colors ${
-                        c.is_overdue && c.status !== 'RESOLVED' ? 'bg-[#fbeeed]/40' : ''
+                      className={`hover:bg-[#FAF8F5] dark:hover:bg-[#2b2723] transition-colors ${
+                        c.is_overdue && c.status !== 'RESOLVED'
+                          ? 'bg-[#fbeeed]/40 dark:bg-[#4a2927]/40'
+                          : ''
                       }`}
                     >
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
                           <Link
                             to={`/complaints/${c.id}`}
-                            className="font-serif text-base font-normal text-[#24211e] hover:text-[#5f4b3b] line-clamp-1"
+                            className="font-serif text-base font-normal text-[#24211e] dark:text-[#f5f2ec] hover:text-[#5f4b3b] dark:hover:text-[#d8cdbc] line-clamp-1"
                           >
                             {c.title}
                           </Link>
-                          <span className="text-xs text-[#8F8778] font-mono mt-0.5">#{c.id}</span>
+                          <span className="text-xs text-[#8F8778] dark:text-[#a89e91] font-mono mt-0.5">#{c.id}</span>
                         </div>
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-xs font-semibold text-[#24211e]">{c.resident_name}</div>
-                        <div className="text-xs text-[#6b665e]">Flat {c.resident_flat_no || 'N/A'}</div>
+                        <div className="text-xs font-semibold text-[#24211e] dark:text-[#f5f2ec]">{c.resident_name}</div>
+                        <div className="text-xs text-[#6b665e] dark:text-[#c8bfb3]">Flat {c.resident_flat_no || 'N/A'}</div>
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc]">
+                        <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none whitespace-nowrap">
                           {c.category}
                         </span>
                       </td>
@@ -254,7 +256,7 @@ export default function AdminComplaintsPage() {
                         <select
                           value={c.priority}
                           onChange={(e) => handlePriorityChange(c.id, e.target.value)}
-                          className="text-xs font-semibold uppercase tracking-wider bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1 px-2.5 focus:border-[#5f4b3b] focus:outline-none shadow-sm"
+                          className="text-xs font-semibold uppercase tracking-wider bg-[#FAF8F5] dark:bg-[#2a2520] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] py-1 px-2.5 focus:border-[#5f4b3b] focus:outline-none shadow-sm rounded-none"
                         >
                           <option value="LOW">Low</option>
                           <option value="MEDIUM">Medium</option>
@@ -270,7 +272,7 @@ export default function AdminComplaintsPage() {
                         {c.status !== 'RESOLVED' && (
                           <button
                             onClick={() => handleOpenStatusModal(c)}
-                            className="inline-flex items-center px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] border border-[#24211e] shadow-sm transition-colors"
+                            className="inline-flex items-center px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] dark:bg-[#342d27] dark:hover:bg-[#433931] border border-[#24211e] dark:border-[rgba(245,242,236,0.2)] shadow-sm transition-colors rounded-none"
                           >
                             <Edit3 className="w-3.5 h-3.5 mr-1" />
                             Status
@@ -278,7 +280,7 @@ export default function AdminComplaintsPage() {
                         )}
                         <Link
                           to={`/complaints/${c.id}`}
-                          className="inline-flex items-center px-2.5 py-1.5 text-xs text-[#5f4b3b] hover:text-[#24211e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc] transition-colors"
+                          className="inline-flex items-center px-2.5 py-1.5 text-xs text-[#5f4b3b] dark:text-[#d8cdbc] hover:text-[#24211e] dark:hover:text-[#f5f2ec] bg-[#ebe5da] dark:bg-[#342d27] hover:bg-[#d8cdbc] dark:hover:bg-[#433931] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] transition-colors rounded-none"
                           title="View complaint details"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -293,22 +295,22 @@ export default function AdminComplaintsPage() {
 
             {/* Pagination */}
             {pagination.total_pages > 1 && (
-              <div className="px-6 py-4 bg-[#FAF8F5] border-t border-[#d8cdbc] flex items-center justify-between">
-                <span className="text-xs text-[#6b665e]">
+              <div className="px-6 py-4 bg-[#FAF8F5] dark:bg-[#24211e] border-t border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] flex items-center justify-between">
+                <span className="text-xs text-[#6b665e] dark:text-[#c8bfb3]">
                   Page {pagination.page} of {pagination.total_pages}
                 </span>
                 <div className="flex items-center space-x-2">
                   <button
                     disabled={pagination.page <= 1}
                     onClick={() => fetchComplaints(pagination.page - 1)}
-                    className="px-4 py-2 border border-[#d8cdbc] text-xs font-semibold uppercase tracking-wider text-[#24211e] bg-[#faf8f3] hover:bg-[#ebe5da] disabled:opacity-50 inline-flex items-center transition-colors"
+                    className="px-4 py-2 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-xs font-semibold uppercase tracking-wider text-[#24211e] dark:text-[#f5f2ec] bg-[#faf8f3] dark:bg-[#2b2723] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] disabled:opacity-50 inline-flex items-center transition-colors rounded-none"
                   >
                     <ChevronLeft className="w-4 h-4 mr-1" /> Prev
                   </button>
                   <button
                     disabled={pagination.page >= pagination.total_pages}
                     onClick={() => fetchComplaints(pagination.page + 1)}
-                    className="px-4 py-2 border border-[#d8cdbc] text-xs font-semibold uppercase tracking-wider text-[#24211e] bg-[#faf8f3] hover:bg-[#ebe5da] disabled:opacity-50 inline-flex items-center transition-colors"
+                    className="px-4 py-2 border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-xs font-semibold uppercase tracking-wider text-[#24211e] dark:text-[#f5f2ec] bg-[#faf8f3] dark:bg-[#2b2723] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] disabled:opacity-50 inline-flex items-center transition-colors rounded-none"
                   >
                     Next <ChevronRight className="w-4 h-4 ml-1" />
                   </button>
