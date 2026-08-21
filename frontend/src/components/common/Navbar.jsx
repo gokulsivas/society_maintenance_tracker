@@ -67,33 +67,33 @@ export default function Navbar() {
   const navLinkClass = ({ isActive }) =>
     `inline-flex items-center px-3.5 py-2 text-xs font-sans font-semibold uppercase tracking-wider transition-colors ${
       isActive
-        ? 'bg-[#ebe5da] text-[#24211e] border-b-2 border-[#5f4b3b]'
-        : 'text-[#6b665e] hover:text-[#24211e] hover:bg-[#ebe5da]/50'
+        ? 'bg-[#302a25] text-[#f5f2ec] border-b-2 border-[#d8cdbc]'
+        : 'text-[#d8cdbc] hover:text-[#ffffff] hover:bg-[#302a25]'
     }`;
 
   const mobileNavLinkClass = ({ isActive }) =>
     `block px-3.5 py-2.5 text-sm font-sans font-semibold transition-colors ${
       isActive
-        ? 'bg-[#ebe5da] text-[#24211e] border-l-4 border-[#5f4b3b]'
-        : 'text-[#6b665e] hover:text-[#24211e] hover:bg-[#ebe5da]/50'
+        ? 'bg-[#302a25] text-[#f5f2ec] border-l-4 border-[#d8cdbc]'
+        : 'text-[#d8cdbc] hover:text-[#ffffff] hover:bg-[#302a25]'
     }`;
 
   if (!isAuthenticated) return null;
 
   return (
-    <nav className="bg-[#faf8f3] border-b border-[#d8cdbc] text-[#24211e] shadow-sm sticky top-0 z-40">
+    <nav className="bg-[#24211e] border-b border-[rgba(245,242,236,0.16)] text-[#f5f2ec] shadow-sm sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Brand Logo & Name */}
           <div className="flex items-center space-x-3">
             <Link
               to={isAdmin ? '/admin/dashboard' : '/dashboard'}
-              className="flex items-center space-x-3 text-[#24211e] hover:opacity-90 transition-opacity"
+              className="flex items-center space-x-3 text-[#f5f2ec] hover:opacity-90 transition-opacity"
             >
-              <div className="w-8 h-8 bg-[#24211e] text-[#FAF8F5] border border-[#24211e] flex items-center justify-center">
+              <div className="w-8 h-8 bg-[#302a25] text-[#FAF8F5] border border-[rgba(245,242,236,0.2)] flex items-center justify-center">
                 <Building2 className="h-4 w-4" />
               </div>
-              <span className="font-sans font-semibold text-lg sm:text-xl tracking-tight hidden sm:inline text-[#24211e]">
+              <span className="font-serif font-medium text-lg sm:text-xl tracking-tight hidden sm:inline text-[#f5f2ec]">
                 Socivio
               </span>
             </Link>
@@ -152,13 +152,13 @@ export default function Navbar() {
               onClick={toggleTheme}
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               aria-pressed={isDark}
-              className="w-10 h-10 rounded-none bg-[#24211e] hover:bg-[#3f3025] text-[#FAF8F5] border border-[#24211e] font-sans font-medium text-xs flex items-center justify-center shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5f4b3b]"
+              className="w-10 h-10 rounded-none bg-[#302a25] hover:bg-[#3f3025] text-[#FAF8F5] border border-[rgba(245,242,236,0.2)] hover:border-[#f5f2ec] font-sans font-medium text-xs flex items-center justify-center shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d8cdbc]"
               title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {isDark ? (
                 <Sun className="w-4 h-4 text-[#e0a96d]" />
               ) : (
-                <Moon className="w-4 h-4 text-[#FAF8F5]" />
+                <Moon className="w-4 h-4 text-[#d8cdbc]" />
               )}
             </button>
 
@@ -167,7 +167,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
-                className="w-10 h-10 rounded-none bg-[#24211e] hover:bg-[#3f3025] text-[#FAF8F5] border border-[#24211e] font-sans font-semibold text-xs tracking-wider flex items-center justify-center shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5f4b3b]"
+                className="w-10 h-10 rounded-none bg-[#302a25] hover:bg-[#3f3025] text-[#FAF8F5] border border-[rgba(245,242,236,0.2)] hover:border-[#f5f2ec] font-sans font-semibold text-xs tracking-wider flex items-center justify-center shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d8cdbc]"
                 aria-label="Open account menu"
                 aria-haspopup="menu"
                 aria-expanded={isDropdownOpen}
@@ -179,7 +179,7 @@ export default function Navbar() {
                     className="w-full h-full rounded-none object-cover"
                   />
                 ) : (
-                  <span className="tracking-wider font-sans">{getUserInitials(user?.name)}</span>
+                  <span className="tracking-wider font-sans text-[#f5f2ec]">{getUserInitials(user?.name)}</span>
                 )}
               </button>
 
@@ -188,24 +188,24 @@ export default function Navbar() {
                 <div
                   role="menu"
                   aria-label="Account menu"
-                  className="absolute right-0 mt-2 w-64 bg-[#faf8f3] border border-[#d8cdbc] shadow-md z-50 rounded-none animate-in fade-in zoom-in-95 duration-100 text-[#24211e]"
+                  className="absolute right-0 mt-2 w-64 bg-[#faf8f3] dark:bg-[#24211e] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-md z-50 rounded-none animate-in fade-in zoom-in-95 duration-100 text-[#24211e] dark:text-[#f5f2ec]"
                 >
-                  <div className="px-4 py-3.5 border-b border-[#d8cdbc]/60">
-                    <p className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#8F8778] mb-0.5">
+                  <div className="px-4 py-3.5 border-b border-[#d8cdbc]/60 dark:border-[rgba(245,242,236,0.16)]">
+                    <p className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#8F8778] dark:text-[#a89e91] mb-0.5">
                       Name
                     </p>
-                    <p className="font-serif text-base font-normal text-[#24211e] leading-snug break-words">
+                    <p className="font-serif text-base font-normal text-[#24211e] dark:text-[#f5f2ec] leading-snug break-words">
                       {user?.name || 'User'}
                     </p>
 
-                    <p className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#8F8778] mt-3 mb-0.5">
+                    <p className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#8F8778] dark:text-[#a89e91] mt-3 mb-0.5">
                       Role
                     </p>
-                    <p className="text-xs font-sans font-bold uppercase tracking-wider text-[#5f4b3b]">
+                    <p className="text-xs font-sans font-bold uppercase tracking-wider text-[#5f4b3b] dark:text-[#d8cdbc]">
                       {user?.role === 'ADMIN' ? 'ADMINISTRATOR' : 'RESIDENT'}
                     </p>
                     {user?.flat_no && user?.role !== 'ADMIN' && (
-                      <p className="text-xs font-sans text-[#6b665e] mt-1">Flat {user.flat_no}</p>
+                      <p className="text-xs font-sans text-[#6b665e] dark:text-[#c8bfb3] mt-1">Flat {user.flat_no}</p>
                     )}
                   </div>
 
@@ -217,7 +217,7 @@ export default function Navbar() {
                         handleLogout();
                       }}
                       role="menuitem"
-                      className="w-full flex items-center px-3 py-2 text-xs font-sans font-semibold uppercase tracking-wider text-[#8a4d43] hover:text-[#5f4b3b] hover:bg-[#ebe5da] transition-colors text-left"
+                      className="w-full flex items-center px-3 py-2 text-xs font-sans font-semibold uppercase tracking-wider text-[#8a4d43] hover:text-[#5f4b3b] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] transition-colors text-left"
                     >
                       <LogOut className="w-3.5 h-3.5 mr-2 text-[#8a4d43]" />
                       Sign Out
@@ -232,7 +232,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 text-[#24211e] hover:bg-[#ebe5da] border border-[#d8cdbc] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5f4b3b]"
+                className="inline-flex items-center justify-center p-2 text-[#f5f2ec] hover:bg-[#302a25] border border-[rgba(245,242,236,0.2)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d8cdbc]"
                 aria-expanded={isMobileMenuOpen}
                 aria-label="Toggle navigation menu"
               >
@@ -246,7 +246,7 @@ export default function Navbar() {
 
       {/* Mobile menu dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-[#faf8f3] border-t border-[#d8cdbc] px-3 pt-3 pb-4 space-y-1 text-[#24211e]">
+        <div className="md:hidden bg-[#24211e] border-t border-[rgba(245,242,236,0.16)] px-3 pt-3 pb-4 space-y-1 text-[#f5f2ec]">
           {!isAdmin ? (
             <>
               <NavLink to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className={mobileNavLinkClass}>

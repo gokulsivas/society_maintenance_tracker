@@ -17,9 +17,31 @@
   --color-warning: #8a6843;
   --color-danger: #8a4d43;
 
+  --surface-page: #f5f2ec;
+  --surface-card: #faf8f3;
+  --surface-raised: #ebe5da;
+  --surface-elevated: #d8cdbc;
+  --text-primary: #24211e;
+  --text-secondary: #6b665e;
+  --border-default: rgba(63, 49, 38, 0.16);
+
   --radius-sharp: 0px;
   --radius-subtle: 2px;
   --shadow-subtle: 0 8px 24px rgba(45, 34, 26, 0.06);
+}
+
+.dark {
+  --surface-page: #191715;
+  --surface-card: #24211e;
+  --surface-raised: #2b2723;
+  --surface-elevated: #342d27;
+  --text-primary: #f5f2ec;
+  --text-secondary: #c8bfb3;
+  --border-default: rgba(245, 242, 236, 0.16);
+
+  --danger-surface: #4a2927;
+  --danger-border: #9b5a50;
+  --danger-text: #ffe6e1;
 }
 
 html {
@@ -40,6 +62,11 @@ body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+.dark body {
+  background-color: #191715;
+  color: #f5f2ec;
+}
+
 .editorial-page-surface {
   position: relative;
   background-color: #f5f2ec;
@@ -47,6 +74,14 @@ body {
     linear-gradient(rgba(67, 53, 42, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(67, 53, 42, 0.04) 1px, transparent 1px);
   background-size: 84px 84px;
+}
+
+.dark .editorial-page-surface {
+  background-color: #191715;
+  background-image:
+    linear-gradient(rgba(245, 242, 236, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 242, 236, 0.035) 1px, transparent 1px);
+  color: #f5f2ec;
 }
 
 @media (max-width: 640px) {
@@ -69,124 +104,3 @@ body {
   outline: 2px solid #5f4b3b;
   outline-offset: 2px;
 }
-
-/* ==========================================================================
-   Dark Theme Overrides
-   ========================================================================== */
-
-html.dark body {
-  background-color: #191715;
-  color: #f5f2ec;
-}
-
-html.dark .editorial-page-surface {
-  background-color: #191715;
-  background-image:
-    linear-gradient(rgba(245, 242, 236, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245, 242, 236, 0.035) 1px, transparent 1px);
-  color: #f5f2ec;
-}
-
-html.dark .bg-\[\#faf8f3\],
-html.dark .bg-\[\#FAF8F5\],
-html.dark .bg-\[\#FAF8F5\]\/95 {
-  background-color: #24201c;
-  color: #f5f2ec;
-}
-
-html.dark .bg-\[\#ebe5da\] {
-  background-color: #312b25;
-  color: #f5f2ec;
-}
-
-html.dark .bg-\[\#f5f2ec\] {
-  background-color: #191715;
-  color: #f5f2ec;
-}
-
-html.dark .border-\[\#d8cdbc\],
-html.dark .border-\[\#d8cdbc\]\/60 {
-  border-color: rgba(245, 242, 236, 0.16);
-}
-
-html.dark .divide-\[\#d8cdbc\],
-html.dark .divide-\[\#d8cdbc\]\/60 {
-  border-color: rgba(245, 242, 236, 0.16);
-}
-
-html.dark .text-\[\#24211e\] {
-  color: #f5f2ec;
-}
-
-html.dark .text-\[\#6b665e\] {
-  color: #c8bfb3;
-}
-
-html.dark .text-\[\#8F8778\] {
-  color: #a89f91;
-}
-
-html.dark .text-\[\#5f4b3b\] {
-  color: #d8cdbc;
-}
-
-html.dark input,
-html.dark select,
-html.dark textarea {
-  background-color: #2a2520;
-  color: #f5f2ec;
-  border-color: rgba(245, 242, 236, 0.16);
-}
-
-html.dark input::placeholder,
-html.dark textarea::placeholder {
-  color: #887e72;
-}
-
-html.dark table thead {
-  background-color: #312b25;
-}
-
-html.dark table tbody tr:hover {
-  background-color: #2e2823;
-}
-
-/* Navbar must always remain light in both light and dark mode */
-html.dark header,
-html.dark header.bg-\[\#faf8f3\],
-html.dark nav {
-  background-color: #faf8f3 !important;
-  color: #24211e !important;
-  border-color: #d8cdbc !important;
-}
-
-html.dark header .text-\[\#24211e\],
-html.dark header .text-\[\#3f3025\],
-html.dark header .text-\[\#5f4b3b\] {
-  color: #24211e !important;
-}
-
-html.dark header .text-\[\#6b665e\] {
-  color: #6b665e !important;
-}
-
-html.dark header .border-\[\#d8cdbc\] {
-  border-color: #d8cdbc !important;
-}
-
-html.dark header .bg-\[\#ebe5da\] {
-  background-color: #ebe5da !important;
-  color: #24211e !important;
-}
-
-html.dark header .bg-\[\#FAF8F5\] {
-  background-color: #FAF8F5 !important;
-  color: #24211e !important;
-}
-
-html.dark header .bg-\[\#24211e\] {
-  background-color: #24211e !important;
-  color: #FAF8F5 !important;
-}
-
-

@@ -102,21 +102,21 @@ export default function AdminComplaintsPage() {
     <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-4">
           <div>
-            <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] tracking-tight">
+            <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] dark:text-[#f5f2ec] tracking-tight">
               Complaints Management
             </h1>
-            <p className="text-sm text-[#6b665e] mt-1">
+            <p className="text-sm text-[#6b665e] dark:text-[#c8bfb3] mt-1">
               Review, prioritize, and update the status lifecycle of all society maintenance tickets.
             </p>
           </div>
 
           <button
             onClick={() => fetchComplaints(pagination.page)}
-            className="inline-flex items-center px-4 py-2.5 bg-[#faf8f3] border border-[#d8cdbc] text-[#24211e] hover:bg-[#ebe5da] text-xs font-semibold uppercase tracking-wider transition-colors self-start sm:self-auto shadow-sm"
+            className="inline-flex items-center px-4 py-2.5 bg-[#faf8f3] dark:bg-[#24211e] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] text-[#24211e] dark:text-[#f5f2ec] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] text-xs font-semibold uppercase tracking-wider transition-colors self-start sm:self-auto shadow-sm rounded-none"
           >
-            <RefreshCw className={`w-3.5 h-3.5 mr-2 text-[#5f4b3b] ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 mr-2 text-[#5f4b3b] dark:text-[#d8cdbc] ${loading ? 'animate-spin' : ''}`} />
             Refresh List
           </button>
         </div>

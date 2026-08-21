@@ -114,23 +114,23 @@ export default function ComplaintDetailPage() {
     <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Navigation & Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] pb-4">
           <div className="flex items-center space-x-3">
             <button
               onClick={() => navigate(isAdmin ? '/admin/complaints' : '/complaints')}
-              className="p-2.5 text-[#24211e] hover:bg-[#ebe5da] bg-[#faf8f3] border border-[#d8cdbc] shadow-sm transition-colors"
+              className="p-2.5 text-[#24211e] dark:text-[#f5f2ec] hover:bg-[#ebe5da] dark:hover:bg-[#342d27] bg-[#faf8f3] dark:bg-[#24211e] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm transition-colors rounded-none"
               aria-label="Back to complaints list"
             >
-              <ArrowLeft className="w-4 h-4 text-[#5f4b3b]" />
+              <ArrowLeft className="w-4 h-4 text-[#5f4b3b] dark:text-[#d8cdbc]" />
             </button>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-mono text-[#8F8778]">Ticket #{complaint.id}</span>
-                <span className="text-[11px] px-2 py-0.5 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc] font-semibold uppercase tracking-wider">
+                <span className="text-xs font-mono text-[#8F8778] dark:text-[#a89e91]">Ticket #{complaint.id}</span>
+                <span className="text-[11px] px-2 py-0.5 bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] font-semibold uppercase tracking-wider rounded-none">
                   {complaint.category}
                 </span>
               </div>
-              <h1 className="font-serif text-2xl sm:text-3xl font-normal text-[#24211e] tracking-tight mt-0.5">
+              <h1 className="font-serif text-2xl sm:text-3xl font-normal text-[#24211e] dark:text-[#f5f2ec] tracking-tight mt-0.5">
                 {complaint.title}
               </h1>
             </div>
@@ -144,9 +144,9 @@ export default function ComplaintDetailPage() {
             {canEdit && (
               <button
                 onClick={() => setIsEditModalOpen(true)}
-                className="inline-flex items-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#24211e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc] shadow-sm transition-all"
+                className="inline-flex items-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#24211e] dark:text-[#f5f2ec] bg-[#ebe5da] dark:bg-[#342d27] hover:bg-[#d8cdbc] dark:hover:bg-[#433931] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] shadow-sm transition-all rounded-none"
               >
-                <Pencil className="w-3.5 h-3.5 mr-1.5 text-[#5f4b3b]" />
+                <Pencil className="w-3.5 h-3.5 mr-1.5 text-[#5f4b3b] dark:text-[#d8cdbc]" />
                 Edit Complaint
               </button>
             )}
@@ -155,7 +155,7 @@ export default function ComplaintDetailPage() {
             {isAdmin && complaint.status !== 'RESOLVED' && (
               <button
                 onClick={() => setIsStatusModalOpen(true)}
-                className="inline-flex items-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] border border-[#24211e] shadow-sm transition-all"
+                className="inline-flex items-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] dark:bg-[#342d27] dark:hover:bg-[#433931] border border-[#24211e] dark:border-[rgba(245,242,236,0.2)] shadow-sm transition-all rounded-none"
               >
                 <Edit3 className="w-4 h-4 mr-1.5" />
                 Update Status
