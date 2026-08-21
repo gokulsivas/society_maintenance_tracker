@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import {
   Building2,
   ArrowRight,
-  CheckCircle2,
   Clock,
   Bell,
   ShieldCheck,
@@ -241,22 +240,17 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Subtle sharp-cornered translucent caption badge near bottom */}
-        <div className="absolute bottom-6 left-4 sm:left-6 lg:left-12 z-10 bg-[#1F1E1C]/70 backdrop-blur-md px-4 py-3 border border-white/15 shadow-sm hidden sm:flex items-center space-x-3">
-          <div className="w-7 h-7 bg-[#FAF8F5]/15 flex items-center justify-center text-[#FAF8F5]">
-            <CheckCircle2 className="w-4 h-4 text-[#FAF8F5]" />
-          </div>
-          <div>
-            <p className="text-xs font-bold text-[#FAF8F5]">12 requests resolved</p>
-            <p className="text-[11px] text-[#D5CDBC] uppercase tracking-wider font-medium">
-              This month
-            </p>
-          </div>
+        {/* Subtle sharp-cornered translucent caption badge near bottom right */}
+        <div className="absolute bottom-6 right-4 sm:right-6 lg:right-12 z-10 bg-[#1F1E1C]/70 backdrop-blur-md px-5 py-3.5 border border-white/15 shadow-sm text-left">
+          <p className="text-xs font-bold text-[#FAF8F5] leading-tight">12 requests resolved</p>
+          <p className="text-[11px] text-[#D5CDBC] uppercase tracking-wider font-medium mt-0.5">
+            This month
+          </p>
         </div>
       </section>
 
-      {/* 3. OVERLAPPING INFORMATION PANEL */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 pb-20">
+      {/* 3. THOUGHTFUL MAINTENANCE PANEL */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20 pb-20 relative z-20">
         <div className="bg-[#EBE6DC] border border-[#DDD6C8] p-6 sm:p-10 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             {/* Left Visual (Architectural Detail Photo) */}
