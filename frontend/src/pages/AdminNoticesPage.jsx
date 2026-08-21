@@ -72,72 +72,78 @@ export default function AdminNoticesPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
-            <Bell className="w-7 h-7 text-blue-600" />
-            Notice Management
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Publish, edit, and broadcast society announcements to residents.
-          </p>
+    <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] pb-4">
+          <div>
+            <div className="flex items-center space-x-2.5">
+              <div className="p-2 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc]">
+                <Bell className="w-4 h-4" />
+              </div>
+              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] tracking-tight">
+                Notice Management
+              </h1>
+            </div>
+            <p className="text-sm text-[#6b665e] mt-1">
+              Publish, edit, and broadcast society announcements to residents.
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={fetchNotices}
+              className="p-2.5 text-[#24211e] bg-[#faf8f3] hover:bg-[#ebe5da] border border-[#d8cdbc] shadow-sm transition-colors"
+              title="Refresh list"
+              aria-label="Refresh list"
+            >
+              <RefreshCw className={`w-4 h-4 text-[#5f4b3b] ${loading ? 'animate-spin' : ''}`} />
+            </button>
+
+            <button
+              onClick={handleCreate}
+              className="inline-flex items-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#3f3025] text-[#FAF8F5] border border-[#24211e] shadow-sm transition-all"
+            >
+              <PlusCircle className="w-4 h-4 mr-2" />
+              Publish Notice
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={fetchNotices}
-            className="p-2.5 text-gray-600 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl shadow-sm transition-colors"
-            title="Refresh list"
-            aria-label="Refresh list"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+        <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
-          <button
-            onClick={handleCreate}
-            className="inline-flex items-center px-4 py-2.5 rounded-xl font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-all"
-          >
-            <PlusCircle className="w-4 h-4 mr-2" />
-            Publish Notice
-          </button>
-        </div>
-      </div>
+        {loading && notices.length === 0 ? (
+          <NoticeCardSkeleton count={4} />
+        ) : notices.length === 0 ? (
+          <EmptyState
+            title="No notices published"
+            description="Click 'Publish Notice' above to post the first notice for all residents."
+            actionText="Publish Notice"
+            onAction={handleCreate}
+          />
+        ) : (
+          <div className="space-y-5">
+            {notices.map((notice) => (
+              <NoticeCard
+                key={notice.id}
+                notice={notice}
+                isAdmin={true}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
+        )}
 
-      <ErrorAlert message={error} onDismiss={() => setError(null)} />
-
-      {loading && notices.length === 0 ? (
-        <NoticeCardSkeleton count={4} />
-      ) : notices.length === 0 ? (
-        <EmptyState
-          title="No notices published"
-          description="Click 'Publish Notice' above to post the first notice for all residents."
-          actionText="Publish Notice"
-          onAction={handleCreate}
+        <NoticeModal
+          notice={selectedNotice}
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedNotice(null);
+          }}
+          onSuccess={() => fetchNotices()}
         />
-      ) : (
-        <div className="space-y-4">
-          {notices.map((notice) => (
-            <NoticeCard
-              key={notice.id}
-              notice={notice}
-              isAdmin={true}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
-      )}
-
-      <NoticeModal
-        notice={selectedNotice}
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedNotice(null);
-        }}
-        onSuccess={() => fetchNotices()}
-      />
+      </div>
     </div>
   );
 }

@@ -10,21 +10,21 @@ export default function NoticeCard({ notice, onEdit = null, onDelete = null, isA
 
   return (
     <div
-      className={`rounded-xl border p-5 transition-all ${
+      className={`border p-6 transition-all shadow-sm ${
         notice.is_important
-          ? 'bg-rose-50/40 border-rose-200 shadow-sm'
-          : 'bg-white border-gray-200 shadow-sm'
+          ? 'bg-[#fbeeed]/80 border-[#d9a8a0]'
+          : 'bg-[#faf8f3] border-[#d8cdbc]'
       }`}
     >
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-2.5 flex-wrap">
           {notice.is_important && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300">
-              <Pin className="w-3.5 h-3.5 mr-1 text-rose-600 fill-rose-600" />
-              IMPORTANT
+            <span className="inline-flex items-center px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider bg-[#8a4d43] text-white border border-[#8a4d43]">
+              <Pin className="w-3.5 h-3.5 mr-1 text-white fill-white" />
+              Important
             </span>
           )}
-          <h4 className="text-base font-bold text-gray-900">{notice.title}</h4>
+          <h4 className="font-serif text-xl font-normal text-[#24211e]">{notice.title}</h4>
         </div>
 
         {isAdmin && (
@@ -32,7 +32,7 @@ export default function NoticeCard({ notice, onEdit = null, onDelete = null, isA
             {onEdit && (
               <button
                 onClick={() => onEdit(notice)}
-                className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                className="p-1.5 text-[#6b665e] hover:text-[#24211e] hover:bg-[#ebe5da] border border-transparent hover:border-[#d8cdbc] transition-colors"
                 title="Edit notice"
                 aria-label="Edit notice"
               >
@@ -42,7 +42,7 @@ export default function NoticeCard({ notice, onEdit = null, onDelete = null, isA
             {onDelete && (
               <button
                 onClick={() => onDelete(notice)}
-                className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                className="p-1.5 text-[#8a4d43] hover:text-red-800 hover:bg-[#fbeeed] border border-transparent hover:border-[#d9a8a0] transition-colors"
                 title="Delete notice"
                 aria-label="Delete notice"
               >
@@ -53,18 +53,18 @@ export default function NoticeCard({ notice, onEdit = null, onDelete = null, isA
         )}
       </div>
 
-      <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed mb-4">
+      <p className="text-sm text-[#6b665e] whitespace-pre-line leading-relaxed mb-4">
         {notice.body}
       </p>
 
-      <div className="pt-3 border-t border-gray-100/80 flex items-center justify-between text-xs text-gray-500">
+      <div className="pt-3 border-t border-[#d8cdbc]/60 flex items-center justify-between text-xs text-[#6b665e]">
         <span className="inline-flex items-center">
-          <Calendar className="w-3.5 h-3.5 mr-1 text-gray-400" />
+          <Calendar className="w-3.5 h-3.5 mr-1 text-[#8F8778]" />
           Posted on {formattedDate}
         </span>
         {notice.author_name && (
-          <span className="inline-flex items-center font-medium text-gray-600">
-            <User className="w-3.5 h-3.5 mr-1 text-gray-400" />
+          <span className="inline-flex items-center font-medium text-[#24211e]">
+            <User className="w-3.5 h-3.5 mr-1 text-[#8F8778]" />
             {notice.author_name}
           </span>
         )}

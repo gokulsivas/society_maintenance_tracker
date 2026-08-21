@@ -48,13 +48,13 @@ export default function StatusTransitionModal({ complaint, isOpen, onClose, onSu
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 relative">
-        <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
-          <h3 className="text-lg font-bold text-gray-900">Update Complaint Status</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="bg-[#faf8f3] border border-[#d8cdbc] max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
+        <div className="flex items-center justify-between pb-4 border-b border-[#d8cdbc] mb-5">
+          <h3 className="font-serif text-xl font-normal text-[#24211e]">Update Complaint Status</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 rounded-lg p-1"
+            className="text-[#6b665e] hover:text-[#24211e] p-1 transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -63,27 +63,27 @@ export default function StatusTransitionModal({ complaint, isOpen, onClose, onSu
 
         <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
-        <div className="mb-4 bg-gray-50 p-3 rounded-lg flex items-center justify-between text-sm">
-          <span className="text-gray-600">Current Status:</span>
+        <div className="mb-5 bg-[#FAF8F5] p-3.5 border border-[#d8cdbc] flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
+          <span className="text-[#5f4b3b]">Current Status:</span>
           <StatusBadge status={currentStatus} isOverdue={complaint.is_overdue} />
         </div>
 
         {isResolved ? (
-          <div className="p-4 bg-emerald-50 rounded-xl text-emerald-800 text-sm mb-4 flex items-start space-x-2">
-            <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+          <div className="p-4 bg-[#eef2eb] border border-[#b8c9af] text-[#52634a] text-sm mb-4 flex items-start space-x-2">
+            <CheckCircle className="w-5 h-5 text-[#52634a] flex-shrink-0 mt-0.5" />
             <p>This complaint is marked <strong>RESOLVED</strong>. Resolved complaints are terminal and cannot be reopened.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="target-status" className="block text-sm font-semibold text-gray-700 mb-1">
-                New Status <span className="text-red-500">*</span>
+              <label htmlFor="target-status" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
+                New Status <span className="text-[#8a4d43]">*</span>
               </label>
               <select
                 id="target-status"
                 value={targetStatus}
                 onChange={(e) => setTargetStatus(e.target.value)}
-                className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5 border"
+                className="w-full bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] text-sm p-2.5 focus:border-[#5f4b3b] focus:outline-none"
                 required
               >
                 <option value="">Select target status...</option>
@@ -96,8 +96,8 @@ export default function StatusTransitionModal({ complaint, isOpen, onClose, onSu
             </div>
 
             <div>
-              <label htmlFor="status-note" className="block text-sm font-semibold text-gray-700 mb-1">
-                Admin Note <span className="text-gray-400 font-normal">(Optional, will be emailed to resident)</span>
+              <label htmlFor="status-note" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
+                Admin Note <span className="text-[#8F8778] font-normal text-[11px]">(Optional, emailed to resident)</span>
               </label>
               <textarea
                 id="status-note"
@@ -105,24 +105,24 @@ export default function StatusTransitionModal({ complaint, isOpen, onClose, onSu
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="e.g. Technician dispatched, inspection scheduled for 2 PM..."
-                className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5 border"
+                className="w-full bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] placeholder-[#a8a196] text-sm p-2.5 focus:border-[#5f4b3b] focus:outline-none"
               />
             </div>
 
-            <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-100">
+            <div className="flex items-center justify-end space-x-3 pt-4 border-t border-[#d8cdbc]">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc] transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading || !targetStatus}
-                className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg shadow-sm transition-colors"
+                className="inline-flex items-center px-5 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] disabled:opacity-50 border border-[#24211e] shadow-sm transition-colors"
               >
-                {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                {loading && <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />}
                 Update Status
               </button>
             </div>

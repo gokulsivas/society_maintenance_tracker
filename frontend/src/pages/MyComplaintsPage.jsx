@@ -64,118 +64,120 @@ export default function MyComplaintsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-            My Complaints
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Track and monitor the status of all your raised maintenance requests.
-          </p>
-        </div>
-
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={fetchComplaints}
-            className="p-2.5 text-gray-600 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl shadow-sm transition-colors"
-            title="Refresh complaints"
-            aria-label="Refresh complaints"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          </button>
-
-          <Link
-            to="/complaints/new"
-            className="inline-flex items-center px-4 py-2.5 rounded-xl font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-all"
-          >
-            <PlusCircle className="w-4 h-4 mr-2" />
-            Raise Complaint
-          </Link>
-        </div>
-      </div>
-
-      <ErrorAlert message={error} onDismiss={() => setError(null)} />
-
-      {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-        <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-            <Search className="h-4 w-4" />
+    <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] pb-4">
+          <div>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#24211e] font-normal tracking-tight">
+              My Complaints
+            </h1>
+            <p className="text-sm text-[#6b665e] mt-1">
+              Track and monitor the status of all your raised maintenance requests.
+            </p>
           </div>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by title, description, or ID..."
-            className="block w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={fetchComplaints}
+              className="p-2.5 text-[#24211e] bg-[#faf8f3] hover:bg-[#ebe5da] border border-[#d8cdbc] shadow-sm transition-colors"
+              title="Refresh complaints"
+              aria-label="Refresh complaints"
+            >
+              <RefreshCw className={`w-4 h-4 text-[#5f4b3b] ${loading ? 'animate-spin' : ''}`} />
+            </button>
+
+            <Link
+              to="/complaints/new"
+              className="inline-flex items-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#3f3025] text-[#FAF8F5] border border-[#24211e] shadow-sm transition-all"
+            >
+              <PlusCircle className="w-4 h-4 mr-2" />
+              Raise Complaint
+            </Link>
+          </div>
+        </div>
+
+        <ErrorAlert message={error} onDismiss={() => setError(null)} />
+
+        {/* Filter and Search Bar */}
+        <div className="bg-[#faf8f3] p-4 sm:p-5 border border-[#d8cdbc] shadow-sm flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8F8778]">
+              <Search className="h-4 w-4" />
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title, description, or ID..."
+              className="block w-full pl-10 pr-3.5 py-2 text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] placeholder-[#a8a196] focus:border-[#5f4b3b] focus:outline-none"
+            />
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center space-x-1.5 text-xs text-[#5f4b3b] uppercase tracking-wider font-semibold">
+              <Filter className="w-3.5 h-3.5 text-[#5f4b3b]" />
+              <span>Filter:</span>
+            </div>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="text-xs sm:text-sm border border-[#d8cdbc] py-2 px-3 focus:outline-none focus:border-[#5f4b3b] bg-[#FAF8F5] text-[#24211e]"
+            >
+              <option value="ALL">All Statuses</option>
+              <option value="OPEN">Open</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="RESOLVED">Resolved</option>
+            </select>
+
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="text-xs sm:text-sm border border-[#d8cdbc] py-2 px-3 focus:outline-none focus:border-[#5f4b3b] bg-[#FAF8F5] text-[#24211e]"
+            >
+              <option value="ALL">All Categories</option>
+              <option value="PLUMBING">Plumbing</option>
+              <option value="ELECTRICAL">Electrical</option>
+              <option value="CARPENTRY">Carpentry</option>
+              <option value="CLEANLINESS">Cleanliness</option>
+              <option value="SECURITY">Security</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Content */}
+        {loading && complaints.length === 0 ? (
+          <ComplaintCardSkeleton count={6} />
+        ) : filteredComplaints.length === 0 ? (
+          <EmptyState
+            title={searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL' ? 'No matching complaints found' : 'No complaints raised yet'}
+            description={
+              searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL'
+                ? 'Try adjusting your search query or filter options.'
+                : 'Whenever an issue arises in your apartment or common area, raise a complaint here.'
+            }
+            actionText={searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL' ? 'Clear Filters' : 'Raise a Complaint'}
+            onAction={
+              searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL'
+                ? () => {
+                    setSearchQuery('');
+                    setStatusFilter('ALL');
+                    setCategoryFilter('ALL');
+                  }
+                : null
+            }
+            actionLink={searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL' ? null : '/complaints/new'}
           />
-        </div>
-
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="flex items-center space-x-1.5 text-xs text-gray-500">
-            <Filter className="w-4 h-4 text-gray-400" />
-            <span className="font-semibold">Filter:</span>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            {filteredComplaints.map((c) => (
+              <ComplaintCard key={c.id} complaint={c} />
+            ))}
           </div>
-
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-xs sm:text-sm border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          >
-            <option value="ALL">All Statuses</option>
-            <option value="OPEN">Open</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="RESOLVED">Resolved</option>
-          </select>
-
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="text-xs sm:text-sm border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          >
-            <option value="ALL">All Categories</option>
-            <option value="PLUMBING">Plumbing</option>
-            <option value="ELECTRICAL">Electrical</option>
-            <option value="CARPENTRY">Carpentry</option>
-            <option value="CLEANLINESS">Cleanliness</option>
-            <option value="SECURITY">Security</option>
-            <option value="OTHER">Other</option>
-          </select>
-        </div>
+        )}
       </div>
-
-      {/* Content */}
-      {loading && complaints.length === 0 ? (
-        <ComplaintCardSkeleton count={6} />
-      ) : filteredComplaints.length === 0 ? (
-        <EmptyState
-          title={searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL' ? 'No matching complaints found' : 'No complaints raised yet'}
-          description={
-            searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL'
-              ? 'Try adjusting your search query or filter options.'
-              : 'Whenever an issue arises in your apartment or common area, raise a complaint here.'
-          }
-          actionText={searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL' ? 'Clear Filters' : 'Raise a Complaint'}
-          onAction={
-            searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL'
-              ? () => {
-                  setSearchQuery('');
-                  setStatusFilter('ALL');
-                  setCategoryFilter('ALL');
-                }
-              : null
-          }
-          actionLink={searchQuery || statusFilter !== 'ALL' || categoryFilter !== 'ALL' ? null : '/complaints/new'}
-        />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredComplaints.map((c) => (
-            <ComplaintCard key={c.id} complaint={c} />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

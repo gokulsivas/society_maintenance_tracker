@@ -76,292 +76,294 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-100 text-blue-800 mb-1">
-            Admin Console
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-            Society Maintenance Dashboard
-          </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
-            Real-time analytics, status breakdowns, and live overdue monitoring.
-          </p>
-        </div>
-
-        <button
-          onClick={fetchDashboard}
-          className="inline-flex items-center px-4 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl shadow-sm text-sm font-semibold transition-colors self-start sm:self-auto"
-        >
-          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-          Refresh Stats
-        </button>
-      </div>
-
-      <ErrorAlert message={error} onDismiss={() => setError(null)} />
-
-      {/* Date Range Filter Bar */}
-      <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-        <form onSubmit={handleFilterSubmit} className="flex flex-col sm:flex-row sm:items-center gap-3">
-          <div className="flex items-center space-x-1.5 text-xs text-gray-500">
-            <Calendar className="w-4 h-4 text-gray-400" />
-            <span className="font-semibold">Date Range:</span>
+    <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* Top Banner */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#d8cdbc] pb-4">
+          <div>
+            <span className="inline-flex items-center px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc] mb-2">
+              Admin Console
+            </span>
+            <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] tracking-tight">
+              Society Maintenance Dashboard
+            </h1>
+            <p className="text-sm text-[#6b665e] mt-1">
+              Real-time analytics, status breakdowns, and live overdue monitoring.
+            </p>
           </div>
 
-          <div className="flex items-center gap-2 flex-1 flex-wrap">
-            <input
-              type="date"
-              value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
-              className="text-xs sm:text-sm border border-gray-300 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-blue-500"
-              title="From date"
-            />
-            <span className="text-xs text-gray-400">to</span>
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              className="text-xs sm:text-sm border border-gray-300 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-blue-500"
-              title="To date"
-            />
+          <button
+            onClick={fetchDashboard}
+            className="inline-flex items-center px-4 py-2.5 bg-[#faf8f3] border border-[#d8cdbc] text-[#24211e] hover:bg-[#ebe5da] text-xs font-semibold uppercase tracking-wider transition-colors self-start sm:self-auto shadow-sm"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 mr-2 text-[#5f4b3b] ${loading ? 'animate-spin' : ''}`} />
+            Refresh Stats
+          </button>
+        </div>
 
-            <button
-              type="submit"
-              className="px-3 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm"
-            >
-              Apply Filter
-            </button>
+        <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
-            {(fromDate || toDate) && (
+        {/* Date Range Filter Bar */}
+        <div className="bg-[#faf8f3] p-4 sm:p-5 border border-[#d8cdbc] shadow-sm">
+          <form onSubmit={handleFilterSubmit} className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex items-center space-x-1.5 text-xs font-semibold text-[#5f4b3b] uppercase tracking-wider">
+              <Calendar className="w-3.5 h-3.5 text-[#5f4b3b]" />
+              <span>Date Range:</span>
+            </div>
+
+            <div className="flex items-center gap-2 flex-1 flex-wrap">
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
+                title="From date"
+              />
+              <span className="text-xs text-[#8F8778]">to</span>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="text-xs sm:text-sm bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] py-1.5 px-2.5 focus:border-[#5f4b3b] focus:outline-none"
+                title="To date"
+              />
+
               <button
-                type="button"
-                onClick={handleResetFilters}
-                className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg"
+                type="submit"
+                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] border border-[#24211e] shadow-sm"
               >
-                Reset
+                Apply Filter
               </button>
-            )}
-          </div>
-        </form>
-      </div>
 
-      {loading && !data ? (
-        <div className="space-y-8 animate-pulse">
-          {/* Summary Metric Cards Skeleton */}
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            {Array.from({ length: 5 }).map((_, idx) => (
-              <div key={idx} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-                <div className="flex justify-between items-center">
-                  <div className="h-3 bg-gray-200 rounded w-1/3" />
-                  <div className="w-5 h-5 bg-gray-200 rounded" />
-                </div>
-                <div className="h-8 bg-gray-300 rounded w-1/2" />
-              </div>
-            ))}
-          </div>
-
-          {/* Breakdown Section Skeleton */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {Array.from({ length: 3 }).map((_, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-                <div className="h-4 bg-gray-200 rounded w-1/3 pb-2" />
-                <div className="space-y-2">
-                  <div className="h-4 bg-gray-100 rounded" />
-                  <div className="h-4 bg-gray-100 rounded" />
-                  <div className="h-4 bg-gray-100 rounded" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Recent Activity Skeleton */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {Array.from({ length: 2 }).map((_, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-                <div className="h-4 bg-gray-200 rounded w-1/4 pb-3" />
-                <div className="space-y-3">
-                  <div className="h-10 bg-gray-100 rounded" />
-                  <div className="h-10 bg-gray-100 rounded" />
-                  <div className="h-10 bg-gray-100 rounded" />
-                </div>
-              </div>
-            ))}
-          </div>
+              {(fromDate || toDate) && (
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc]"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+          </form>
         </div>
-      ) : data ? (
-        <>
-          {/* Summary Metric Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
-              <div className="flex items-center justify-between text-gray-500 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Total</span>
-                <ClipboardList className="w-5 h-5 text-gray-400" />
-              </div>
-              <p className="text-3xl font-extrabold text-gray-900">{data.total_complaints}</p>
+
+        {loading && !data ? (
+          <div className="space-y-8 animate-pulse">
+            {/* Summary Metric Cards Skeleton */}
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+              {Array.from({ length: 5 }).map((_, idx) => (
+                <div key={idx} className="bg-[#faf8f3] p-5 border border-[#d8cdbc] space-y-3">
+                  <div className="flex justify-between items-center">
+                    <div className="h-3 bg-[#ebe5da] rounded-none w-1/3" />
+                    <div className="w-5 h-5 bg-[#ebe5da] rounded-none" />
+                  </div>
+                  <div className="h-8 bg-[#ebe5da] rounded-none w-1/2" />
+                </div>
+              ))}
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm">
-              <div className="flex items-center justify-between text-amber-600 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Open</span>
-                <Clock className="w-5 h-5" />
-              </div>
-              <p className="text-3xl font-extrabold text-amber-600">{data.total_open}</p>
+            {/* Breakdown Section Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {Array.from({ length: 3 }).map((_, idx) => (
+                <div key={idx} className="bg-[#faf8f3] p-6 border border-[#d8cdbc] space-y-4">
+                  <div className="h-4 bg-[#ebe5da] rounded-none w-1/3 pb-2" />
+                  <div className="space-y-2">
+                    <div className="h-4 bg-[#FAF8F5] rounded-none" />
+                    <div className="h-4 bg-[#FAF8F5] rounded-none" />
+                    <div className="h-4 bg-[#FAF8F5] rounded-none" />
+                  </div>
+                </div>
+              ))}
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-blue-200 shadow-sm">
-              <div className="flex items-center justify-between text-blue-600 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">In Progress</span>
-                <AlertTriangle className="w-5 h-5" />
-              </div>
-              <p className="text-3xl font-extrabold text-blue-600">{data.total_in_progress}</p>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-emerald-200 shadow-sm">
-              <div className="flex items-center justify-between text-emerald-600 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Resolved</span>
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-              <p className="text-3xl font-extrabold text-emerald-600">{data.total_resolved}</p>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-rose-200 shadow-sm col-span-2 lg:col-span-1">
-              <div className="flex items-center justify-between text-rose-600 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Overdue</span>
-                <AlertOctagon className="w-5 h-5" />
-              </div>
-              <p className="text-3xl font-extrabold text-rose-600">{data.total_overdue}</p>
+            {/* Recent Activity Skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {Array.from({ length: 2 }).map((_, idx) => (
+                <div key={idx} className="bg-[#faf8f3] p-6 border border-[#d8cdbc] space-y-4">
+                  <div className="h-4 bg-[#ebe5da] rounded-none w-1/4 pb-3" />
+                  <div className="space-y-3">
+                    <div className="h-10 bg-[#FAF8F5] rounded-none" />
+                    <div className="h-10 bg-[#FAF8F5] rounded-none" />
+                    <div className="h-10 bg-[#FAF8F5] rounded-none" />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+        ) : data ? (
+          <>
+            {/* Summary Metric Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="bg-[#faf8f3] p-5 border border-[#d8cdbc] shadow-sm">
+                <div className="flex items-center justify-between text-[#5f4b3b] mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider">Total</span>
+                  <ClipboardList className="w-5 h-5 text-[#8F8778]" />
+                </div>
+                <p className="font-serif text-3xl font-normal text-[#24211e]">{data.total_complaints}</p>
+              </div>
 
-          {/* Breakdown Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* By Status */}
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
-                By Status
-              </h3>
-              <div className="space-y-2 text-sm">
-                {Object.entries(data.by_status || {}).map(([st, cnt]) => (
-                  <div key={st} className="flex items-center justify-between">
-                    <StatusBadge status={st} showOverdue={false} />
-                    <span className="font-bold text-gray-900">{cnt}</span>
-                  </div>
-                ))}
+              <div className="bg-[#FAF8F5] p-5 border border-[#d8cdbc] shadow-sm">
+                <div className="flex items-center justify-between text-[#8a6843] mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider">Open</span>
+                  <Clock className="w-5 h-5 text-[#8a6843]" />
+                </div>
+                <p className="font-serif text-3xl font-normal text-[#8a6843]">{data.total_open}</p>
+              </div>
+
+              <div className="bg-[#ebe5da] p-5 border border-[#d8cdbc] shadow-sm">
+                <div className="flex items-center justify-between text-[#5f4b3b] mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider">In Progress</span>
+                  <AlertTriangle className="w-5 h-5 text-[#5f4b3b]" />
+                </div>
+                <p className="font-serif text-3xl font-normal text-[#5f4b3b]">{data.total_in_progress}</p>
+              </div>
+
+              <div className="bg-[#faf8f3] p-5 border border-[#b8c9af] shadow-sm">
+                <div className="flex items-center justify-between text-[#52634a] mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider">Resolved</span>
+                  <CheckCircle2 className="w-5 h-5 text-[#52634a]" />
+                </div>
+                <p className="font-serif text-3xl font-normal text-[#52634a]">{data.total_resolved}</p>
+              </div>
+
+              <div className="bg-[#fbeeed] p-5 border border-[#d9a8a0] shadow-sm col-span-2 lg:col-span-1">
+                <div className="flex items-center justify-between text-[#8a4d43] mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider">Overdue</span>
+                  <AlertOctagon className="w-5 h-5 text-[#8a4d43]" />
+                </div>
+                <p className="font-serif text-3xl font-normal text-[#8a4d43]">{data.total_overdue}</p>
               </div>
             </div>
 
-            {/* By Priority */}
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
-                By Priority
-              </h3>
-              <div className="space-y-2 text-sm">
-                {Object.entries(data.by_priority || {}).map(([prio, cnt]) => (
-                  <div key={prio} className="flex items-center justify-between">
-                    <PriorityBadge priority={prio} />
-                    <span className="font-bold text-gray-900">{cnt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* By Category */}
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
-                By Category
-              </h3>
-              <div className="space-y-2 text-sm">
-                {Object.entries(data.by_category || {}).map(([cat, cnt]) => (
-                  <div key={cat} className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-gray-700">{cat}</span>
-                    <span className="font-bold text-gray-900">{cnt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Activity: Complaints & Transitions */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Recent Complaints */}
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                <h3 className="text-base font-bold text-gray-900">Recent Complaints</h3>
-                <Link to="/admin/complaints" className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center">
-                  View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                </Link>
-              </div>
-
-              {data.recent_complaints?.length === 0 ? (
-                <p className="text-sm text-gray-500 italic">No complaints found.</p>
-              ) : (
-                <div className="divide-y divide-gray-100">
-                  {data.recent_complaints.map((c) => (
-                    <div key={c.id} className="py-3 flex items-center justify-between gap-2">
-                      <div>
-                        <Link
-                          to={`/complaints/${c.id}`}
-                          className="text-sm font-bold text-gray-900 hover:text-blue-600 line-clamp-1"
-                        >
-                          {c.title}
-                        </Link>
-                        <p className="text-xs text-gray-500">
-                          {c.resident_name} &bull; Flat {c.resident_flat_no || 'N/A'}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <StatusBadge status={c.status} isOverdue={c.is_overdue} />
-                      </div>
+            {/* Breakdown Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* By Status */}
+              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-3">
+                <h3 className="font-serif text-lg text-[#24211e] font-normal border-b border-[#d8cdbc] pb-2">
+                  By Status
+                </h3>
+                <div className="space-y-2 text-sm">
+                  {Object.entries(data.by_status || {}).map(([st, cnt]) => (
+                    <div key={st} className="flex items-center justify-between">
+                      <StatusBadge status={st} showOverdue={false} />
+                      <span className="font-serif text-base text-[#24211e]">{cnt}</span>
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-
-            {/* Recent Status Transitions */}
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-              <div className="border-b border-gray-100 pb-3">
-                <h3 className="text-base font-bold text-gray-900">Recent Status Transitions</h3>
               </div>
 
-              {data.recent_status_transitions?.length === 0 ? (
-                <p className="text-sm text-gray-500 italic">No recent transitions recorded.</p>
-              ) : (
-                <div className="divide-y divide-gray-100">
-                  {data.recent_status_transitions.map((t) => (
-                    <div key={t.id} className="py-3 text-xs space-y-1">
-                      <div className="flex items-center justify-between">
-                        <Link
-                          to={`/complaints/${t.complaint_id}`}
-                          className="font-bold text-blue-600 hover:text-blue-800"
-                        >
-                          Complaint #{t.complaint_id}
-                        </Link>
-                        <span className="text-gray-400">
-                          {new Date(t.changed_at).toLocaleString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: '2-digit',
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-1 font-semibold text-gray-700">
-                        <span>{t.from_status || 'INITIAL'}</span>
-                        <span>&rarr;</span>
-                        <span className="text-blue-600">{t.to_status}</span>
-                      </div>
-                      {t.note && <p className="text-gray-600 italic">"{t.note}"</p>}
+              {/* By Priority */}
+              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-3">
+                <h3 className="font-serif text-lg text-[#24211e] font-normal border-b border-[#d8cdbc] pb-2">
+                  By Priority
+                </h3>
+                <div className="space-y-2 text-sm">
+                  {Object.entries(data.by_priority || {}).map(([prio, cnt]) => (
+                    <div key={prio} className="flex items-center justify-between">
+                      <PriorityBadge priority={prio} />
+                      <span className="font-serif text-base text-[#24211e]">{cnt}</span>
                     </div>
                   ))}
                 </div>
-              )}
+              </div>
+
+              {/* By Category */}
+              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-3">
+                <h3 className="font-serif text-lg text-[#24211e] font-normal border-b border-[#d8cdbc] pb-2">
+                  By Category
+                </h3>
+                <div className="space-y-2 text-sm">
+                  {Object.entries(data.by_category || {}).map(([cat, cnt]) => (
+                    <div key={cat} className="flex items-center justify-between">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">{cat}</span>
+                      <span className="font-serif text-base text-[#24211e]">{cnt}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </>
-      ) : null}
+
+            {/* Recent Activity: Complaints & Transitions */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Recent Complaints */}
+              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-[#d8cdbc] pb-3">
+                  <h3 className="font-serif text-lg text-[#24211e] font-normal">Recent Complaints</h3>
+                  <Link to="/admin/complaints" className="text-xs font-bold uppercase tracking-wider text-[#5f4b3b] hover:text-[#24211e] flex items-center">
+                    View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                  </Link>
+                </div>
+
+                {data.recent_complaints?.length === 0 ? (
+                  <p className="text-sm text-[#6b665e] italic">No complaints found.</p>
+                ) : (
+                  <div className="divide-y divide-[#d8cdbc]/60">
+                    {data.recent_complaints.map((c) => (
+                      <div key={c.id} className="py-3 flex items-center justify-between gap-2">
+                        <div>
+                          <Link
+                            to={`/complaints/${c.id}`}
+                            className="font-serif text-base font-normal text-[#24211e] hover:text-[#5f4b3b] line-clamp-1"
+                          >
+                            {c.title}
+                          </Link>
+                          <p className="text-xs text-[#6b665e] mt-0.5">
+                            {c.resident_name} &bull; Flat {c.resident_flat_no || 'N/A'}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <StatusBadge status={c.status} isOverdue={c.is_overdue} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Recent Status Transitions */}
+              <div className="bg-[#faf8f3] p-6 border border-[#d8cdbc] shadow-sm space-y-4">
+                <div className="border-b border-[#d8cdbc] pb-3">
+                  <h3 className="font-serif text-lg text-[#24211e] font-normal">Recent Status Transitions</h3>
+                </div>
+
+                {data.recent_status_transitions?.length === 0 ? (
+                  <p className="text-sm text-[#6b665e] italic">No recent transitions recorded.</p>
+                ) : (
+                  <div className="divide-y divide-[#d8cdbc]/60">
+                    {data.recent_status_transitions.map((t) => (
+                      <div key={t.id} className="py-3 text-xs space-y-1">
+                        <div className="flex items-center justify-between">
+                          <Link
+                            to={`/complaints/${t.complaint_id}`}
+                            className="font-semibold text-[#5f4b3b] hover:text-[#24211e]"
+                          >
+                            Complaint #{t.complaint_id}
+                          </Link>
+                          <span className="text-[#8F8778]">
+                            {new Date(t.changed_at).toLocaleString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              hour: 'numeric',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-1.5 font-semibold text-[#24211e]">
+                          <span>{t.from_status || 'INITIAL'}</span>
+                          <span>&rarr;</span>
+                          <span className="text-[#5f4b3b]">{t.to_status}</span>
+                        </div>
+                        {t.note && <p className="text-[#6b665e] italic mt-0.5">"{t.note}"</p>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -73,10 +73,8 @@ def is_valid_cloudinary_url(url: str, expected_cloud_name: Optional[str] = None)
         if len(path_segments) < 2:
             return False
 
-        cloud_name = expected_cloud_name or settings.CLOUDINARY_CLOUD_NAME
-        # If a non-placeholder cloud name is configured, enforce exact match on first path segment
-        if cloud_name and cloud_name != "your_cloud_name":
-            if path_segments[0] != cloud_name:
+        if expected_cloud_name:
+            if path_segments[0] != expected_cloud_name:
                 return False
 
         return True

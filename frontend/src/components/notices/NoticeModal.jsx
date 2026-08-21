@@ -62,16 +62,16 @@ export default function NoticeModal({ notice = null, isOpen, onClose, onSuccess 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 relative">
-        <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
-          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <Bell className="w-5 h-5 text-blue-600" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="bg-[#faf8f3] border border-[#d8cdbc] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+        <div className="flex items-center justify-between pb-4 border-b border-[#d8cdbc] mb-5">
+          <h3 className="font-serif text-xl font-normal text-[#24211e] flex items-center gap-2">
+            <Bell className="w-5 h-5 text-[#5f4b3b]" />
             {isEditing ? 'Edit Notice' : 'Publish New Notice'}
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 rounded-lg p-1"
+            className="text-[#6b665e] hover:text-[#24211e] p-1 transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -82,8 +82,8 @@ export default function NoticeModal({ notice = null, isOpen, onClose, onSuccess 
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="notice-title" className="block text-sm font-semibold text-gray-700 mb-1">
-              Title <span className="text-red-500">*</span>
+            <label htmlFor="notice-title" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
+              Title <span className="text-[#8a4d43]">*</span>
             </label>
             <input
               id="notice-title"
@@ -92,13 +92,13 @@ export default function NoticeModal({ notice = null, isOpen, onClose, onSuccess 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Water Tank Maintenance Schedule"
-              className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5 border"
+              className="w-full bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] placeholder-[#a8a196] focus:border-[#5f4b3b] focus:outline-none text-sm p-2.5"
             />
           </div>
 
           <div>
-            <label htmlFor="notice-body" className="block text-sm font-semibold text-gray-700 mb-1">
-              Notice Body <span className="text-red-500">*</span>
+            <label htmlFor="notice-body" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
+              Notice Body <span className="text-[#8a4d43]">*</span>
             </label>
             <textarea
               id="notice-body"
@@ -107,45 +107,45 @@ export default function NoticeModal({ notice = null, isOpen, onClose, onSuccess 
               value={body}
               onChange={(e) => setBody(e.target.value)}
               placeholder="Write the full announcement details..."
-              className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5 border"
+              className="w-full bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] placeholder-[#a8a196] focus:border-[#5f4b3b] focus:outline-none text-sm p-2.5"
             />
           </div>
 
-          <div className="flex items-start space-x-3 p-3 bg-amber-50/70 rounded-lg border border-amber-200">
+          <div className="flex items-start space-x-3 p-3.5 bg-[#ebe5da]/70 border border-[#d8cdbc]">
             <div className="flex items-center h-5">
               <input
                 id="is-important"
                 type="checkbox"
                 checked={isImportant}
                 onChange={(e) => setIsImportant(e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 accent-[#5f4b3b] border-[#d8cdbc]"
               />
             </div>
             <div className="text-xs">
-              <label htmlFor="is-important" className="font-bold text-gray-900 flex items-center gap-1 cursor-pointer">
-                <Pin className="w-3.5 h-3.5 text-rose-600 fill-rose-600" />
+              <label htmlFor="is-important" className="font-bold text-[#24211e] uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
+                <Pin className="w-3.5 h-3.5 text-[#8a4d43] fill-[#8a4d43]" />
                 Mark as Important / Pinned
               </label>
-              <p className="text-gray-600 mt-0.5">
+              <p className="text-[#6b665e] mt-1 leading-relaxed">
                 Important notices are pinned to the top of the board{!isEditing && ' and sent via broadcast email to all active residents'}.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-100">
+          <div className="flex items-center justify-end space-x-3 pt-4 border-t border-[#d8cdbc]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#6b665e] bg-[#ebe5da] hover:bg-[#d8cdbc] border border-[#d8cdbc] transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !title.trim() || !body.trim()}
-              className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg shadow-sm transition-colors"
+              className="inline-flex items-center px-5 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] disabled:opacity-50 border border-[#24211e] shadow-sm transition-colors"
             >
-              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {loading && <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />}
               {isEditing ? 'Save Changes' : 'Publish Notice'}
             </button>
           </div>

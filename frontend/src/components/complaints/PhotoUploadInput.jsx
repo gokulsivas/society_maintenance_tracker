@@ -45,28 +45,28 @@ export default function PhotoUploadInput({ value, onChange, onError }) {
   };
 
   return (
-    <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
-        Attached Photo <span className="text-gray-400 font-normal">(Optional, max 5 MB)</span>
+    <div className="space-y-2">
+      <label className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">
+        Attached Photo <span className="text-[#8F8778] font-normal text-[11px]">(Optional, max 5 MB)</span>
       </label>
 
       {!preview ? (
-        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-blue-400 transition-colors bg-gray-50/50">
+        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border border-dashed border-[#d8cdbc] hover:border-[#5f4b3b]/60 transition-colors bg-[#FAF8F5]">
           <div className="space-y-2 text-center">
             {uploading ? (
               <div className="flex flex-col items-center py-3">
-                <Loader2 className="h-8 w-8 text-blue-600 animate-spin mb-2" />
-                <p className="text-sm font-medium text-blue-600">Uploading securely to Cloudinary...</p>
+                <Loader2 className="h-8 w-8 text-[#5f4b3b] animate-spin mb-2" />
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#5f4b3b]">Uploading photo securely...</p>
               </div>
             ) : (
               <>
-                <Upload className="mx-auto h-10 w-10 text-gray-400" />
-                <div className="flex text-sm text-gray-600">
+                <Upload className="mx-auto h-8 w-8 text-[#8F8778]" />
+                <div className="flex text-sm text-[#6b665e]">
                   <label
                     htmlFor="photo-upload"
-                    className="relative cursor-pointer bg-transparent rounded-md font-semibold text-blue-600 hover:text-blue-500 focus-within:outline-none"
+                    className="relative cursor-pointer bg-transparent font-semibold text-[#5f4b3b] hover:text-[#24211e] focus-within:outline-none"
                   >
-                    <span>Upload a file</span>
+                    <span>Upload a photo</span>
                     <input
                       id="photo-upload"
                       name="photo-upload"
@@ -79,27 +79,27 @@ export default function PhotoUploadInput({ value, onChange, onError }) {
                   </label>
                   <p className="pl-1">or drag and drop</p>
                 </div>
-                <p className="text-xs text-gray-500">PNG, JPG, WebP up to 5MB</p>
+                <p className="text-[11px] text-[#8F8778]">PNG, JPG, WebP up to 5MB</p>
               </>
             )}
           </div>
         </div>
       ) : (
-        <div className="relative inline-block rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-gray-50 p-2">
+        <div className="relative inline-block border border-[#d8cdbc] bg-[#FAF8F5] p-2 shadow-sm">
           <img
             src={preview}
             alt="Uploaded complaint preview"
-            className="h-44 w-auto object-cover rounded-md"
+            className="h-44 w-auto object-cover border border-[#d8cdbc]"
           />
           <div className="mt-2 flex items-center justify-between px-1">
-            <span className="inline-flex items-center text-xs font-semibold text-emerald-600">
+            <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-[#52634a]">
               <CheckCircle className="w-3.5 h-3.5 mr-1" />
-              Uploaded
+              Attached
             </span>
             <button
               type="button"
               onClick={handleRemove}
-              className="inline-flex items-center text-xs font-medium text-red-600 hover:text-red-800"
+              className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-[#8a4d43] hover:text-[#5f4b3b]"
             >
               <X className="w-3.5 h-3.5 mr-0.5" />
               Remove

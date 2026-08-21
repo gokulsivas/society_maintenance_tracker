@@ -60,79 +60,85 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
-          <Settings className="w-7 h-7 text-blue-600" />
-          System Settings
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Configure society-wide operational rules and automated calculation parameters.
-        </p>
-      </div>
-
-      <ErrorAlert message={error} onDismiss={() => setError(null)} />
-
-      {successMsg && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 flex items-center justify-between text-sm">
-          <div className="flex items-center space-x-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-            <span className="font-semibold">{successMsg}</span>
+    <div className="editorial-page-surface min-h-[calc(100vh-5rem)] py-8 sm:py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="border-b border-[#d8cdbc] pb-4">
+          <div className="flex items-center space-x-2.5">
+            <div className="p-2 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc]">
+              <Settings className="w-4 h-4" />
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl font-normal text-[#24211e] tracking-tight">
+              System Settings
+            </h1>
           </div>
-          <button onClick={() => setSuccessMsg(null)} className="text-emerald-600 hover:text-emerald-800 text-xs font-bold">
-            Dismiss
-          </button>
-        </div>
-      )}
-
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
-        <div className="border-b border-gray-100 pb-4">
-          <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-amber-500" />
-            Complaint Resolution Overdue Threshold
-          </h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Complaints that remain in <strong>OPEN</strong> or <strong>IN_PROGRESS</strong> status past this number of days are dynamically flagged as overdue in the dashboard and sorted to the top of the admin queue.
+          <p className="text-sm text-[#6b665e] mt-1">
+            Configure society-wide operational rules and automated calculation parameters.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
-          <div>
-            <label htmlFor="overdue_threshold_days" className="block text-sm font-semibold text-gray-700 mb-1">
-              Overdue Threshold (Days)
-            </label>
-            <input
-              id="overdue_threshold_days"
-              type="number"
-              min={1}
-              max={365}
-              required
-              disabled={loading || saving}
-              value={days}
-              onChange={(e) => setDays(e.target.value)}
-              className="block w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm shadow-sm disabled:bg-gray-100"
-            />
-            <p className="text-xs text-gray-400 mt-1.5">Valid range: 1 to 365 days.</p>
-          </div>
+        <ErrorAlert message={error} onDismiss={() => setError(null)} />
 
-          <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-start space-x-3 text-xs text-gray-600">
-            <AlertOctagon className="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5" />
-            <p>
-              Changes take effect immediately across all live queries and dashboards without requiring a database migration.
+        {successMsg && (
+          <div className="p-4 bg-[#eef2eb] border border-[#b8c9af] text-[#52634a] flex items-center justify-between text-xs sm:text-sm shadow-sm">
+            <div className="flex items-center space-x-2">
+              <CheckCircle2 className="w-4 h-4 text-[#52634a]" />
+              <span className="font-semibold">{successMsg}</span>
+            </div>
+            <button onClick={() => setSuccessMsg(null)} className="text-[#52634a] hover:text-[#24211e] text-xs font-bold uppercase tracking-wider">
+              Dismiss
+            </button>
+          </div>
+        )}
+
+        <div className="bg-[#faf8f3] border border-[#d8cdbc] shadow-sm p-6 sm:p-10 space-y-6">
+          <div className="border-b border-[#d8cdbc] pb-4">
+            <h2 className="font-serif text-xl font-normal text-[#24211e] flex items-center gap-2">
+              <Clock className="w-5 h-5 text-[#8a6843]" />
+              Complaint Resolution Overdue Threshold
+            </h2>
+            <p className="text-xs text-[#6b665e] mt-1.5 leading-relaxed">
+              Complaints that remain in <strong>OPEN</strong> or <strong>IN_PROGRESS</strong> status past this number of days are dynamically flagged as overdue in the dashboard and sorted to the top of the admin queue.
             </p>
           </div>
 
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={loading || saving}
-              className="inline-flex items-center px-5 py-2.5 font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-xl shadow-sm transition-all"
-            >
-              <Save className="w-4 h-4 mr-2" />
-              {saving ? 'Saving...' : 'Save Settings'}
-            </button>
-          </div>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-5 max-w-md">
+            <div>
+              <label htmlFor="overdue_threshold_days" className="block text-xs font-semibold uppercase tracking-wider text-[#5f4b3b] mb-1.5">
+                Overdue Threshold (Days)
+              </label>
+              <input
+                id="overdue_threshold_days"
+                type="number"
+                min={1}
+                max={365}
+                required
+                disabled={loading || saving}
+                value={days}
+                onChange={(e) => setDays(e.target.value)}
+                className="block w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-[#d8cdbc] text-[#24211e] focus:border-[#5f4b3b] focus:outline-none text-sm shadow-sm disabled:opacity-50"
+              />
+              <p className="text-[11px] text-[#8F8778] mt-1.5">Valid range: 1 to 365 days.</p>
+            </div>
+
+            <div className="p-4 bg-[#FAF8F5] border border-[#d8cdbc] flex items-start space-x-3 text-xs text-[#6b665e]">
+              <AlertOctagon className="w-4 h-4 text-[#8a4d43] flex-shrink-0 mt-0.5" />
+              <p className="leading-relaxed">
+                Changes take effect immediately across all live queries and dashboards without requiring a database migration.
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading || saving}
+                className="inline-flex items-center px-6 py-2.5 font-semibold text-xs uppercase tracking-wider text-[#FAF8F5] bg-[#24211e] hover:bg-[#3f3025] disabled:opacity-50 border border-[#24211e] shadow-sm transition-all"
+              >
+                <Save className="w-3.5 h-3.5 mr-2" />
+                {saving ? 'Saving...' : 'Save Settings'}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

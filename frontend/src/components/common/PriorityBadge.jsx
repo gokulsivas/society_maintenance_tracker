@@ -4,26 +4,26 @@ export default function PriorityBadge({ priority }) {
   const priorityConfig = {
     LOW: {
       label: 'Low',
-      className: 'bg-slate-100 text-slate-700 border-slate-200',
+      className: 'bg-[#faf8f3] text-[#6b665e] border-[#d8cdbc]',
     },
     MEDIUM: {
       label: 'Medium',
-      className: 'bg-amber-50 text-amber-700 border-amber-200',
+      className: 'bg-[#ebe5da] text-[#8a6843] border-[#d8cdbc]',
     },
     HIGH: {
       label: 'High',
-      className: 'bg-red-50 text-red-700 border-red-200 font-bold',
+      className: 'bg-[#fbeeed] text-[#8a4d43] border-[#d9a8a0] font-bold',
     },
   };
 
   const config = priorityConfig[priority] || {
     label: priority,
-    className: 'bg-gray-100 text-gray-700 border-gray-200',
+    className: 'bg-[#faf8f3] text-[#6b665e] border-[#d8cdbc]',
   };
 
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${config.className}`}
+      className={`inline-flex items-center px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider border ${config.className}`}
     >
       {config.label}
     </span>

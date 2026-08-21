@@ -12,37 +12,37 @@ export default function ComplaintCard({ complaint, showResident = false }) {
   });
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all p-5 flex flex-col justify-between">
+    <div className="bg-[#faf8f3] border border-[#d8cdbc] hover:border-[#5f4b3b]/60 transition-all p-5 sm:p-6 flex flex-col justify-between shadow-sm">
       <div>
-        <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex items-center gap-2 flex-wrap">
             <StatusBadge status={complaint.status} isOverdue={complaint.is_overdue} />
             <PriorityBadge priority={complaint.priority} />
-            <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded font-medium">
+            <span className="text-[11px] px-2 py-0.5 bg-[#ebe5da] text-[#5f4b3b] border border-[#d8cdbc] font-semibold uppercase tracking-wider">
               {complaint.category}
             </span>
           </div>
-          <span className="text-xs font-mono text-gray-400">#{complaint.id}</span>
+          <span className="text-xs font-mono text-[#8F8778]">#{complaint.id}</span>
         </div>
 
-        <h4 className="text-base font-bold text-gray-900 mb-1.5 line-clamp-1">{complaint.title}</h4>
-        <p className="text-sm text-gray-600 line-clamp-2 mb-4">{complaint.description}</p>
+        <h4 className="font-serif text-lg font-normal text-[#24211e] mb-1.5 line-clamp-1">{complaint.title}</h4>
+        <p className="text-sm text-[#6b665e] line-clamp-2 mb-4 leading-relaxed">{complaint.description}</p>
       </div>
 
-      <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+      <div className="pt-3 border-t border-[#d8cdbc]/60 flex items-center justify-between text-xs text-[#6b665e]">
         <div className="flex items-center space-x-3">
           <span className="inline-flex items-center">
-            <Calendar className="w-3.5 h-3.5 mr-1 text-gray-400" />
+            <Calendar className="w-3.5 h-3.5 mr-1 text-[#8F8778]" />
             {formattedDate}
           </span>
           {showResident && complaint.resident_name && (
-            <span className="inline-flex items-center font-medium text-gray-700">
-              <User className="w-3.5 h-3.5 mr-1 text-gray-400" />
+            <span className="inline-flex items-center font-medium text-[#24211e]">
+              <User className="w-3.5 h-3.5 mr-1 text-[#8F8778]" />
               {complaint.resident_name} ({complaint.resident_flat_no || 'N/A'})
             </span>
           )}
           {complaint.photo_url && (
-            <span className="inline-flex items-center text-blue-600 font-medium" title="Has attached photo">
+            <span className="inline-flex items-center text-[#5f4b3b] font-medium" title="Has attached photo">
               <ImageIcon className="w-3.5 h-3.5 mr-0.5" />
               Photo
             </span>
@@ -51,7 +51,7 @@ export default function ComplaintCard({ complaint, showResident = false }) {
 
         <Link
           to={`/complaints/${complaint.id}`}
-          className="inline-flex items-center font-semibold text-blue-600 hover:text-blue-800"
+          className="inline-flex items-center font-semibold uppercase tracking-wider text-xs text-[#5f4b3b] hover:text-[#24211e]"
         >
           View
           <ChevronRight className="w-4 h-4 ml-0.5" />
