@@ -11,7 +11,7 @@ ROOT_DIR = BACKEND_DIR.parent
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Society Maintenance Tracker"
+    PROJECT_NAME: str = "Socivio"
     API_V1_STR: str = "/api"
     ENVIRONMENT: str = "development"
 

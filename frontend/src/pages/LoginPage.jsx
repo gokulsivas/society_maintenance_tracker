@@ -52,7 +52,7 @@ export default function LoginPage() {
           </div>
         </div>
         <h2 className="text-center text-3xl font-extrabold text-gray-900 tracking-tight">
-          Society Maintenance
+          Socivio
         </h2>
         <p className="mt-1 text-center text-sm text-gray-600">
           Sign in to manage and track apartment society requests

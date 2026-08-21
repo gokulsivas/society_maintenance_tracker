@@ -60,13 +60,13 @@ export default function LandingPage() {
             href="#home"
             onClick={(e) => handleScrollTo(e, 'home')}
             className="flex items-center space-x-3 text-[#1F1E1C] hover:opacity-80 transition-opacity"
-            aria-label="Society Maintenance Tracker - Return to Top"
+            aria-label="Socivio - Return to Top"
           >
             <div className="w-8 h-8 bg-[#1F1E1C] text-[#FAF8F5] flex items-center justify-center">
               <Building2 className="w-4 h-4" />
             </div>
             <span className="font-serif font-medium text-lg sm:text-xl tracking-tight">
-              Society Maintenance Tracker
+              Socivio
             </span>
           </a>
 
@@ -575,7 +575,7 @@ export default function LandingPage() {
               onClick={(e) => handleScrollTo(e, 'home')}
               className="font-serif font-medium text-lg text-[#1F1E1C] hover:opacity-80 transition-opacity"
             >
-              Society Maintenance Tracker
+              Socivio
             </a>
             <p className="text-xs text-[#8F8778]">
               A clearer way to manage apartment society maintenance.
@@ -606,7 +606,7 @@ export default function LandingPage() {
           </div>
 
           <p className="text-xs text-[#8F8778]">
-            &copy; {new Date().getFullYear()} Society Maintenance Tracker. All rights reserved.
+            &copy; {new Date().getFullYear()} Socivio. All rights reserved.
           </p>
         </div>
       </footer>

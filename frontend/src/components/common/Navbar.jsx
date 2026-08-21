@@ -54,7 +54,7 @@ export default function Navbar() {
               <div className="p-1.5 bg-blue-600 rounded-lg">
                 <Building2 className="h-5 w-5 text-white" />
               </div>
-              <span className="tracking-tight hidden sm:inline">Society Tracker</span>
+              <span className="tracking-tight hidden sm:inline">Socivio</span>
             </Link>
           </div>
 

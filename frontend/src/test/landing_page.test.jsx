@@ -30,7 +30,7 @@ describe('LandingPage Component', () => {
     ).not.toBeInTheDocument();
 
     // Brand Wordmark
-    expect(screen.getAllByText(/Society Maintenance Tracker/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Socivio/i).length).toBeGreaterThan(0);
 
     // Hero Headline
     expect(

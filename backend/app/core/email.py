@@ -111,7 +111,7 @@ def send_complaint_status_email(
             </a>
         </p>
         <p style="color: #888; font-size: 12px; margin-top: 30px;">
-            Society Maintenance Tracker &bull; Automated Notification
+            Socivio &bull; Automated Notification
         </p>
     </div>
     """
@@ -125,7 +125,7 @@ Status: {from_status} -> {to_status}{note_text}
 
 View details: {complaint_url}
 
-Society Maintenance Tracker
+Socivio
 """
 
     recipient = [{"email": resident_email, "name": resident_name or "Resident"}]
@@ -164,7 +164,7 @@ def send_important_notice_broadcast(
             </a>
         </p>
         <p style="color: #888; font-size: 12px; margin-top: 30px;">
-            Society Maintenance Tracker &bull; Broadcast Notification
+            Socivio &bull; Broadcast Notification
         </p>
     </div>
     """
@@ -175,7 +175,7 @@ def send_important_notice_broadcast(
 
 View on Notice Board: {notices_url}
 
-Society Maintenance Tracker
+Socivio
 """
 
     sent_count = 0
