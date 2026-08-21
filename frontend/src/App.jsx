@@ -5,6 +5,7 @@ import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
 // Public Pages
+import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 
@@ -21,28 +22,16 @@ import AdminComplaintsPage from './pages/AdminComplaintsPage';
 import AdminNoticesPage from './pages/AdminNoticesPage';
 import AdminSettingsPage from './pages/AdminSettingsPage';
 
-function RootRedirect() {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
-
-  if (loading) return null;
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return isAdmin ? <Navigate to="/admin/dashboard" replace /> : <Navigate to="/dashboard" replace />;
-}
-
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <div className="min-h-screen bg-slate-50 text-gray-900 flex flex-col font-sans">
           <Navbar />
-          <main className="flex-1 pb-12">
+          <main className="flex-1">
             <Routes>
-              {/* Root redirect */}
-              <Route path="/" element={<RootRedirect />} />
+              {/* Public Landing Page */}
+              <Route path="/" element={<LandingPage />} />
 
               {/* Public Auth Routes */}
               <Route path="/login" element={<LoginPage />} />
