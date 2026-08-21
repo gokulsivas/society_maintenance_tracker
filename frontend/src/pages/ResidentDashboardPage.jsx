@@ -69,7 +69,7 @@ export default function ResidentDashboardPage() {
             <span className="inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-[#FAF8F5]/10 text-[#FAF8F5] border border-white/10">
               Resident Portal &bull; Flat {user?.flat_no || 'Resident'}
             </span>
-            <h1 className="font-serif text-3xl sm:text-4xl font-normal tracking-tight">
+            <h1 className="font-serif text-3xl sm:text-4xl font-normal tracking-tight text-[#FAF8F5]">
               Welcome back, {user?.name}!
             </h1>
             <p className="text-[#C4BDAF] text-sm leading-relaxed max-w-xl">

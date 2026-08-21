@@ -126,7 +126,7 @@ export default function ComplaintDetailPage() {
             <div>
               <div className="flex items-center space-x-2">
                 <span className="text-xs font-mono text-[#8F8778] dark:text-[#a89e91]">Ticket #{complaint.id}</span>
-                <span className="category-label">
+                <span className="px-2 py-0.5 text-xs font-semibold uppercase tracking-wider bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none whitespace-nowrap">
                   {complaint.category}
                 </span>
               </div>

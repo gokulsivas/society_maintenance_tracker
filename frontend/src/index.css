@@ -2,26 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root,
-[data-theme="light"],
-.light {
-  --surface-page: #f5f2ec;
-  --surface-card: #faf8f3;
-  --surface-raised: #ebe5da;
-  --surface-elevated: #d8cdbc;
-  --text-primary: #24211e;
-  --text-secondary: #6b665e;
-  --text-muted: #8a8177;
-  --border-default: rgba(63, 49, 38, 0.16);
-  --border-strong: rgba(63, 49, 38, 0.30);
-  --input-surface: #faf8f3;
-  --input-text: #24211e;
-  --input-placeholder: #8a8177;
-  --table-header: #ebe5da;
-  --table-row: #faf8f3;
-  --table-row-alt: #f5f2ec;
-  --table-row-hover: #ebe5da;
-
+:root {
   --color-ivory: #f5f2ec;
   --color-paper: #faf8f3;
   --color-taupe: #ebe5da;
@@ -41,30 +22,6 @@
   --shadow-subtle: 0 8px 24px rgba(45, 34, 26, 0.06);
 }
 
-[data-theme="dark"],
-.dark {
-  --surface-page: #1b1917;
-  --surface-card: #24211e;
-  --surface-raised: #2b2723;
-  --surface-elevated: #342d27;
-  --text-primary: #f5f2ec;
-  --text-secondary: #c8bfb3;
-  --text-muted: #a89e91;
-  --border-default: rgba(245, 242, 236, 0.16);
-  --border-strong: rgba(245, 242, 236, 0.25);
-  --input-surface: #2a2520;
-  --input-text: #f5f2ec;
-  --input-placeholder: #a89e91;
-  --table-header: #342d27;
-  --table-row: #24211e;
-  --table-row-alt: #2b2723;
-  --table-row-hover: #2b2723;
-
-  --danger-surface: #4a2927;
-  --danger-border: #9b5a50;
-  --danger-text: #ffe6e1;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -78,27 +35,18 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: var(--surface-page);
-  color: var(--text-primary);
+  background-color: #f5f2ec;
+  color: #24211e;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .editorial-page-surface {
   position: relative;
-  background-color: var(--surface-page);
+  background-color: #f5f2ec;
   background-image:
     linear-gradient(rgba(67, 53, 42, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(67, 53, 42, 0.04) 1px, transparent 1px);
   background-size: 84px 84px;
-}
-
-.dark .editorial-page-surface,
-[data-theme="dark"] .editorial-page-surface {
-  background-color: var(--surface-page);
-  background-image:
-    linear-gradient(rgba(245, 242, 236, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245, 242, 236, 0.035) 1px, transparent 1px);
-  color: var(--text-primary);
 }
 
 @media (max-width: 640px) {
@@ -122,65 +70,21 @@ body {
   outline-offset: 2px;
 }
 
-/* Light mode explicit headings enforcement */
-html:not(.dark) h1:not(.no-theme-heading),
-html:not(.dark) h2:not(.no-theme-heading),
-html:not(.dark) h3:not(.no-theme-heading),
-.light h1:not(.no-theme-heading),
-.light h2:not(.no-theme-heading),
-.light h3:not(.no-theme-heading),
-[data-theme="light"] h1:not(.no-theme-heading),
-[data-theme="light"] h2:not(.no-theme-heading),
-[data-theme="light"] h3:not(.no-theme-heading) {
-  color: #24211e;
-}
+/* ==========================================================================
+   Dark Theme Overrides (Scoped strictly to .dark / [data-theme="dark"])
+   ========================================================================== */
 
-.dark h1:not(.no-theme-heading),
-.dark h2:not(.no-theme-heading),
-.dark h3:not(.no-theme-heading),
-[data-theme="dark"] h1:not(.no-theme-heading),
-[data-theme="dark"] h2:not(.no-theme-heading),
-[data-theme="dark"] h3:not(.no-theme-heading) {
+.dark body,
+[data-theme="dark"] body {
+  background-color: #191715;
   color: #f5f2ec;
 }
 
-/* Exclude dark header/navbar and hero banners from heading color overrides */
-.no-theme-heading,
-nav h1,
-nav h2,
-nav h3,
-nav span,
-header h1,
-header h2,
-header h3,
-header span,
-.bg-\[\#24211e\] h1,
-.bg-\[\#24211e\] h2,
-.bg-\[\#24211e\] h3,
-.bg-\[\#24211e\] p,
-.bg-\[\#24211e\] span {
-  color: inherit;
-}
-
-/* Explicit category, status, priority label tokens */
-.category-label {
-  display: inline-flex;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  border-radius: 0px;
-  padding: 2px 8px;
-  background-color: #ebe5da;
-  color: #5f4b3b;
-  border: 1px solid rgba(63, 49, 38, 0.25);
-}
-
-.dark .category-label,
-[data-theme="dark"] .category-label {
-  background-color: #342d27;
-  color: #d8cdbc;
-  border: 1px solid rgba(245, 242, 236, 0.16);
+.dark .editorial-page-surface,
+[data-theme="dark"] .editorial-page-surface {
+  background-color: #191715;
+  background-image:
+    linear-gradient(rgba(245, 242, 236, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 242, 236, 0.035) 1px, transparent 1px);
+  color: #f5f2ec;
 }

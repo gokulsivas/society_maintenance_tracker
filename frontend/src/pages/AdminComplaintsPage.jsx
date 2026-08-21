@@ -247,7 +247,7 @@ export default function AdminComplaintsPage() {
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="category-label">
+                        <span className="px-2 py-0.5 text-xs font-semibold uppercase tracking-wider bg-[#ebe5da] dark:bg-[#342d27] text-[#5f4b3b] dark:text-[#d8cdbc] border border-[#d8cdbc] dark:border-[rgba(245,242,236,0.16)] rounded-none whitespace-nowrap">
                           {c.category}
                         </span>
                       </td>
