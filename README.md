@@ -134,7 +134,12 @@ Authentication uses JSON Web Tokens (JWT) stored client-side and verified server
 
 ## Screenshots
 
-Screenshots can be added here from the deployed application after capturing the final production views.
+<img width="3781" height="2149" alt="image" src="https://github.com/user-attachments/assets/2ba7546a-deb9-4109-a8bd-63ff01ba1209" />
+<img width="1761" height="2018" alt="image" src="https://github.com/user-attachments/assets/5544c48a-4a88-4936-8370-65bf46718f63" />
+<img width="3773" height="2164" alt="image" src="https://github.com/user-attachments/assets/cb07d419-2ea7-45df-8a43-a3783943c0b1" />
+<img width="3772" height="2159" alt="image" src="https://github.com/user-attachments/assets/40c9e14e-4131-4835-8ba4-cc4baa9ce513" />
+<img width="3767" height="2133" alt="image" src="https://github.com/user-attachments/assets/8162e463-e3f6-41b4-8437-8bcf4ee05286" />
+<img width="3772" height="2163" alt="image" src="https://github.com/user-attachments/assets/a9df9337-013d-4ab3-8d8e-02728b05ef71" />
 
 ---
 
