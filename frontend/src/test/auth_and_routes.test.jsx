@@ -511,5 +511,149 @@ describe('Auth & Protected Routing', () => {
     expect(screen.getByTestId('landing-content')).toBeInTheDocument();
     expect(screen.queryByTestId('dashboard-content')).not.toBeInTheDocument();
   });
+
+  it('direct browser refresh at / with cached resident in AuthProvider synchronously redirects to /dashboard without flashing landing', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    localStorage.setItem('token', 'valid.resident.token');
+    localStorage.setItem(
+      'user',
+      JSON.stringify({ id: 42, name: 'Refreshed Resident', role: 'RESIDENT' })
+    );
+
+    vi.spyOn(authApi, 'getMe').mockResolvedValueOnce({
+      id: 42,
+      name: 'Refreshed Resident',
+      role: 'RESIDENT',
+    });
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <GuestOnlyRoute>
+                  <div data-testid="landing-content">LANDING_PAGE_HERO</div>
+                </GuestOnlyRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={<div data-testid="dashboard-content">RESIDENT_DASHBOARD_VIEW</div>}
+            />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    // Should immediately be on dashboard, no landing content rendered
+    expect(screen.getByTestId('dashboard-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('landing-content')).not.toBeInTheDocument();
+    expect(screen.queryByText('Checking authentication...')).not.toBeInTheDocument();
+  });
+
+  it('authenticated user navigating to /signin or /signup redirects to /dashboard', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    const authValue = {
+      user: { id: 7, name: 'Active Resident', role: 'RESIDENT' },
+      isAuthenticated: true,
+      isAdmin: false,
+      loading: false,
+    };
+
+    for (const routePath of ['/signin', '/signup']) {
+      const { unmount } = render(
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter initialEntries={[routePath]}>
+            <Routes>
+              <Route
+                path={routePath}
+                element={
+                  <GuestOnlyRoute>
+                    <div data-testid="guest-auth-page">AUTH_PAGE_FOR_{routePath}</div>
+                  </GuestOnlyRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={<div data-testid="dashboard-content">RESIDENT_DASHBOARD_VIEW</div>}
+              />
+            </Routes>
+          </MemoryRouter>
+        </AuthContext.Provider>
+      );
+
+      expect(screen.getByTestId('dashboard-content')).toBeInTheDocument();
+      expect(screen.queryByTestId('guest-auth-page')).not.toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  it('logging out restores access to / to render landing page', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    const { useNavigate } = await import('react-router-dom');
+    localStorage.setItem('token', 'logout.test.token');
+    localStorage.setItem(
+      'user',
+      JSON.stringify({ id: 99, name: 'Logout User', role: 'RESIDENT' })
+    );
+
+    function FullAppSimulator() {
+      const { logout } = useAuth();
+      const navigate = useNavigate();
+      return (
+        <div>
+          <button
+            onClick={() => {
+              logout();
+              navigate('/');
+            }}
+            data-testid="logout-btn"
+          >
+            Log out
+          </button>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <GuestOnlyRoute>
+                  <div data-testid="landing-content">LANDING_PAGE_HERO</div>
+                </GuestOnlyRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={<div data-testid="dashboard-content">RESIDENT_DASHBOARD_VIEW</div>}
+            />
+          </Routes>
+        </div>
+      );
+    }
+
+    const { fireEvent } = await import('@testing-library/react');
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/']}>
+          <FullAppSimulator />
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    // Initially authenticated: redirected to dashboard
+    expect(screen.getByTestId('dashboard-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('landing-content')).not.toBeInTheDocument();
+
+    // Trigger logout
+    fireEvent.click(screen.getByTestId('logout-btn'));
+
+    // Now on /, landing page is rendered
+    await waitFor(() => {
+      expect(screen.getByTestId('landing-content')).toBeInTheDocument();
+      expect(screen.queryByTestId('dashboard-content')).not.toBeInTheDocument();
+    });
+  });
 });
+
 
