@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import GuestOnlyRoute from './components/common/GuestOnlyRoute';
 
 // Public Pages
 import LandingPage from './pages/LandingPage';
@@ -22,103 +23,152 @@ import AdminComplaintsPage from './pages/AdminComplaintsPage';
 import AdminNoticesPage from './pages/AdminNoticesPage';
 import AdminSettingsPage from './pages/AdminSettingsPage';
 
+function AuthenticatedLayout({ children, adminOnly = false }) {
+  return (
+    <ProtectedRoute adminOnly={adminOnly}>
+      <div className="min-h-screen bg-[#f5f2ec] text-[#24211e] flex flex-col font-sans">
+        <Navbar />
+        <main className="flex-1">{children}</main>
+      </div>
+    </ProtectedRoute>
+  );
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-[#f5f2ec] text-[#24211e] flex flex-col font-sans">
-          <Navbar />
-          <main className="flex-1">
-              <Routes>
-                {/* Public Landing Page */}
-                <Route path="/" element={<LandingPage />} />
+        <Routes>
+          {/* Public Guest-Only Routes */}
+          <Route
+            path="/"
+            element={
+              <GuestOnlyRoute>
+                <LandingPage />
+              </GuestOnlyRoute>
+            }
+          />
+          <Route
+            path="/signin"
+            element={
+              <GuestOnlyRoute>
+                <LoginPage />
+              </GuestOnlyRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <GuestOnlyRoute>
+                <LoginPage />
+              </GuestOnlyRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <GuestOnlyRoute>
+                <RegisterPage />
+              </GuestOnlyRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <GuestOnlyRoute>
+                <RegisterPage />
+              </GuestOnlyRoute>
+            }
+          />
 
-                {/* Public Auth Routes */}
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
+          {/* Resident & Shared Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <AuthenticatedLayout>
+                <ResidentDashboardPage />
+              </AuthenticatedLayout>
+            }
+          />
+          {/* Order matters: /complaints/new MUST come before /complaints/:id */}
+          <Route
+            path="/complaints/new"
+            element={
+              <AuthenticatedLayout>
+                <CreateComplaintPage />
+              </AuthenticatedLayout>
+            }
+          />
+          <Route
+            path="/new-complaint"
+            element={
+              <AuthenticatedLayout>
+                <CreateComplaintPage />
+              </AuthenticatedLayout>
+            }
+          />
+          <Route
+            path="/complaints/:id"
+            element={
+              <AuthenticatedLayout>
+                <ComplaintDetailPage />
+              </AuthenticatedLayout>
+            }
+          />
+          <Route
+            path="/complaints"
+            element={
+              <AuthenticatedLayout>
+                <MyComplaintsPage />
+              </AuthenticatedLayout>
+            }
+          />
+          <Route
+            path="/notices"
+            element={
+              <AuthenticatedLayout>
+                <NoticeBoardPage />
+              </AuthenticatedLayout>
+            }
+          />
 
-                {/* Resident & Shared Protected Routes */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <ResidentDashboardPage />
-                    </ProtectedRoute>
-                  }
-                />
-                {/* Order matters: /complaints/new MUST come before /complaints/:id */}
-                <Route
-                  path="/complaints/new"
-                  element={
-                    <ProtectedRoute>
-                      <CreateComplaintPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/complaints/:id"
-                  element={
-                    <ProtectedRoute>
-                      <ComplaintDetailPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/complaints"
-                  element={
-                    <ProtectedRoute>
-                      <MyComplaintsPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/notices"
-                  element={
-                    <ProtectedRoute>
-                      <NoticeBoardPage />
-                    </ProtectedRoute>
-                  }
-                />
+          {/* Admin-only Protected Routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AuthenticatedLayout adminOnly>
+                <AdminDashboardPage />
+              </AuthenticatedLayout>
+            }
+          />
+          <Route
+            path="/admin/complaints"
+            element={
+              <AuthenticatedLayout adminOnly>
+                <AdminComplaintsPage />
+              </AuthenticatedLayout>
+            }
+          />
+          <Route
+            path="/admin/notices"
+            element={
+              <AuthenticatedLayout adminOnly>
+                <AdminNoticesPage />
+              </AuthenticatedLayout>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <AuthenticatedLayout adminOnly>
+                <AdminSettingsPage />
+              </AuthenticatedLayout>
+            }
+          />
 
-                {/* Admin-only Protected Routes */}
-                <Route
-                  path="/admin/dashboard"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <AdminDashboardPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/complaints"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <AdminComplaintsPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/notices"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <AdminNoticesPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/settings"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <AdminSettingsPage />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* 404 Fallback */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </main>
-        </div>
+          {/* 404 Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
   );

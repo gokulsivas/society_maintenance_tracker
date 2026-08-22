@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider, useAuth } from '../context/AuthContext';
+import { AuthProvider, AuthContext, useAuth } from '../context/AuthContext';
 import ProtectedRoute from '../components/common/ProtectedRoute';
 import * as authApi from '../api/auth';
 
@@ -63,12 +63,12 @@ describe('Auth & Protected Routing', () => {
     });
   });
 
-  it('redirects unauthenticated users to /login on ProtectedRoute', async () => {
+  it('redirects unauthenticated users to /signin on ProtectedRoute', async () => {
     render(
       <AuthProvider>
         <MemoryRouter initialEntries={['/dashboard']}>
           <Routes>
-            <Route path="/login" element={<div>LOGIN_PAGE</div>} />
+            <Route path="/signin" element={<div>SIGNIN_PAGE</div>} />
             <Route
               path="/dashboard"
               element={
@@ -83,7 +83,7 @@ describe('Auth & Protected Routing', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('LOGIN_PAGE')).toBeInTheDocument();
+      expect(screen.getByText('SIGNIN_PAGE')).toBeInTheDocument();
       expect(screen.queryByText('PROTECTED_DASHBOARD')).not.toBeInTheDocument();
     });
   });
@@ -273,6 +273,140 @@ describe('Auth & Protected Routing', () => {
 
     // Does NOT auto-submit
     expect(loginSpy).not.toHaveBeenCalled();
+  });
+
+  it('GuestOnlyRoute redirects authenticated resident to /dashboard on / or /signin or /signup', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    const authValue = {
+      user: { id: 1, name: 'Alice Resident', role: 'RESIDENT' },
+      isAuthenticated: true,
+      isAdmin: false,
+      loading: false,
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter initialEntries={['/signin']}>
+          <Routes>
+            <Route
+              path="/signin"
+              element={
+                <GuestOnlyRoute>
+                  <div>GUEST_SIGNIN_PAGE</div>
+                </GuestOnlyRoute>
+              }
+            />
+            <Route path="/dashboard" element={<div>RESIDENT_DASHBOARD_LANDING</div>} />
+          </Routes>
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    expect(screen.getByText('RESIDENT_DASHBOARD_LANDING')).toBeInTheDocument();
+    expect(screen.queryByText('GUEST_SIGNIN_PAGE')).not.toBeInTheDocument();
+  });
+
+  it('GuestOnlyRoute redirects authenticated admin to /admin/dashboard on / or /signin', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    const authValue = {
+      user: { id: 2, name: 'Admin Boss', role: 'ADMIN' },
+      isAuthenticated: true,
+      isAdmin: true,
+      loading: false,
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <GuestOnlyRoute>
+                  <div>LANDING_PAGE_CONTENT</div>
+                </GuestOnlyRoute>
+              }
+            />
+            <Route path="/admin/dashboard" element={<div>ADMIN_DASHBOARD_LANDING</div>} />
+          </Routes>
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    expect(screen.getByText('ADMIN_DASHBOARD_LANDING')).toBeInTheDocument();
+    expect(screen.queryByText('LANDING_PAGE_CONTENT')).not.toBeInTheDocument();
+  });
+
+  it('redirects logged-out visit to /complaints, /new-complaint, and /notices to /signin', async () => {
+    const authValue = {
+      user: null,
+      isAuthenticated: false,
+      isAdmin: false,
+      loading: false,
+    };
+
+    for (const routePath of ['/dashboard', '/complaints', '/new-complaint', '/notices']) {
+      const { unmount } = render(
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter initialEntries={[routePath]}>
+            <Routes>
+              <Route path="/signin" element={<div>SIGNIN_VIEW_FOR_{routePath}</div>} />
+              <Route
+                path={routePath}
+                element={
+                  <ProtectedRoute>
+                    <div>PROTECTED_VIEW</div>
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </MemoryRouter>
+        </AuthContext.Provider>
+      );
+
+      expect(screen.getByText(`SIGNIN_VIEW_FOR_${routePath}`)).toBeInTheDocument();
+      expect(screen.queryByText('PROTECTED_VIEW')).not.toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  it('supports redirect query parameter on sign in', async () => {
+    const { default: LoginPage } = await import('../pages/LoginPage');
+    vi.spyOn(authApi, 'loginUser').mockResolvedValueOnce({
+      access_token: 'res.token',
+      token_type: 'bearer',
+      user: {
+        id: 5,
+        name: 'Query Redirect User',
+        role: 'RESIDENT',
+      },
+    });
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/signin?redirect=/complaints/new']}>
+          <Routes>
+            <Route path="/signin" element={<LoginPage />} />
+            <Route path="/complaints/new" element={<div>NEW_COMPLAINT_PAGE</div>} />
+            <Route path="/dashboard" element={<div>DEFAULT_DASHBOARD</div>} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/Email Address/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const submitBtn = screen.getByRole('button', { name: /Sign In/i });
+
+    const { fireEvent } = await import('@testing-library/react');
+    fireEvent.change(emailInput, { target: { value: 'query_redirect@society.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123' } });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText('NEW_COMPLAINT_PAGE')).toBeInTheDocument();
+      expect(screen.queryByText('DEFAULT_DASHBOARD')).not.toBeInTheDocument();
+    });
   });
 });
 

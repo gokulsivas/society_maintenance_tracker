@@ -25,15 +25,28 @@ export default function LoginPage() {
       const user = await login(email.trim(), password);
       // Route admin to /admin/dashboard and resident to /dashboard
       const defaultDest = user.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
-      const fromPath = location.state?.from?.pathname;
-      let destination = defaultDest;
+      const searchParams = new URLSearchParams(location.search);
+      const queryRedirect = searchParams.get('redirect') || searchParams.get('next');
+      const stateRedirect =
+        typeof location.state?.from === 'string'
+          ? location.state.from
+          : location.state?.from?.pathname;
+      const targetPath = stateRedirect || queryRedirect;
 
-      if (fromPath) {
+      let destination = defaultDest;
+      if (
+        targetPath &&
+        targetPath !== '/' &&
+        targetPath !== '/login' &&
+        targetPath !== '/signin' &&
+        targetPath !== '/register' &&
+        targetPath !== '/signup'
+      ) {
         if (user.role === 'ADMIN') {
-          destination = fromPath;
+          destination = targetPath;
         } else {
           // Resident: only preserve non-admin routes; redirect to /dashboard if previous route was /admin/*
-          destination = fromPath.startsWith('/admin') ? '/dashboard' : fromPath;
+          destination = targetPath.startsWith('/admin') ? '/dashboard' : targetPath;
         }
       }
       navigate(destination, { replace: true });
@@ -176,7 +189,7 @@ export default function LoginPage() {
           <div className="mt-6 pt-6 border-t border-[#d8cdbc] text-center">
             <p className="text-sm text-[#6b665e]">
               New resident?{' '}
-              <Link to="/register" className="font-semibold text-[#5f4b3b] hover:text-[#24211e] underline underline-offset-2 transition-colors">
+              <Link to="/signup" className="font-semibold text-[#5f4b3b] hover:text-[#24211e] underline underline-offset-2 transition-colors">
                 Register an account
               </Link>
             </p>

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Logo from '../components/common/Logo';
 import {
   ArrowRight,
@@ -14,14 +13,7 @@ import {
 } from 'lucide-react';
 
 export default function LandingPage() {
-  const { isAuthenticated, isAdmin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const authDestination = isAuthenticated
-    ? isAdmin
-      ? '/admin/dashboard'
-      : '/dashboard'
-    : '/login';
 
   // Smooth in-page scrolling with prefers-reduced-motion respect
   const handleScrollTo = (e, targetId) => {
@@ -105,16 +97,16 @@ export default function LandingPage() {
           {/* Right Actions */}
           <div className="hidden md:flex items-center space-x-5">
             <Link
-              to={authDestination}
+              to="/signin"
               className="text-sm font-medium text-[#5C5955] hover:text-[#1F1E1C] transition-colors px-2 py-2"
             >
-              {isAuthenticated ? 'Go to Dashboard' : 'Sign in'}
+              Sign in
             </Link>
             <Link
-              to={isAuthenticated ? authDestination : '/register'}
+              to="/signup"
               className="inline-flex items-center justify-center px-6 py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#1F1E1C] text-[#FAF8F5] hover:bg-[#383633] transition-all border border-[#1F1E1C]"
             >
-              {isAuthenticated ? 'Open Portal' : 'Get started'}
+              Get started
             </Link>
           </div>
 
@@ -167,18 +159,18 @@ export default function LandingPage() {
             </nav>
             <div className="pt-4 border-t border-[#EAE5DC] flex flex-col space-y-3">
               <Link
-                to={authDestination}
+                to="/signin"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full text-center py-2.5 text-sm font-medium text-[#1F1E1C] border border-[#DDD6C8]"
               >
-                {isAuthenticated ? 'Go to Dashboard' : 'Sign in'}
+                Sign in
               </Link>
               <Link
-                to={isAuthenticated ? authDestination : '/register'}
+                to="/signup"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full text-center py-2.5 text-xs font-semibold uppercase tracking-wider bg-[#1F1E1C] text-[#FAF8F5] border border-[#1F1E1C]"
               >
-                {isAuthenticated ? 'Open Portal' : 'Get started'}
+                Get started
               </Link>
             </div>
           </div>
@@ -221,7 +213,7 @@ export default function LandingPage() {
 
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
               <Link
-                to={isAuthenticated ? authDestination : '/register'}
+                to="/signup"
                 className="inline-flex items-center justify-center px-8 py-3.5 font-medium text-sm bg-[#FAF8F5] hover:bg-white text-[#1F1E1C] transition-all shadow-md"
               >
                 Get started
@@ -492,7 +484,7 @@ export default function LandingPage() {
 
               <div>
                 <Link
-                  to="/login"
+                  to="/signin"
                   className="w-full inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#ebe5da] hover:bg-[#d8cdbc] text-[#24211e] border border-[#d8cdbc] transition-all"
                 >
                   Resident experience
@@ -537,7 +529,7 @@ export default function LandingPage() {
 
               <div>
                 <Link
-                  to="/login"
+                  to="/signin"
                   className="w-full inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider bg-[#24211e] hover:bg-[#383633] text-[#FAF8F5] border border-[#24211e] transition-all"
                 >
                   Admin experience
@@ -561,7 +553,7 @@ export default function LandingPage() {
 
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
-                to="/login"
+                to="/signin"
                 className="inline-flex items-center justify-center px-8 py-3.5 font-medium text-sm bg-[#FAF8F5] hover:bg-[#ebe5da] text-[#24211e] transition-all border border-[#FAF8F5]"
               >
                 Open the tracker
@@ -569,7 +561,7 @@ export default function LandingPage() {
               </Link>
 
               <Link
-                to="/register"
+                to="/signup"
                 className="text-sm font-medium text-[#C4BDAF] hover:text-[#FAF8F5] underline underline-offset-4 transition-colors"
               >
                 Create a resident account
@@ -609,10 +601,10 @@ export default function LandingPage() {
               >
                 Features
               </a>
-              <Link to="/login" className="hover:text-[#24211e] transition-colors">
+              <Link to="/signin" className="hover:text-[#24211e] transition-colors">
                 Sign in
               </Link>
-              <Link to="/register" className="hover:text-[#24211e] transition-colors">
+              <Link to="/signup" className="hover:text-[#24211e] transition-colors">
                 Register
               </Link>
             </div>

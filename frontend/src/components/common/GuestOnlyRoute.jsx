@@ -1,11 +1,14 @@
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import LoadingSpinner from './LoadingSpinner';
 
-export default function ProtectedRoute({ children, adminOnly = false }) {
+/**
+ * Route wrapper that allows access only to unauthenticated/guest users.
+ * If the user is authenticated, they are immediately redirected to their dashboard.
+ */
+export default function GuestOnlyRoute({ children }) {
   const { isAuthenticated, isAdmin, loading } = useAuth();
-  const location = useLocation();
 
   if (loading) {
     return (
@@ -15,12 +18,9 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
     );
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/signin" state={{ from: location }} replace />;
-  }
-
-  if (adminOnly && !isAdmin) {
-    return <Navigate to="/dashboard" replace />;
+  if (isAuthenticated) {
+    const destination = isAdmin ? '/admin/dashboard' : '/dashboard';
+    return <Navigate to={destination} replace />;
   }
 
   return children;

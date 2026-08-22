@@ -86,11 +86,11 @@ describe('LandingPage Component', () => {
     // Action buttons
     const signInLinks = screen.getAllByRole('link', { name: /Sign in/i });
     expect(signInLinks.length).toBeGreaterThan(0);
-    expect(signInLinks[0]).toHaveAttribute('href', '/login');
+    expect(signInLinks[0]).toHaveAttribute('href', '/signin');
 
     const getStartedLinks = screen.getAllByRole('link', { name: /Get started/i });
     expect(getStartedLinks.length).toBeGreaterThan(0);
-    expect(getStartedLinks[0]).toHaveAttribute('href', '/register');
+    expect(getStartedLinks[0]).toHaveAttribute('href', '/signup');
   });
 
   it('renders the 4 features and 3-step workflow items', () => {
@@ -127,6 +127,6 @@ describe('LandingPage Component', () => {
       screen.getByText(/Make everyday community management feel simpler\./i)
     ).toBeInTheDocument();
     const ctaLink = screen.getByRole('link', { name: /Open the tracker/i });
-    expect(ctaLink).toHaveAttribute('href', '/login');
+    expect(ctaLink).toHaveAttribute('href', '/signin');
   });
 });
