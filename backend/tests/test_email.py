@@ -305,3 +305,160 @@ def test_send_brevo_email_returns_false_and_logs_safe_message_when_unconfigured(
         assert result is False
         assert not mock_client.called
         assert "Email notifications are disabled because email configuration is missing." in caplog.text
+
+
+def test_registration_sends_welcome_email_when_configured(client, email_setup):
+    """Test 1: Successful registration creates the account and sends one welcome email when configured."""
+    with patch("backend.app.core.email.send_brevo_email", return_value=True) as mock_send:
+        payload = {
+            "name": "Grace Hopper",
+            "email": "grace@society.com",
+            "password": "Password123",
+            "flat_no": "D-404",
+        }
+        res = client.post("/api/auth/register", json=payload)
+        assert res.status_code == status.HTTP_201_CREATED
+        assert mock_send.called
+        assert mock_send.call_count == 1
+
+        args, _ = mock_send.call_args
+        recipients = args[0]
+        subject = args[1]
+        html_content = args[2]
+        text_content = args[3]
+
+        assert recipients == [{"email": "grace@society.com", "name": "Grace Hopper"}]
+        assert subject == "Welcome to Socivio"
+        assert "Grace Hopper" in html_content
+        assert "account has been created successfully" in html_content
+        assert "https://society.example.com" in html_content
+        assert "This is a transactional email from Socivio." in html_content
+        assert "Grace Hopper" in text_content
+
+
+def test_registration_skips_welcome_email_when_brevo_key_missing(client, email_setup, monkeypatch):
+    """Test 2: Registration succeeds and no external email request is made when BREVO_API_KEY is missing."""
+    monkeypatch.setattr(settings, "BREVO_API_KEY", None)
+
+    with patch("backend.app.core.email.send_brevo_email", wraps=None) as mock_send, patch("httpx.Client") as mock_http:
+        payload = {
+            "name": "No Key Resident",
+            "email": "nokey@society.com",
+            "password": "Password123",
+        }
+        res = client.post("/api/auth/register", json=payload)
+        assert res.status_code == status.HTTP_201_CREATED
+        assert not mock_http.called
+
+
+def test_registration_skips_welcome_email_when_email_from_missing(client, email_setup, monkeypatch):
+    """Test 3: Registration succeeds and no external email request is made when EMAIL_FROM is missing."""
+    monkeypatch.setattr(settings, "EMAIL_FROM", None)
+
+    with patch("backend.app.core.email.send_brevo_email", wraps=None) as mock_send, patch("httpx.Client") as mock_http:
+        payload = {
+            "name": "No From Resident",
+            "email": "nofrom@society.com",
+            "password": "Password123",
+        }
+        res = client.post("/api/auth/register", json=payload)
+        assert res.status_code == status.HTTP_201_CREATED
+        assert not mock_http.called
+
+
+def test_duplicate_email_registration_does_not_send_welcome_email(client, email_setup):
+    """Test 4: Duplicate email registration returns 409 and does NOT send a welcome email."""
+    # First registration
+    with patch("backend.app.core.email.send_brevo_email", return_value=True):
+        client.post(
+            "/api/auth/register",
+            json={"name": "Dup User", "email": "dup@society.com", "password": "Password123"},
+        )
+
+    # Attempt duplicate registration
+    with patch("backend.app.core.email.send_brevo_email", return_value=True) as mock_send:
+        res = client.post(
+            "/api/auth/register",
+            json={"name": "Dup User 2", "email": "dup@society.com", "password": "Password123"},
+        )
+        assert res.status_code == status.HTTP_409_CONFLICT
+        assert not mock_send.called
+
+
+def test_invalid_email_registration_does_not_send_welcome_email(client, email_setup):
+    """Test 5: Invalid email registration returns 422 and does NOT send a welcome email."""
+    with patch("backend.app.core.email.send_brevo_email", return_value=True) as mock_send:
+        res = client.post(
+            "/api/auth/register",
+            json={"name": "Invalid Email", "email": "not-a-valid-email", "password": "Password123"},
+        )
+        assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert not mock_send.called
+
+
+def test_failed_db_registration_does_not_send_welcome_email(client, email_setup):
+    """Test 6: Database failure during registration does NOT send a welcome email."""
+    with patch("sqlalchemy.orm.Session.commit", side_effect=Exception("DB connection dropped")), \
+         patch("backend.app.core.email.send_brevo_email", return_value=True) as mock_send:
+        with pytest.raises(Exception):
+            client.post(
+                "/api/auth/register",
+                json={"name": "Fail DB", "email": "faildb@society.com", "password": "Password123"},
+            )
+        assert not mock_send.called
+
+
+def test_brevo_failure_does_not_rollback_or_fail_registration(client, email_setup, db_session):
+    """Test 7: Brevo failure does NOT roll back the account or fail the registration response."""
+    with patch("backend.app.core.email.send_brevo_email", side_effect=Exception("Brevo Network Error")):
+        payload = {
+            "name": "Resilient Resident",
+            "email": "resilient@society.com",
+            "password": "Password123",
+            "flat_no": "R-101",
+        }
+        res = client.post("/api/auth/register", json=payload)
+        assert res.status_code == status.HTTP_201_CREATED
+        data = res.json()
+        assert data["user"]["email"] == "resilient@society.com"
+
+        # Verify user was successfully committed to database
+        db_session.expire_all()
+        user_in_db = db_session.query(User).filter_by(email="resilient@society.com").first()
+        assert user_in_db is not None
+        assert user_in_db.name == "Resilient Resident"
+
+
+def test_welcome_email_recipient_matches_registered_user(client, email_setup):
+    """Test 8: The recipient is exactly the newly registered user's email."""
+    with patch("backend.app.core.email.send_brevo_email", return_value=True) as mock_send:
+        client.post(
+            "/api/auth/register",
+            json={"name": "Target User", "email": "target_user@society.com", "password": "Password123"},
+        )
+        assert mock_send.called
+        args, _ = mock_send.call_args
+        recipients = args[0]
+        assert len(recipients) == 1
+        assert recipients[0]["email"] == "target_user@society.com"
+        assert recipients[0]["name"] == "Target User"
+
+
+def test_welcome_email_html_escaping_prevents_xss(client, email_setup):
+    """Test 9: Dynamic name and values are safely escaped in HTML email content."""
+    with patch("backend.app.core.email.send_brevo_email", return_value=True) as mock_send:
+        client.post(
+            "/api/auth/register",
+            json={
+                "name": "<script>alert('xss')</script> Hacker",
+                "email": "hacker@society.com",
+                "password": "Password123",
+            },
+        )
+        assert mock_send.called
+        args, _ = mock_send.call_args
+        html_content = args[2]
+
+        assert "<script>" not in html_content
+        assert "&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt; Hacker" in html_content
+

@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -5,10 +6,13 @@ from sqlalchemy import select
 from backend.app.core.database import get_db
 from backend.app.core.security import hash_password, verify_password, create_access_token
 from backend.app.core.dependencies import get_current_user
+from backend.app.core.email import send_welcome_email
 from backend.app.models.enums import UserRole
 from backend.app.models.user import User
 from backend.app.schemas.auth import UserRegisterRequest, LoginRequest, TokenResponse
 from backend.app.schemas.user import UserRead
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -49,6 +53,16 @@ def register_resident(
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    # Post-commit welcome email notification (Zero-Rollback Guarantee)
+    if new_user.email:
+        try:
+            send_welcome_email(
+                resident_email=new_user.email,
+                resident_name=new_user.name,
+            )
+        except Exception as exc:
+            logger.error("Post-commit welcome email failed: %s", type(exc).__name__)
 
     # Generate JWT access token
     access_token = create_access_token(new_user.id)

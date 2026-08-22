@@ -186,3 +186,58 @@ Socivio
             sent_count += len(batch)
 
     return sent_count
+
+
+def send_welcome_email(
+    resident_email: str,
+    resident_name: Optional[str] = None,
+) -> bool:
+    """Dispatch welcome email notification to a newly registered resident."""
+    if not resident_email:
+        return False
+
+    # Safely escape dynamic HTML inputs
+    safe_name = html.escape(resident_name or "Resident")
+    base_url = settings.FRONTEND_URL.rstrip("/")
+    safe_url = html.escape(base_url)
+
+    subject = "Welcome to Socivio"
+
+    html_content = f"""
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2>Welcome to Socivio!</h2>
+        <p>Hello {safe_name},</p>
+        <p>Your Socivio account has been created successfully.</p>
+        <p>With Socivio, you can easily:</p>
+        <ul>
+            <li>Report maintenance requests with optional photo attachments</li>
+            <li>Track live resolution status and progress updates</li>
+            <li>Stay informed with official society notices and alerts</li>
+        </ul>
+        <p style="margin-top: 20px;">
+            <a href="{safe_url}" style="background-color: #24211e; color: #ffffff; padding: 10px 18px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                Open Socivio Portal
+            </a>
+        </p>
+        <p style="color: #888; font-size: 12px; margin-top: 30px;">
+            This is a transactional email from Socivio.
+        </p>
+    </div>
+    """
+
+    text_content = f"""Welcome to Socivio!
+
+Hello {resident_name or 'Resident'},
+
+Your Socivio account has been created successfully.
+
+With Socivio, you can report maintenance requests, track progress, and view society notices.
+
+Access the portal: {base_url}
+
+This is a transactional email from Socivio.
+"""
+
+    recipient = [{"email": resident_email, "name": resident_name or "Resident"}]
+    return send_brevo_email(recipient, subject, html_content, text_content)
+

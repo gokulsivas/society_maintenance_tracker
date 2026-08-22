@@ -313,13 +313,16 @@ The table below describes the variables defined in `.env.example`:
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret | Only if image uploads are enabled |
 | `BREVO_API_KEY` | Brevo REST API key for email delivery | Only if email notifications are enabled |
 | `EMAIL_FROM` | Sender email address for notifications | Only if email notifications are enabled |
-| `EMAIL_FROM_NAME` | Sender display name | Only if email notifications are enabled |
+| `EMAIL_FROM_NAME` | Sender display name (default: `Socivio`) | Only if email notifications are enabled |
 | `FRONTEND_URL` | Deployed frontend URL for email links | Only if email notifications are enabled |
 | `VITE_API_URL` | API base path prefix for frontend requests | Yes (default: `/api`) |
 
-> **Note**: Transactional email notifications are optional and disabled unless a provider, API key, and verified sender are configured.
+> **Email & Welcome Notification Note**:
+> - Welcome emails and status update notifications are completely **optional**.
+> - They are dispatched only when Brevo credentials (`BREVO_API_KEY`) and a verified sender address (`EMAIL_FROM`) are configured in the environment.
+> - Missing or incomplete email configuration does **not** block or prevent user registration, complaint creation, or notice publication.
+> - **Security Notice**: Never commit real API keys, email provider tokens, or database passwords to version control.
 
-> **Security Note**: Never commit `.env` files, database URLs, JWT secrets, API keys, or production credentials to version control.
 
 ---
 
