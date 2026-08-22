@@ -22,7 +22,7 @@ def send_brevo_email(
     Guarantees no secret leaks in logs and never raises uncaught exceptions.
     """
     if not settings.is_brevo_configured:
-        logger.info("Brevo email API is not configured. Skipping email dispatch.")
+        logger.info("Email notifications are disabled because email configuration is missing.")
         return False
 
     if not to_recipients:

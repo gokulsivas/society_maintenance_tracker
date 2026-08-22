@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import Logo from './Logo';
 import {
-  Building2,
   LayoutDashboard,
   ClipboardList,
   PlusCircle,
@@ -87,7 +87,7 @@ export default function Navbar() {
               className="flex items-center space-x-3 text-[#f5f2ec] hover:opacity-90 transition-opacity"
             >
               <div className="w-8 h-8 bg-[#302a25] text-[#FAF8F5] border border-[rgba(245,242,236,0.2)] flex items-center justify-center">
-                <Building2 className="h-4 w-4" />
+                <Logo className="h-4 w-4" />
               </div>
               <span className="font-serif font-medium text-lg sm:text-xl tracking-tight hidden sm:inline text-[#f5f2ec]">
                 Socivio

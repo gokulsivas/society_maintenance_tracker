@@ -252,3 +252,56 @@ def test_html_escaping_prevents_injection(client, email_setup, db_session):
         assert "&lt;script&gt;" in html_content
         assert "<img" not in html_content
         assert "&lt;img" in html_content
+
+
+def test_send_brevo_email_returns_false_and_logs_safe_message_when_unconfigured(monkeypatch, caplog):
+    """Verify send_brevo_email logs a safe message without secrets and makes no network calls when unconfigured."""
+    import logging
+    from backend.app.core.email import send_brevo_email
+
+    # Case 1: Both unconfigured
+    monkeypatch.setattr(settings, "BREVO_API_KEY", None)
+    monkeypatch.setattr(settings, "EMAIL_FROM", None)
+
+    with caplog.at_level(logging.INFO), patch("httpx.Client") as mock_client:
+        result = send_brevo_email(
+            to_recipients=[{"email": "resident@example.com", "name": "Resident"}],
+            subject="Test Subject",
+            html_content="<p>Test</p>",
+            text_content="Test",
+        )
+        assert result is False
+        assert not mock_client.called
+        assert "Email notifications are disabled because email configuration is missing." in caplog.text
+
+    # Case 2: Only BREVO_API_KEY set, EMAIL_FROM missing
+    caplog.clear()
+    monkeypatch.setattr(settings, "BREVO_API_KEY", "xkeysib-some-key")
+    monkeypatch.setattr(settings, "EMAIL_FROM", None)
+
+    with caplog.at_level(logging.INFO), patch("httpx.Client") as mock_client:
+        result = send_brevo_email(
+            to_recipients=[{"email": "resident@example.com", "name": "Resident"}],
+            subject="Test Subject",
+            html_content="<p>Test</p>",
+            text_content="Test",
+        )
+        assert result is False
+        assert not mock_client.called
+        assert "Email notifications are disabled because email configuration is missing." in caplog.text
+
+    # Case 3: Only EMAIL_FROM set, BREVO_API_KEY missing
+    caplog.clear()
+    monkeypatch.setattr(settings, "BREVO_API_KEY", None)
+    monkeypatch.setattr(settings, "EMAIL_FROM", "test@example.com")
+
+    with caplog.at_level(logging.INFO), patch("httpx.Client") as mock_client:
+        result = send_brevo_email(
+            to_recipients=[{"email": "resident@example.com", "name": "Resident"}],
+            subject="Test Subject",
+            html_content="<p>Test</p>",
+            text_content="Test",
+        )
+        assert result is False
+        assert not mock_client.called
+        assert "Email notifications are disabled because email configuration is missing." in caplog.text

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Logo from '../components/common/Logo';
 import {
-  Building2,
   ArrowRight,
   Clock,
   Bell,
@@ -63,7 +63,7 @@ export default function LandingPage() {
             aria-label="Socivio - Return to Top"
           >
             <div className="w-8 h-8 bg-[#1F1E1C] text-[#FAF8F5] flex items-center justify-center">
-              <Building2 className="w-4 h-4" />
+              <Logo className="w-4 h-4" />
             </div>
             <span className="font-serif font-medium text-lg sm:text-xl tracking-tight">
               Socivio

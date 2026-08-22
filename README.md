@@ -317,6 +317,8 @@ The table below describes the variables defined in `.env.example`:
 | `FRONTEND_URL` | Deployed frontend URL for email links | Only if email notifications are enabled |
 | `VITE_API_URL` | API base path prefix for frontend requests | Yes (default: `/api`) |
 
+> **Note**: Transactional email notifications are optional and disabled unless a provider, API key, and verified sender are configured.
+
 > **Security Note**: Never commit `.env` files, database URLs, JWT secrets, API keys, or production credentials to version control.
 
 ---

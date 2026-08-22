@@ -29,10 +29,10 @@ class Settings(BaseSettings):
     CLOUDINARY_API_SECRET: Optional[str] = None
     CLOUDINARY_FOLDER: str = "society_complaints"
 
-    # Brevo Email Service (Server-side credentials)
+    # Brevo Email Service (Optional server-side credentials)
     BREVO_API_KEY: Optional[str] = None
-    EMAIL_FROM: str = "noreply@society.com"
-    EMAIL_FROM_NAME: str = "Society Maintenance"
+    EMAIL_FROM: Optional[str] = None
+    EMAIL_FROM_NAME: str = "Socivio"
     FRONTEND_URL: str = "http://localhost:5173"
 
     # CORS configuration - Explicit origins only (never wildcard with credentials)
@@ -124,7 +124,12 @@ class Settings(BaseSettings):
 
     @property
     def is_brevo_configured(self) -> bool:
-        return bool(self.BREVO_API_KEY and self.BREVO_API_KEY.strip())
+        return bool(
+            self.BREVO_API_KEY
+            and self.BREVO_API_KEY.strip()
+            and self.EMAIL_FROM
+            and self.EMAIL_FROM.strip()
+        )
 
 
 settings = Settings()

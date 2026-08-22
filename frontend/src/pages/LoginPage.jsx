@@ -3,7 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getErrorMessage } from '../api/client';
 import ErrorAlert from '../components/common/ErrorAlert';
-import { Building2, Lock, Mail, Loader2, ArrowRight, ArrowLeft, Shield, User } from 'lucide-react';
+import Logo from '../components/common/Logo';
+import { Lock, Mail, Loader2, ArrowRight, ArrowLeft, Shield, User } from 'lucide-react';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -58,7 +59,7 @@ export default function LoginPage() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link to="/" className="inline-flex items-center justify-center mb-4">
           <div className="w-10 h-10 bg-[#24211e] text-[#FAF8F5] flex items-center justify-center">
-            <Building2 className="h-5 w-5" />
+            <Logo className="h-5 w-5" />
           </div>
         </Link>
         <h1 className="font-serif text-3xl sm:text-4xl text-[#24211e] font-normal tracking-tight">

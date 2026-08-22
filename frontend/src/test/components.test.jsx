@@ -8,12 +8,21 @@ import NoticeCard from '../components/notices/NoticeCard';
 import EmptyState from '../components/common/EmptyState';
 import ErrorAlert from '../components/common/ErrorAlert';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import Logo from '../components/common/Logo';
 import EditComplaintModal from '../components/complaints/EditComplaintModal';
 import * as complaintsApi from '../api/complaints';
 
 describe('Common UI Components', () => {
   beforeEach(() => {
     localStorage.clear();
+  });
+
+  it('renders original Logo SVG with accessible aria-label and role', () => {
+    render(<Logo className="w-6 h-6 custom-logo" ariaLabel="Socivio Logo" />);
+    const logoEl = screen.getByRole('img', { name: /Socivio Logo/i });
+    expect(logoEl).toBeInTheDocument();
+    expect(logoEl).toHaveAttribute('aria-label', 'Socivio Logo');
+    expect(logoEl.getAttribute('class')).toContain('custom-logo');
   });
 
   it('renders StatusBadge for OPEN, IN_PROGRESS, RESOLVED and OVERDUE state', () => {
