@@ -408,5 +408,108 @@ describe('Auth & Protected Routing', () => {
       expect(screen.queryByText('DEFAULT_DASHBOARD')).not.toBeInTheDocument();
     });
   });
+
+  it('root URL / redirects authenticated resident directly to /dashboard without rendering landing page', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    const authValue = {
+      user: { id: 10, name: 'Direct Nav Resident', role: 'RESIDENT' },
+      isAuthenticated: true,
+      isAdmin: false,
+      loading: false,
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <GuestOnlyRoute>
+                  <div data-testid="landing-content">LANDING_PAGE_HERO</div>
+                </GuestOnlyRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={<div data-testid="dashboard-content">RESIDENT_DASHBOARD_VIEW</div>}
+            />
+          </Routes>
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    expect(screen.getByTestId('dashboard-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('landing-content')).not.toBeInTheDocument();
+  });
+
+  it('root URL / renders loading spinner while auth is unresolved and does not render landing page', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    const authValue = {
+      user: null,
+      isAuthenticated: false,
+      isAdmin: false,
+      loading: true,
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <GuestOnlyRoute>
+                  <div data-testid="landing-content">LANDING_PAGE_HERO</div>
+                </GuestOnlyRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={<div data-testid="dashboard-content">RESIDENT_DASHBOARD_VIEW</div>}
+            />
+          </Routes>
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    expect(screen.getByText('Checking authentication...')).toBeInTheDocument();
+    expect(screen.queryByTestId('landing-content')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('dashboard-content')).not.toBeInTheDocument();
+  });
+
+  it('root URL / renders landing page when user is logged out', async () => {
+    const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+    const authValue = {
+      user: null,
+      isAuthenticated: false,
+      isAdmin: false,
+      loading: false,
+    };
+
+    render(
+      <AuthContext.Provider value={authValue}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <GuestOnlyRoute>
+                  <div data-testid="landing-content">LANDING_PAGE_HERO</div>
+                </GuestOnlyRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={<div data-testid="dashboard-content">RESIDENT_DASHBOARD_VIEW</div>}
+            />
+          </Routes>
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    expect(screen.getByTestId('landing-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('dashboard-content')).not.toBeInTheDocument();
+  });
 });
 
