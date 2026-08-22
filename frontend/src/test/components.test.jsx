@@ -17,13 +17,24 @@ describe('Common UI Components', () => {
     localStorage.clear();
   });
 
-  it('renders original Logo SVG with accessible aria-label and role', () => {
-    render(<Logo className="w-6 h-6 custom-logo" ariaLabel="Socivio Logo" />);
-    const logoEl = screen.getByRole('img', { name: /Socivio Logo/i });
+  it('renders custom solid architectural S Logo SVG with accessible aria-label, role, and props', () => {
+    // Custom props
+    const { rerender } = render(<Logo className="w-6 h-6 custom-logo" ariaLabel="Socivio Brand Logo" />);
+    const logoEl = screen.getByRole('img', { name: /Socivio Brand Logo/i });
     expect(logoEl).toBeInTheDocument();
-    expect(logoEl).toHaveAttribute('aria-label', 'Socivio Logo');
+    expect(logoEl).toHaveAttribute('aria-label', 'Socivio Brand Logo');
     expect(logoEl.getAttribute('class')).toContain('custom-logo');
+    expect(logoEl).toHaveAttribute('fill', 'currentColor');
+    expect(logoEl.querySelectorAll('path').length).toBe(2);
+
+    // Default props
+    rerender(<Logo />);
+    const defaultLogoEl = screen.getByRole('img', { name: /Socivio/i });
+    expect(defaultLogoEl).toBeInTheDocument();
+    expect(defaultLogoEl).toHaveAttribute('aria-label', 'Socivio');
+    expect(defaultLogoEl.getAttribute('class')).toBe('h-5 w-5');
   });
+
 
   it('renders StatusBadge for OPEN, IN_PROGRESS, RESOLVED and OVERDUE state', () => {
     const { rerender } = render(<StatusBadge status="OPEN" isOverdue={false} />);
