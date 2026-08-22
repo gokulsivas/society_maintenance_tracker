@@ -654,6 +654,122 @@ describe('Auth & Protected Routing', () => {
       expect(screen.queryByTestId('dashboard-content')).not.toBeInTheDocument();
     });
   });
+
+  describe('UI Layout Isolation & Authenticated Navbar Isolation', () => {
+    it('rendering / for unauthenticated user does not render any authenticated Navbar elements or links', async () => {
+      const { default: App } = await import('../App');
+
+      render(<App />);
+
+      // The public landing page is rendered
+      expect(
+        screen.getByRole('heading', { name: /A calmer way to care for your society\./i })
+      ).toBeInTheDocument();
+
+      // Authenticated Navbar links must NOT exist in the DOM
+      expect(screen.queryByRole('link', { name: /My Complaints/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('link', { name: /New Complaint/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /Open account menu/i })).not.toBeInTheDocument();
+
+      // Public landing navigation items SHOULD exist
+      expect(screen.getAllByRole('link', { name: /Sign in/i }).length).toBeGreaterThan(0);
+      expect(screen.getAllByRole('link', { name: /Get started/i }).length).toBeGreaterThan(0);
+    });
+
+    it('rendering /dashboard for authenticated resident mounts the Authenticated Navbar', async () => {
+      const { default: Navbar } = await import('../components/common/Navbar');
+      const authValue = {
+        user: { id: 55, name: 'Alice Resident', role: 'RESIDENT', flat_no: 'B-101' },
+        isAuthenticated: true,
+        isAdmin: false,
+        loading: false,
+      };
+
+      render(
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter initialEntries={['/dashboard']}>
+            <Navbar />
+            <div data-testid="page-body">RESIDENT_DASHBOARD</div>
+          </MemoryRouter>
+        </AuthContext.Provider>
+      );
+
+      // Authenticated Navbar is present
+      expect(screen.getByRole('navigation')).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /Dashboard/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /My Complaints/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /New Complaint/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /Notices/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Open account menu/i })).toBeInTheDocument();
+    });
+
+    it('navigating from /dashboard to / unmounts the Authenticated Navbar completely', async () => {
+      const { default: Navbar } = await import('../components/common/Navbar');
+      const { default: GuestOnlyRoute } = await import('../components/common/GuestOnlyRoute');
+      const { useNavigate } = await import('react-router-dom');
+
+      function Switcher() {
+        const navigate = useNavigate();
+        return (
+          <div>
+            <button onClick={() => navigate('/')} data-testid="go-to-root">
+              Go to Root
+            </button>
+            <Routes>
+              <Route
+                path="/dashboard"
+                element={
+                  <div>
+                    <Navbar />
+                    <div data-testid="dashboard-view">DASHBOARD_BODY</div>
+                  </div>
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <GuestOnlyRoute>
+                    <div data-testid="clean-landing">CLEAN_LANDING_PAGE</div>
+                  </GuestOnlyRoute>
+                }
+              />
+            </Routes>
+          </div>
+        );
+      }
+
+      const { fireEvent } = await import('@testing-library/react');
+
+      // Unauthenticated state
+      const authValue = {
+        user: null,
+        isAuthenticated: false,
+        isAdmin: false,
+        loading: false,
+      };
+
+      render(
+        <AuthContext.Provider value={authValue}>
+          <MemoryRouter initialEntries={['/dashboard']}>
+            <Switcher />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      );
+
+      // On /dashboard, navbar is rendered
+      expect(screen.getByTestId('dashboard-view')).toBeInTheDocument();
+
+      // Navigate to /
+      fireEvent.click(screen.getByTestId('go-to-root'));
+
+      // On /, landing is rendered and navbar is completely unmounted from DOM
+      expect(screen.getByTestId('clean-landing')).toBeInTheDocument();
+      expect(screen.queryByTestId('dashboard-view')).not.toBeInTheDocument();
+      expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
+      expect(screen.queryByRole('link', { name: /My Complaints/i })).not.toBeInTheDocument();
+    });
+  });
 });
+
 
 

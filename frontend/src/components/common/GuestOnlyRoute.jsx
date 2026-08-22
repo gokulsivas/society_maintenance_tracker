@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -23,5 +23,5 @@ export default function GuestOnlyRoute({ children }) {
     return <Navigate to={destination} replace />;
   }
 
-  return children;
+  return children || <Outlet />;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -23,12 +23,22 @@ import AdminComplaintsPage from './pages/AdminComplaintsPage';
 import AdminNoticesPage from './pages/AdminNoticesPage';
 import AdminSettingsPage from './pages/AdminSettingsPage';
 
-function AuthenticatedLayout({ children, adminOnly = false }) {
+export function PublicLayout() {
+  return (
+    <GuestOnlyRoute>
+      <Outlet />
+    </GuestOnlyRoute>
+  );
+}
+
+export function AuthenticatedLayout({ adminOnly = false }) {
   return (
     <ProtectedRoute adminOnly={adminOnly}>
       <div className="min-h-screen bg-[#f5f2ec] text-[#24211e] flex flex-col font-sans">
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1">
+          <Outlet />
+        </main>
       </div>
     </ProtectedRoute>
   );
@@ -39,132 +49,32 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Guest-Only Routes */}
-          <Route
-            path="/"
-            element={
-              <GuestOnlyRoute>
-                <LandingPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/signin"
-            element={
-              <GuestOnlyRoute>
-                <LoginPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <GuestOnlyRoute>
-                <LoginPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <GuestOnlyRoute>
-                <RegisterPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <GuestOnlyRoute>
-                <RegisterPage />
-              </GuestOnlyRoute>
-            }
-          />
+          {/* Public Guest-Only Routes (Structurally Isolated from Authenticated Layout) */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/signin" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<RegisterPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
 
           {/* Resident & Shared Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <AuthenticatedLayout>
-                <ResidentDashboardPage />
-              </AuthenticatedLayout>
-            }
-          />
-          {/* Order matters: /complaints/new MUST come before /complaints/:id */}
-          <Route
-            path="/complaints/new"
-            element={
-              <AuthenticatedLayout>
-                <CreateComplaintPage />
-              </AuthenticatedLayout>
-            }
-          />
-          <Route
-            path="/new-complaint"
-            element={
-              <AuthenticatedLayout>
-                <CreateComplaintPage />
-              </AuthenticatedLayout>
-            }
-          />
-          <Route
-            path="/complaints/:id"
-            element={
-              <AuthenticatedLayout>
-                <ComplaintDetailPage />
-              </AuthenticatedLayout>
-            }
-          />
-          <Route
-            path="/complaints"
-            element={
-              <AuthenticatedLayout>
-                <MyComplaintsPage />
-              </AuthenticatedLayout>
-            }
-          />
-          <Route
-            path="/notices"
-            element={
-              <AuthenticatedLayout>
-                <NoticeBoardPage />
-              </AuthenticatedLayout>
-            }
-          />
+          <Route element={<AuthenticatedLayout />}>
+            <Route path="/dashboard" element={<ResidentDashboardPage />} />
+            <Route path="/complaints/new" element={<CreateComplaintPage />} />
+            <Route path="/new-complaint" element={<CreateComplaintPage />} />
+            <Route path="/complaints/:id" element={<ComplaintDetailPage />} />
+            <Route path="/complaints" element={<MyComplaintsPage />} />
+            <Route path="/notices" element={<NoticeBoardPage />} />
+          </Route>
 
-          {/* Admin-only Protected Routes */}
-          <Route
-            path="/admin/dashboard"
-            element={
-              <AuthenticatedLayout adminOnly>
-                <AdminDashboardPage />
-              </AuthenticatedLayout>
-            }
-          />
-          <Route
-            path="/admin/complaints"
-            element={
-              <AuthenticatedLayout adminOnly>
-                <AdminComplaintsPage />
-              </AuthenticatedLayout>
-            }
-          />
-          <Route
-            path="/admin/notices"
-            element={
-              <AuthenticatedLayout adminOnly>
-                <AdminNoticesPage />
-              </AuthenticatedLayout>
-            }
-          />
-          <Route
-            path="/admin/settings"
-            element={
-              <AuthenticatedLayout adminOnly>
-                <AdminSettingsPage />
-              </AuthenticatedLayout>
-            }
-          />
+          {/* Admin-Only Protected Routes */}
+          <Route element={<AuthenticatedLayout adminOnly />}>
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
+            <Route path="/admin/notices" element={<AdminNoticesPage />} />
+            <Route path="/admin/settings" element={<AdminSettingsPage />} />
+          </Route>
 
           {/* 404 Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -173,3 +83,4 @@ export default function App() {
     </AuthProvider>
   );
 }
+
